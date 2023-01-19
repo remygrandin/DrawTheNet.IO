@@ -9,13 +9,13 @@ module.exports = function(grunt) {
          expand: true,
          cwd: 'node_modules/d3',
          src: 'build/d3.min.js',
-         dest: 'build/js',
+         dest: 'dist/res/build/js',
          flatten: true
        },{
          expand: true,
          cwd: 'node_modules/js-yaml',
          src: 'dist/js-yaml.min.js',
-         dest: 'build/js',
+         dest: 'dist/res/build/js',
          flatten: true
        }]
      }
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         // Anything can be copied
         test: {
             options: {
-                destPrefix: 'build/'
+                destPrefix: 'dist/res'
             },
             files: {
                 'js/angular.min.js': 'angular/angular.min.js',
