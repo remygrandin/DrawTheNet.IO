@@ -43,3 +43,6 @@ jspm_packages
 node_modules*
 
 google.txt
+
+tmp/*
+src/res/icons/*
