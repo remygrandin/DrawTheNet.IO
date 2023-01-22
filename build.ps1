@@ -10,7 +10,7 @@ function DownloadIcons {
     New-Item -Type Directory -Path $tempPath -Force | Out-Null
     
     DownloadAWSIcons
-    #DownloadAzureIcons
+    DownloadAzureIcons
 }
 
 function DownloadAWSIcons {
@@ -44,7 +44,7 @@ function DownloadAWSIcons {
 
         if($obj.FullName.Contains("Architecture-Service-Icons"))
         {
-            $obj.FullName -match "\\Arch_([\da-zA-Z-_]*)\\(?:Arch_)?\d\d\\(?:Arch_ ?(?:Amazon|AWS)?-?)([\da-zA-Z-_]*) ?_(\d\d)_?.svg" | Out-Null
+            $obj.FullName -match "\\Arch_([\da-zA-Z-_]*)\\(?:Arch_)?\d\d\\(?:Arch_ ?(?:Amazon|AWS)?-?)([\da-zA-Z-&_]*) ?_(\d\d)_?.svg" | Out-Null
 
             $obj | Add-Member -MemberType NoteProperty -Name "Size" -Value ([int]($Matches[3]))
             $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "AWS_$($Matches[1])_$($Matches[2])"
@@ -86,7 +86,7 @@ function DownloadAWSIcons {
             Write-Output "    Copy $($obj.FullName) as $($obj.DestName)  ..."
             Copy-Item -Path $obj.FullName -Destination (Join-Path $destPath $obj.DestName) -Force
         }
-        $copiedFiles += $_.BaseName
+        $copiedFiles += $_.Name
     }
 
     Write-Output "Adding data to icons.json..."
@@ -137,15 +137,19 @@ function DownloadAzureIcons {
 
         $obj.FileName -match "(?:\d{5}-icon-service-)(.*).svg" | Out-Null
 
-        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value $Matches[1]
+        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "Azure_$($Matches[1])"
         $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
 
         $svgFilesParsed += $obj
     }
 
+    $copiedFiles = @()
+
     foreach ($svgFileParsed in $svgFilesParsed) {
         Write-Output "    Copy $($svgFileParsed.FullName) as $($svgFileParsed.Name)  ..."
-        Copy-Item -Path $svgFileParsed.FullName -Destination (Join-Path $destPath "Azure-$($svgFileParsed.Name)") -Force
+        Copy-Item -Path $svgFileParsed.FullName -Destination (Join-Path $destPath $svgFileParsed.Name) -Force
+
+        $copiedFiles += $svgFileParsed.BaseName
     }
 
     Write-Output "Adding data to icons.json..."
@@ -185,6 +189,6 @@ Write-Output "Starting DrawTheNet build process..."
 InitCleanup
 DownloadIcons
 CopySrc
-#EndCleanup
+EndCleanup
 
 Write-Output "All Done"
