@@ -37,11 +37,11 @@
     <script type="text/javascript" src="res/js/app.js"></script>
 
 <style>
-html, body {
+html, body, #svg {
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100vh;
+  height: 200vh;
 }
 </style>
 </head>
@@ -54,7 +54,7 @@ html, body {
   function dodraw(){
     var design = clone(window.opener.design);
     draw(design);
-    document.title = 'dld4e: ' + design.title.text
+    document.title = 'DrawtheNet.io: ' + design.title.text
   }
 
   window.onload=dodraw();

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Router with silicon switch]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(285.633100,382.266100) ">
+      <!--emf-blob start-->
+      <g transform="translate(-338.2685, 497.6620)">
+        <path d="M 378.4120,-489.9875 C 378.4120,-485.5599 369.5568,-482.0178 358.3403,-482.0178 C 347.1237,-482.0178 338.2685,-485.5599 338.2685,-489.9875 C 338.2685,-478.4757 338.2685,-478.4757 338.2685,-478.4757 C 338.2685,-474.0481 347.1237,-470.8012 358.3403,-470.8012 C 369.5568,-470.8012 378.4120,-474.0481 378.4120,-478.4757 Z Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7710" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 358.3403,-482.0178 C 369.5568,-482.0178 378.4120,-485.5599 378.4120,-489.9875 C 378.4120,-494.4151 369.5568,-497.6620 358.3403,-497.6620 C 347.1237,-497.6620 338.2685,-494.4151 338.2685,-489.9875 C 338.2685,-485.5599 347.1237,-482.0178 358.3403,-482.0178 Z Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7710" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 352.1416,-492.0537 L 354.5030,-490.8730 L 349.4851,-489.6923 L 350.6657,-490.8730 L 341.8106,-492.3489 L 342.4009,-492.9392 L 351.2561,-491.4634 L 352.1416,-492.0537 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 364.5389,-488.2165 L 362.1775,-489.3971 L 367.1954,-490.2827 L 366.0148,-489.3971 L 375.1651,-487.6261 L 374.2796,-487.0358 L 365.4244,-488.8068 L 364.5389,-488.2165 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 361.8823,-494.7103 L 366.3099,-496.4813 L 365.7196,-494.1199 L 364.2437,-494.4151 L 360.9968,-491.4634 L 359.8161,-491.7585 L 363.3582,-494.4151 L 361.8823,-494.7103 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 355.6837,-485.5599 L 350.9609,-483.7889 L 351.5513,-485.8551 L 353.0271,-485.8551 L 356.2740,-488.5116 L 357.4547,-488.5116 L 354.2078,-485.8551 L 355.6837,-485.5599 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 358.0451,-471.6868 C 360.7016,-471.6868 362.7678,-473.7530 362.7678,-476.4095 C 362.7678,-479.0661 360.7016,-481.1323 358.0451,-481.1323 C 355.6837,-481.1323 353.6175,-479.0661 353.6175,-476.4095 C 353.6175,-473.7530 355.6837,-471.6868 358.0451,-471.6868 Z Z " fill="#000000" stroke="#FFFFFF" stroke-width="1.7710" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 355.0957 -473.9951)">
+          <text font-family="Helvetica" fill="#FFFFFF" style="white-space:pre;" font-weight="700" text-anchor="start" x="0.0000" y="0.0000" font-size="7.0842"><![CDATA[S]]></text>
+        </g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 0.0000 0.0000)">
+</g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 359.1923 -473.9951)">
+          <text font-family="Helvetica" fill="#FFFFFF" style="white-space:pre;" font-weight="700" text-anchor="start" x="0.0000" y="0.0000" font-size="7.0842"><![CDATA[i]]></text>
+        </g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 0.0000 0.0000)">
+</g>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

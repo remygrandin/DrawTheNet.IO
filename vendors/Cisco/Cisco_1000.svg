@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Cisco 1000]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(290.933900,382.719700) ">
+      <!--emf-blob start-->
+      <g transform="translate(-347.9439, 492.2565)">
+        <path d="M 367.4216,-484.2883 L 374.2093,-471.3031 Z " fill="#595959" stroke-width="1px" stroke="#595959"/>
+        <path d="M 367.4216,-484.2883 L 374.2093,-471.3031 " stroke="none" stroke-width="0.0" fill="none"/>
+        <path d="M 370.9630,-491.9613 L 358.8632,-491.9613 L 355.3218,-489.6004 L 367.4216,-489.6004 L 370.9630,-491.9613 Z " fill="#046897" stroke="#FFFFFF" stroke-width="1.7707" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 374.2093,-471.3031 L 374.2093,-465.9910 L 377.7508,-468.0568 L 377.7508,-473.3689 L 370.9630,-486.6492 L 370.9630,-491.9613 L 367.4216,-489.6004 L 367.4216,-484.2883 Z " fill="#046897" stroke-width="1px" stroke="#046897"/>
+        <path d="M 374.2093,-471.3031 L 374.2093,-465.9910 L 377.7508,-468.0568 L 377.7508,-473.3689 L 370.9630,-486.6492 L 370.9630,-491.9613 L 367.4216,-489.6004 L 367.4216,-484.2883 " stroke="#FFFFFF" stroke-width="1.7707" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 374.2093,-471.3031 L 367.4216,-484.2883 L 367.4216,-484.2883 L 367.4216,-489.6004 L 355.3218,-489.6004 L 355.3218,-484.2883 L 355.3218,-484.2883 L 348.5341,-471.3031 L 348.5341,-471.3031 L 348.5341,-465.9910 L 374.2093,-465.9910 L 374.2093,-471.3031 L 374.2093,-471.3031 Z " fill="#046897" stroke="#FFFFFF" stroke-width="1.7707" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 361.2242,-477.7957 L 361.8144,-477.7957 L 361.8144,-472.7787 L 365.3558,-472.7787 L 361.5193,-468.0568 L 357.6827,-472.7787 L 361.2242,-472.7787 L 361.2242,-477.7957 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 361.8144,-478.0908 L 361.2242,-478.0908 L 361.2242,-483.1078 L 357.6827,-483.1078 L 361.5193,-487.8297 L 365.3558,-483.1078 L 361.8144,-483.1078 L 361.8144,-478.0908 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

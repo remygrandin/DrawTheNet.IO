@@ -1,5 +1,6 @@
 $tempPath = Join-Path $PSScriptRoot "tmp"
 $buildPath = Join-Path $PSScriptRoot "dist"
+$vendorsPath = Join-Path $PSScriptRoot "vendors"
 $iconsPath = Join-Path $buildPath "res" "icons"
 $iconsJSONPath = Join-Path $iconsPath "icons.json"
 
@@ -11,6 +12,8 @@ function DownloadIcons {
     
     DownloadAWSIcons
     DownloadAzureIcons
+    DownloadGCPIcons
+    DownloadCiscoIcons
 }
 
 function DownloadAWSIcons {
@@ -99,6 +102,8 @@ function DownloadAWSIcons {
         $iconsJson = [PSCustomObject]@{
         }
     }
+
+    $copiedFiles = $copiedFiles | Sort-Object
     
     $iconsJson | Add-Member -MemberType NoteProperty -Name "AWS" -Value $copiedFiles -Force | Out-Null
     $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
@@ -146,7 +151,72 @@ function DownloadAzureIcons {
     $copiedFiles = @()
 
     foreach ($svgFileParsed in $svgFilesParsed) {
-        Write-Output "    Copy $($svgFileParsed.FullName) as $($svgFileParsed.Name)  ..."
+        Write-Output "    Copy $($svgFileParsed.FullName) as $($svgFileParsed.Name) ..."
+        Copy-Item -Path $svgFileParsed.FullName -Destination (Join-Path $destPath $svgFileParsed.Name) -Force
+
+        $copiedFiles += $svgFileParsed.BaseName
+    }
+
+    Write-Output "Adding data to icons.json..."
+    $iconsJson = $null
+    
+    if (test-path $iconsJSONPath) {
+        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
+    }
+    else {
+        $iconsJson = [PSCustomObject]@{
+        }
+    }
+
+    $copiedFiles = $copiedFiles | Sort-Object
+    
+    $iconsJson | Add-Member -MemberType NoteProperty -Name "Azure" -Value $copiedFiles -Force | Out-Null
+    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
+
+    Write-Output "Done"
+}
+
+function DownloadGCPIcons {
+    Write-Output "------ GCP ------"
+    $zipPath = join-path $tempPath "GCP.zip"
+    $extractPath = join-path $tempPath "GCP"
+    $destPath = join-path $iconsPath "GCP"
+
+    Write-Output "Download..."
+    Invoke-WebRequest -Uri "https://cloud.google.com/static/icons/files/google-cloud-icons.zip" -OutFile $zipPath
+    Write-Output "Done"
+
+    Write-Output "Extract..."
+    New-Item -Type Directory -Path $extractPath -Force | Out-Null
+    Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+    Write-Output "Done"
+
+    Write-Output "Copy :"
+    New-Item -Type Directory -Path $destPath -Force | Out-Null
+    $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith(".svg") }
+
+    # filtering the lowest resolution icons
+    $svgFilesParsed = @()
+    foreach ($svgFile in $svgFilesRaw) {       
+        $obj = [PSCustomObject]@{
+            FullName = $svgFile
+            FileName = $svgFile.Split("\")[-1]
+        }
+
+        $obj.FileName -match "(.*).svg" | Out-Null
+
+        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "GCP_$($Matches[1])"
+        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
+
+        $svgFilesParsed += $obj
+    }
+
+    $copiedFiles = @()
+
+    foreach ($svgFileParsed in $svgFilesParsed) {
+        Write-Output "    Copy $($svgFileParsed.FullName) as $($svgFileParsed.Name) ..."
         Copy-Item -Path $svgFileParsed.FullName -Destination (Join-Path $destPath $svgFileParsed.Name) -Force
 
         $copiedFiles += $svgFileParsed.BaseName
@@ -163,7 +233,76 @@ function DownloadAzureIcons {
         }
     }
     
-    $iconsJson | Add-Member -MemberType NoteProperty -Name "Azure" -Value $copiedFiles -Force | Out-Null
+    $iconsJson | Add-Member -MemberType NoteProperty -Name "GCP" -Value $copiedFiles -Force | Out-Null
+    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
+
+    Write-Output "Done"
+}
+
+function DownloadCiscoIcons {
+    Write-Output "------ Cisco ------"
+    $sourcePath = join-path $vendorsPath "Cisco"
+    $extractPath = join-path $tempPath "Cisco"
+    $destPath = join-path $iconsPath "Cisco"
+
+    Write-Output "Local copy..."
+    Copy-Item -Path $sourcePath -Destination $destPath -Force
+    Write-Output "Done"
+
+    Write-Output "Edit Icons :"
+    Get-ChildItem -Recurse -Path $destPath | `
+        Where-Object { $_.Name.EndsWith(".svg") } | `
+        ForEach-Object {
+            (Get-Content -path $_.FullName -Raw) `
+            -replace 'transform=" translate\([\d\.]*,[\d\.]*\) \"', "" `
+            | Set-Content -Path $_.FullName -Force `
+
+        }
+    Write-Output "Done"
+
+    Write-Output "Copy :"
+    New-Item -Type Directory -Path $destPath -Force | Out-Null
+    $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith(".svg") }
+
+    # filtering the lowest resolution icons
+    $svgFilesParsed = @()
+    foreach ($svgFile in $svgFilesRaw) {       
+        $obj = [PSCustomObject]@{
+            FullName = $svgFile
+            FileName = $svgFile.Split("\")[-1]
+        }
+
+        $obj.FileName -match "(.*).svg" | Out-Null
+
+        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "Cisco_$($Matches[1])"
+        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
+
+        $svgFilesParsed += $obj
+    }
+
+    $copiedFiles = @()
+
+    foreach ($svgFileParsed in $svgFilesParsed) {
+        Write-Output "    Copy $($svgFileParsed.FullName) as $($svgFileParsed.Name) ..."
+        Copy-Item -Path $svgFileParsed.FullName -Destination (Join-Path $destPath $svgFileParsed.Name) -Force
+
+        $copiedFiles += $svgFileParsed.BaseName
+    }
+
+    Write-Output "Adding data to icons.json..."
+    $iconsJson = $null
+    
+    if (test-path $iconsJSONPath) {
+        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
+    }
+    else {
+        $iconsJson = [PSCustomObject]@{
+        }
+    }
+    
+    $iconsJson | Add-Member -MemberType NoteProperty -Name "Cisco" -Value $copiedFiles -Force | Out-Null
     $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
 
     Write-Output "Done"
@@ -176,12 +315,12 @@ function CopySrc {
 
 function InitCleanup {
     Write-Output "====== Cleaning dist ======"
-    Remove-Item -Path $buildPath -Recurse -Force
+    Remove-Item -Path $buildPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 function EndCleanup {
     Write-Output "====== Cleaning tmp ======"
-    Remove-Item -Path $tempPath -Recurse -Force
+    Remove-Item -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 Write-Output "Starting DrawTheNet build process..."

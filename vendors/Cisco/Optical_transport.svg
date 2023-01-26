@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Optical transport]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(284.300800,374.300800) ">
+      <!--emf-blob start-->
+      <g transform="translate(-338.3304, 505.7242)">
+        <path d="M 381.4336,-497.1626 C 381.4336,-492.4390 371.6911,-488.8963 359.8820,-488.8963 C 348.0729,-488.8963 338.6256,-492.4390 338.6256,-497.1626 C 338.6256,-470.5922 338.6256,-470.5922 338.6256,-470.5922 C 338.6256,-465.8685 348.0729,-462.3258 359.8820,-462.3258 C 371.6911,-462.3258 381.4336,-465.8685 381.4336,-470.5922 Z Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 359.8820,-488.6010 C 371.6911,-488.6010 381.4336,-492.4390 381.4336,-497.1626 C 381.4336,-501.5910 371.6911,-505.4290 359.8820,-505.4290 C 348.0729,-505.4290 338.6256,-501.5910 338.6256,-497.1626 C 338.6256,-492.4390 348.0729,-488.6010 359.8820,-488.6010 Z Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 354.8631,-501.8863 L 363.7199,-502.7719 L 361.9486,-500.1149 L 359.8820,-500.4101 L 346.5967,-495.3913 L 344.2349,-496.2769 L 357.2249,-501.0006 L 354.8631,-501.8863 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 365.1961,-498.9340 L 373.7576,-499.8197 L 372.2815,-496.8674 L 369.9197,-497.4579 L 356.9297,-492.4390 L 354.5679,-493.0294 L 367.2627,-498.0483 L 365.1961,-498.9340 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 351.3204,-465.2781 L 351.3204,-470.8874 L 347.7777,-468.2304 L 351.3204,-465.2781 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 367.5579,-487.1249 L 367.5579,-481.5156 L 371.1006,-484.1726 L 367.5579,-487.1249 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 351.3204,-481.2204 L 351.3204,-486.8297 L 347.7777,-484.1726 L 351.3204,-481.2204 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 369.9197,-468.2304 L 364.0152,-468.2304 L 356.0440,-484.1726 L 349.8442,-484.1726 " stroke="#FFFFFF" stroke-width="5.3141" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 350.1395,-468.2304 L 355.7488,-468.2304 L 363.4247,-484.1726 L 369.6245,-484.1726 " stroke="#FFFFFF" stroke-width="5.3141" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 367.5579,-471.1826 L 367.5579,-465.2781 L 371.1006,-468.2304 L 367.5579,-471.1826 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

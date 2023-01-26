@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[FDDI ring]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(268.355900,382.266100) ">
+      <!--emf-blob start-->
+      <g transform="translate(-325.0679, 499.5594)">
+        <path d="M 373.1933,-474.7585 C 386.7747,-474.7585 397.6988,-479.7777 397.6988,-485.9779 C 397.6988,-491.8829 386.7747,-496.9021 373.1933,-496.9021 C 359.6119,-496.9021 348.6877,-491.8829 348.6877,-485.9779 C 348.6877,-479.7777 359.6119,-474.7585 373.1933,-474.7585 Z Z " stroke="#036C9B" stroke-width="1.7715" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 361.9831 -482.4903)">
+          <text font-family="Helvetica" fill="#000000" style="white-space:pre;" font-weight="400" text-anchor="start" x="0.0000" y="0.0000" font-size="9.4479"><![CDATA[FDDI]]></text>
+        </g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 0.0000 0.0000)">
+          <path d="M 373.1933,-472.6918 C 388.2509,-472.6918 400.6513,-478.5968 400.6513,-485.9779 C 400.6513,-493.3591 388.2509,-499.2641 373.1933,-499.2641 C 358.1356,-499.2641 345.7352,-493.3591 345.7352,-485.9779 C 345.7352,-478.5968 358.1356,-472.6918 373.1933,-472.6918 Z Z " stroke="#036C9B" stroke-width="1.7715" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+          <path d="M 327.7251,-484.2065 L 348.9830,-484.2065 " stroke="#036C9B" stroke-width="1.7715" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+          <path d="M 324.7726,-486.8637 L 346.0305,-486.8637 " stroke="#036C9B" stroke-width="1.7715" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        </g>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

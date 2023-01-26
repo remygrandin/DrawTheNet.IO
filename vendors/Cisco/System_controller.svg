@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[System controller]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(287.829900,379.176400) ">
+      <!--emf-blob start-->
+      <g transform="translate(-344.4411, 502.9371)">
+        <path d="M 370.7095,-469.8802 L 370.7095,-495.8535 L 345.3265,-495.8535 L 345.3265,-469.8802 L 370.7095,-469.8802 Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7709" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 370.7095,-495.8535 L 379.5640,-502.0516 L 354.1811,-502.0516 L 345.3265,-495.8535 L 370.7095,-495.8535 Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7709" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 379.5640,-476.0784 L 379.5640,-502.0516 L 371.0047,-495.8535 L 371.0047,-469.8802 L 379.5640,-476.0784 Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7709" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 358.0180,-483.4571 C 360.3792,-483.4571 362.4453,-485.5232 362.4453,-487.8844 C 362.4453,-490.5408 360.3792,-492.3117 358.0180,-492.3117 C 355.3617,-492.3117 353.2956,-490.5408 353.2956,-487.8844 C 353.2956,-485.5232 355.3617,-483.4571 358.0180,-483.4571 Z Z " stroke="#FFFFFF" stroke-width="5.3127" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 358.0180,-481.9814 L 358.0180,-475.1929 " stroke="#FFFFFF" stroke-width="5.3127" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 360.9695,-475.1929 L 355.0665,-475.1929 L 358.0180,-471.6511 L 360.9695,-475.1929 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 354.7714,-482.8668 L 350.9344,-476.9638 " stroke="#FFFFFF" stroke-width="5.3127" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 353.5908,-475.4881 L 348.5732,-478.4396 L 349.1635,-474.3075 L 353.5908,-475.4881 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 360.9695,-482.8668 L 364.8065,-476.9638 " stroke="#FFFFFF" stroke-width="5.3127" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 362.4453,-475.4881 L 367.1677,-478.4396 L 366.5774,-474.3075 L 362.4453,-475.4881 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>
