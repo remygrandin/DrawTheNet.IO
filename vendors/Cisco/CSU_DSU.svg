@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[CSU_DSU]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(276.774800,382.719700) ">
+      <!--emf-blob start-->
+      <g transform="translate(-332.0075, 492.2565)">
+        <path d="M 332.5977,-466.2861 L 332.5977,-486.3541 L 384.2433,-486.3541 L 384.2433,-466.2861 L 332.5977,-466.2861 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7707" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 337.6147,-491.6662 L 332.5977,-486.3541 L 384.2433,-486.3541 L 389.5555,-491.6662 L 337.6147,-491.6662 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7707" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 389.5555,-471.5982 L 389.5555,-491.6662 L 384.2433,-486.3541 L 384.2433,-466.2861 L 389.5555,-471.5982 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7707" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 338.2303 -473.1868)">
+          <text font-family="Helvetica" fill="#FFFFFF" style="white-space:pre;" font-weight="400" text-anchor="start" x="0.0000" y="0.0000" font-size="9.4438"><![CDATA[DSU/CSU]]></text>
+        </g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 0.0000 0.0000)">
+</g>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

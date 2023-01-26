@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Layer 3 switch]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(287.844100,377.844100) ">
+      <!--emf-blob start-->
+      <g transform="translate(-343.6336, 502.1656)">
+        <path d="M 343.9288,-466.1490 L 343.9288,-497.4421 L 375.5172,-497.4421 L 375.5172,-466.1490 L 343.9288,-466.1490 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 379.6502,-469.9869 L 379.6502,-501.5752 L 375.5172,-497.4421 L 375.5172,-466.1490 L 379.6502,-469.9869 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 349.5380,-501.5752 L 343.9288,-497.7374 L 375.5172,-497.7374 L 379.6502,-501.5752 L 349.5380,-501.5752 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 375.5172,-497.4421 L 343.9288,-497.4421 Z " fill="#036C9B" stroke-width="1px" stroke="#036C9B"/>
+        <path d="M 375.5172,-497.4421 L 343.9288,-497.4421 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 375.5172,-497.4421 L 379.6502,-501.5752 Z " fill="#036C9B" stroke-width="1px" stroke="#036C9B"/>
+        <path d="M 375.5172,-497.4421 L 379.6502,-501.5752 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 375.5172,-497.4421 L 375.5172,-466.1490 Z " fill="#036C9B" stroke-width="1px" stroke="#036C9B"/>
+        <path d="M 375.5172,-497.4421 L 375.5172,-466.1490 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 375.5172,-497.4421 L 343.9288,-497.4421 Z " fill="#036C9B" stroke-width="1px" stroke="#036C9B"/>
+        <path d="M 375.5172,-497.4421 L 343.9288,-497.4421 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 375.5172,-497.4421 L 379.6502,-501.5752 Z " fill="#036C9B" stroke-width="1px" stroke="#036C9B"/>
+        <path d="M 375.5172,-497.4421 L 379.6502,-501.5752 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 360.4610,-486.5191 L 360.4610,-493.3091 L 361.6419,-493.3091 L 359.8706,-495.6708 L 358.3945,-493.3091 L 359.2802,-493.3091 L 359.2802,-486.5191 L 360.4610,-486.5191 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 356.9184,-485.3382 L 352.1949,-490.3569 L 353.0806,-490.9473 L 350.1284,-491.5378 L 350.7188,-488.5856 L 351.3093,-489.4713 L 356.3280,-484.7478 L 356.9184,-485.3382 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 355.1471,-482.0908 L 348.3571,-482.0908 L 348.3571,-483.2717 L 345.9954,-481.7956 L 348.3571,-480.0243 L 348.3571,-481.2052 L 355.1471,-481.2052 L 355.1471,-482.0908 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 356.3280,-478.8434 L 351.3093,-473.8247 L 350.7188,-474.7104 L 350.1284,-471.7582 L 353.0806,-472.3486 L 352.1949,-473.2343 L 356.9184,-477.9578 L 356.3280,-478.8434 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 359.2802,-477.0721 L 359.2802,-470.2821 L 358.3945,-470.2821 L 359.8706,-467.6251 L 361.6419,-470.2821 L 360.4610,-470.2821 L 360.4610,-477.0721 L 359.2802,-477.0721 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 362.8228,-477.9578 L 367.8415,-473.2343 L 366.9558,-472.3486 L 369.9080,-471.7582 L 369.3176,-474.7104 L 368.4319,-473.8247 L 363.7084,-478.8434 L 362.8228,-477.9578 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 364.5941,-481.2052 L 371.3841,-481.2052 L 371.3841,-480.0243 L 374.0411,-481.7956 L 371.3841,-483.2717 L 371.3841,-482.0908 L 364.5941,-482.0908 L 364.5941,-481.2052 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 363.7084,-484.7478 L 368.4319,-489.4713 L 369.3176,-488.5856 L 369.9080,-491.5378 L 366.9558,-490.9473 L 367.8415,-490.3569 L 362.8228,-485.3382 L 363.7084,-484.7478 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 364.0037,-475.8912 C 367.2511,-478.2530 368.1367,-482.6812 365.7750,-485.9286 C 363.7084,-489.1760 359.2802,-489.7665 356.0328,-487.6999 C 352.7854,-485.3382 351.8997,-480.9099 354.2615,-477.6625 C 356.6232,-474.4151 361.0515,-473.5295 364.0037,-475.8912 Z Z " fill="#FFFFFF" stroke="#036C9B" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Truck]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(267.477200,380.933900) ">
+      <!--emf-blob start-->
+      <g transform="translate(-324.1233, 495.0408)">
+        <path d="M 371.3544,-466.9973 L 371.3544,-485.8897 L 369.5832,-484.1186 L 369.5832,-465.2261 L 371.3544,-466.9973 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 369.5832,-465.2261 L 369.5832,-484.1186 L 324.4185,-484.1186 L 324.4185,-465.2261 L 369.5832,-465.2261 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 371.3544,-485.8897 L 326.4848,-485.8897 L 324.4185,-484.1186 L 369.5832,-484.1186 L 371.3544,-485.8897 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 371.3544,-485.8897 L 369.5832,-484.1186 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 371.3544,-485.8897 L 369.5832,-484.1186 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 333.8647,-465.2261 L 333.8647,-484.1186 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 333.8647,-465.2261 L 333.8647,-484.1186 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 342.4253,-465.2261 L 342.4253,-484.1186 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 342.4253,-465.2261 L 342.4253,-484.1186 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 350.9860,-465.2261 L 350.9860,-484.1186 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 350.9860,-465.2261 L 350.9860,-484.1186 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 359.8418,-465.2261 L 359.8418,-484.1186 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 359.8418,-465.2261 L 359.8418,-484.1186 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 375.1919,-482.0522 L 376.9631,-479.6907 L 371.3544,-476.4435 L 371.3544,-479.9859 L 375.1919,-482.0522 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 377.8486,-477.6243 L 379.3246,-474.9676 L 371.3544,-470.2444 L 371.3544,-473.7868 L 377.8486,-477.6243 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 395.2651,-477.3291 L 385.8189,-493.8600 L 385.2285,-491.4984 L 394.6747,-474.9676 L 395.2651,-477.3291 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 394.3795,-474.9676 L 385.2285,-491.2032 L 373.7159,-484.7090 L 383.1621,-468.4733 L 394.3795,-474.9676 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 385.8189,-493.8600 L 374.6015,-487.0705 L 373.7159,-484.7090 L 385.2285,-491.2032 L 385.8189,-493.8600 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 385.8189,-493.8600 L 385.2285,-491.2032 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 385.8189,-493.8600 L 385.2285,-491.2032 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 400.8738,-486.1849 L 396.1507,-494.4504 L 395.5603,-492.9744 L 400.2834,-484.7090 L 400.8738,-486.1849 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 400.2834,-484.7090 L 395.5603,-492.6792 L 386.9997,-490.0225 L 393.7891,-478.5099 L 400.2834,-484.7090 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 396.1507,-494.4504 L 387.5901,-491.7936 L 386.9997,-490.0225 L 395.5603,-492.6792 L 396.1507,-494.4504 Z " fill="#0E6A98" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 396.1507,-494.4504 L 395.5603,-492.6792 Z " fill="#0E6A98" stroke-width="1px" stroke="#0E6A98"/>
+        <path d="M 396.1507,-494.4504 L 395.5603,-492.6792 " stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

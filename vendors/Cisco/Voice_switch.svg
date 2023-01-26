@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Voice switch]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(277.214200,381.387400) ">
+      <!--emf-blob start-->
+      <g transform="translate(-334.7614, 492.4003)">
+        <path d="M 377.5660,-464.3560 L 377.5660,-477.9353 L 335.3518,-477.9353 L 335.3518,-464.3560 L 377.5660,-464.3560 Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 335.3518,-477.9353 L 352.4736,-491.8099 L 391.7358,-491.8099 L 377.5660,-477.9353 L 335.3518,-477.9353 Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 377.5660,-463.7655 L 391.7358,-479.1162 L 391.7358,-491.5147 L 377.5660,-477.9353 L 377.5660,-463.7655 Z " fill="#0E6F9C" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 360.1489,-481.4778 L 359.2633,-480.8874 L 348.6360,-480.8874 L 347.7504,-479.7066 L 344.7983,-480.8874 L 350.7024,-482.6586 L 349.5216,-481.4778 L 360.1489,-481.4778 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 368.4146,-486.4963 L 367.5290,-485.9059 L 356.9017,-485.9059 L 356.0161,-485.0202 L 353.0640,-486.2011 L 358.9681,-487.6771 L 357.7873,-486.4963 L 368.4146,-486.4963 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 361.9202,-483.2490 L 362.8058,-483.8394 L 373.4331,-483.8394 L 374.3187,-485.0202 L 377.2708,-483.8394 L 371.3667,-482.0682 L 372.5475,-483.2490 L 361.9202,-483.2490 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 367.5290,-488.5627 L 368.1194,-489.1531 L 378.7468,-489.1531 L 379.9276,-490.0387 L 382.5844,-488.8579 L 376.9756,-487.3819 L 377.8612,-488.5627 L 367.5290,-488.5627 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 361.0345,-465.8320 L 361.0345,-475.5737 L 350.9976,-475.5737 L 350.9976,-465.8320 L 361.0345,-465.8320 Z " fill="#000000" stroke="#FFFFFF" stroke-width="1.7712" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 352.2361 -466.4039)">
+          <text font-family="Helvetica" fill="#FFFFFF" style="white-space:pre;" font-weight="700" text-anchor="start" x="0.0000" y="0.0000" font-size="11.8082"><![CDATA[V]]></text>
+        </g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 0.0000 0.0000)">
+</g>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

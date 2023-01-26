@@ -13,15 +13,22 @@ var drawTitle = function (svg, drawing, title) {
 
     if (title.type == "bar") {
       titleBox.append("line")
-        .attr("stroke", title.stroke )
+        .attr("stroke", title.stroke)
         .attr("x2", title.width)
         .attr("fill", title.fill)
-    } else {
+    }
+    else if (title.type == "box") {
       titleBox.append("rect")
         .attr("fill", title.fill)
-        .attr("stroke", title.stroke )
+        .attr("stroke", title.stroke)
         .attr('width', title.width)
         .attr('height', title.height)
+    }
+    else if (title.type == "none") {
+      return;
+    }
+    else {
+      throw "Invalid title type: " + title.type
     }
 
     // image and imagefill
@@ -31,18 +38,18 @@ var drawTitle = function (svg, drawing, title) {
 
     var logo = titleInner.append("g")
     logo.append("rect")
-      .attr('width', title.height - 2*padding)
-      .attr('height', title.height - 2*padding)
+      .attr('width', title.height - 2 * padding)
+      .attr('height', title.height - 2 * padding)
       .attr("fill", title.logoFill)
     logo.append("svg:image")
-      .attr('width', title.height - 2*padding)
-      .attr('height', title.height - 2*padding)
+      .attr('width', title.height - 2 * padding)
+      .attr('height', title.height - 2 * padding)
       .attr("xlink:href", title.logoUrl)
 
     // the text
     titleInner.append("text")
       .attr("x", title.height)
-      .attr("y", title.height * 2/5)
+      .attr("y", title.height * 2 / 5)
       .attr("dominant-baseline", "middle")
       .style("fill", title.color)
       .style('font-size', title.height * .5 + 'px')
@@ -51,7 +58,7 @@ var drawTitle = function (svg, drawing, title) {
     // the subtext
     titleInner.append("text")
       .attr("x", title.height)
-      .attr("y", title.height * 4/5)
+      .attr("y", title.height * 4 / 5)
       .attr("dominant-baseline", "middle")
       .style("fill", title.color)
       .style('font-size', title.height * .25 + 'px')
@@ -60,8 +67,8 @@ var drawTitle = function (svg, drawing, title) {
     // credits and detail
     // Author
     titleInner.append("text")
-      .attr("x", title.width - title.width/5)
-      .attr("y", title.height * 1/8)
+      .attr("x", title.width - title.width / 5)
+      .attr("y", title.height * 1 / 8)
       .attr("dominant-baseline", "middle")
       .attr("text-anchor", "end")  // set anchor y justification
       .style("fill", title.color)
@@ -70,17 +77,17 @@ var drawTitle = function (svg, drawing, title) {
       .text("Author:")
 
     titleInner.append("text")
-      .attr("x", title.width - title.width/5 + 2*padding)
-      .attr("y", title.height * 1/8)
+      .attr("x", title.width - title.width / 5 + 2 * padding)
+      .attr("y", title.height * 1 / 8)
       .attr("dominant-baseline", "middle")
       .style("fill", title.color)
       .style('font-size', title.height * .25 + 'px')
       .text(title.author)
 
-      // Company
+    // Company
     titleInner.append("text")
-      .attr("x", title.width - title.width/5)
-      .attr("y", title.height * 3/8)
+      .attr("x", title.width - title.width / 5)
+      .attr("y", title.height * 3 / 8)
       .attr("dominant-baseline", "middle")
       .attr("text-anchor", "end")  // set anchor y justification
       .style("fill", title.color)
@@ -89,8 +96,8 @@ var drawTitle = function (svg, drawing, title) {
       .text("Company:")
 
     titleInner.append("text")
-      .attr("x", title.width - title.width/5 + 2*padding)
-      .attr("y", title.height * 3/8)
+      .attr("x", title.width - title.width / 5 + 2 * padding)
+      .attr("y", title.height * 3 / 8)
       .attr("dominant-baseline", "middle")
       .style("fill", title.color)
       .style('font-size', title.height * .25 + 'px')
@@ -98,8 +105,8 @@ var drawTitle = function (svg, drawing, title) {
 
     // Date
     titleInner.append("text")
-      .attr("x", title.width - title.width/5)
-      .attr("y", title.height * 5/8)
+      .attr("x", title.width - title.width / 5)
+      .attr("y", title.height * 5 / 8)
       .attr("dominant-baseline", "middle")
       .attr("text-anchor", "end")  // set anchor y justification
       .style("fill", title.color)
@@ -108,8 +115,8 @@ var drawTitle = function (svg, drawing, title) {
       .text("Date:")
 
     titleInner.append("text")
-      .attr("x", title.width - title.width/5 + 2*padding)
-      .attr("y", title.height * 5/8)
+      .attr("x", title.width - title.width / 5 + 2 * padding)
+      .attr("y", title.height * 5 / 8)
       .attr("dominant-baseline", "middle")
       .style("fill", title.color)
       .style('font-size', title.height * .25 + 'px')
@@ -117,8 +124,8 @@ var drawTitle = function (svg, drawing, title) {
 
     // Version
     titleInner.append("text")
-      .attr("x", title.width - title.width/5)
-      .attr("y", title.height * 7/8)
+      .attr("x", title.width - title.width / 5)
+      .attr("y", title.height * 7 / 8)
       .attr("dominant-baseline", "middle")
       .attr("text-anchor", "end")  // set anchor y justification
       .style("fill", title.color)
@@ -127,8 +134,8 @@ var drawTitle = function (svg, drawing, title) {
       .text("Version:")
 
     titleInner.append("text")
-      .attr("x", title.width - title.width/5 + 2*padding)
-      .attr("y", title.height * 7/8)
+      .attr("x", title.width - title.width / 5 + 2 * padding)
+      .attr("y", title.height * 7 / 8)
       .attr("dominant-baseline", "middle")
       .style("fill", title.color)
       .style('font-size', title.height * .25 + 'px')

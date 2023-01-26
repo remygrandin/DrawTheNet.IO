@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[UPS]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(283.407900,380.948000) ">
+      <!--emf-blob start-->
+      <g transform="translate(-339.9970, 493.1727)">
+        <path d="M 340.2921,-463.3640 L 379.8404,-463.3640 L 379.8404,-486.3846 L 340.2921,-486.3846 L 340.2921,-463.3640 Z " fill="#126D99" stroke="#FFFFFF" stroke-width="1.7708" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 384.2674,-470.1521 L 379.8404,-463.3640 L 379.8404,-486.3846 L 384.2674,-491.9922 L 384.2674,-470.1521 Z " fill="#126D99" stroke="#FFFFFF" stroke-width="1.7708" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 347.3754,-491.9922 L 384.2674,-491.9922 L 379.8404,-486.3846 L 340.2921,-486.3846 L 347.3754,-491.9922 Z " fill="#126D99" stroke="#FFFFFF" stroke-width="1.7708" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 351.6018 -477.3599)">
+          <text font-family="Helvetica" fill="#FFFFFF" style="white-space:pre;" font-weight="700" text-anchor="start" x="0.0000" y="0.0000" font-size="8.2638"><![CDATA[UPS]]></text>
+        </g>
+        <g transform="matrix(1.0000 0.0000 0.0000 1.0000 0.0000 0.0000)">
+          <path d="M 359.7711,-470.1521 C 359.7711,-470.1521 364.7884,-470.4472 364.7884,-470.4472 C 364.7884,-470.4472 358.5906,-472.8083 357.4100,-473.3986 C 357.4100,-473.3986 363.0176,-473.3986 363.0176,-473.3986 C 346.1948,-478.1208 346.1948,-478.1208 346.1948,-478.1208 C 357.4100,-473.9889 357.4100,-473.9889 357.4100,-473.9889 C 357.1149,-473.9889 353.2781,-473.6937 353.2781,-473.6937 C 353.2781,-473.6937 357.4100,-471.6278 358.5906,-471.3326 C 358.2954,-471.3326 354.7538,-470.1521 354.7538,-470.1521 C 375.1182,-464.5445 375.1182,-464.5445 375.1182,-464.5445 Z Z " fill="#FFFFFF" stroke="none"/>
+        </g>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

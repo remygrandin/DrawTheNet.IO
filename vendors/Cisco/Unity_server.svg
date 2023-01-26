@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Unity server]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(291.826800,376.072400) ">
+      <!--emf-blob start-->
+      <g transform="translate(-347.1822, 498.6316)">
+        <path d="M 369.0287,-492.1367 L 347.4774,-492.1367 L 347.4774,-459.3669 L 369.0287,-459.3669 Z " fill="#126D99" stroke-width="1px" stroke="#126D99"/>
+        <path d="M 369.0287,-492.1367 L 347.4774,-492.1367 L 347.4774,-459.3669 L 369.0287,-459.3669 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 369.0287,-459.3669 L 374.9332,-465.2714 L 374.9332,-498.0411 L 353.3819,-498.0411 L 347.4774,-492.1367 L 369.0287,-492.1367 L 369.0287,-459.3669 Z " fill="#126D99" stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 369.0287,-492.1367 L 374.9332,-498.0411 Z " fill="#0C6D9C" stroke-width="1px" stroke="#0C6D9C"/>
+        <path d="M 369.0287,-492.1367 L 374.9332,-498.0411 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 347.7727,-482.9848 L 369.0287,-482.9848 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 347.7727,-462.6144 L 369.0287,-462.6144 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 351.9058,-487.7083 L 356.9246,-487.7083 " stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 358.9911,-485.9370 L 358.9911,-489.7749 L 349.8392,-489.7749 L 349.8392,-485.9370 L 358.9911,-485.9370 Z " fill="none" stroke="#FFFFFF" stroke-width="1.7713" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 359.8768,-472.0615 C 359.8768,-470.8806 358.9911,-470.2902 357.8102,-470.2902 C 357.5150,-470.2902 356.6293,-470.2902 356.3341,-470.8806 C 356.0389,-471.1758 356.0389,-471.4711 356.0389,-472.0615 C 356.0389,-475.0137 356.0389,-475.0137 356.0389,-475.0137 C 356.9246,-475.0137 356.9246,-475.0137 356.9246,-475.0137 C 356.9246,-472.0615 356.9246,-472.0615 356.9246,-472.0615 C 356.9246,-471.4711 357.2198,-471.1758 357.8102,-471.1758 C 358.4007,-471.1758 358.6959,-471.4711 358.6959,-472.0615 C 358.6959,-475.0137 358.6959,-475.0137 358.6959,-475.0137 C 359.8768,-475.0137 359.8768,-475.0137 359.8768,-475.0137 Z Z " fill="#FFFFFF" stroke="none"/>
+        <path d="M 357.8102,-469.4045 C 359.8768,-469.4045 361.6481,-470.8806 361.6481,-472.9472 C 361.6481,-475.0137 359.8768,-476.4899 357.8102,-476.4899 C 356.0389,-476.4899 354.2676,-475.0137 354.2676,-472.9472 C 354.2676,-470.8806 356.0389,-469.4045 357.8102,-469.4045 Z Z " stroke="#FFFFFF" stroke-width="2.6570" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 357.8102,-476.4899 L 364.3051,-476.4899 " stroke="#FFFFFF" stroke-width="2.6570" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 364.6004,-478.5564 L 364.6004,-474.7185 L 366.6669,-476.4899 L 364.6004,-478.5564 Z " fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.8857" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 354.2676,-472.9472 L 354.2676,-479.1469 " stroke="#FFFFFF" stroke-width="2.6570" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 352.4962,-479.4421 L 356.0389,-479.4421 L 354.2676,-481.8039 L 352.4962,-479.4421 Z " fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.8857" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 361.6481,-472.9472 L 361.6481,-466.7475 " stroke="#FFFFFF" stroke-width="2.6570" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 363.4195,-466.4523 L 359.8768,-466.4523 L 361.3529,-464.0905 L 363.4195,-466.4523 Z " fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.8857" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 358.1055,-469.4045 L 351.6105,-469.4045 " stroke="#FFFFFF" stroke-width="2.6570" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 351.6105,-467.3380 L 351.6105,-471.1758 L 349.5440,-469.4045 L 351.6105,-467.3380 Z " fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.8857" stroke-linecap="butt" stroke-linejoin="miter"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

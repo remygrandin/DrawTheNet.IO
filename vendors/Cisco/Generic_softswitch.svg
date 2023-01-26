@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Generic softswitch]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(291.826800,374.300800) ">
+      <!--emf-blob start-->
+      <g transform="translate(-348.0729, 505.7242)">
+        <path d="M 348.6633,-463.2115 L 348.6633,-500.7053 L 370.5101,-500.7053 L 370.5101,-463.2115 L 348.6633,-463.2115 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 355.1583,-505.1338 L 348.6633,-500.7053 L 370.5101,-500.7053 L 376.1195,-505.1338 L 355.1583,-505.1338 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 376.1195,-469.1160 L 376.1195,-505.1338 L 370.5101,-500.7053 L 370.5101,-463.2115 L 376.1195,-469.1160 Z " fill="#036C9B" stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 357.2249,-493.9151 L 366.9674,-493.9151 L 366.9674,-492.7342 L 357.2249,-492.7342 L 357.2249,-490.9629 L 352.7965,-493.3247 L 357.2249,-495.9817 L 357.2249,-493.9151 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 363.4247,-483.5822 L 353.6822,-483.5822 L 353.6822,-485.0583 L 363.4247,-485.0583 L 363.4247,-486.8297 L 367.8531,-484.4679 L 363.4247,-481.8108 L 363.4247,-483.5822 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="612.0000000000" height="792.0000000000">
+  <title><![CDATA[Wavelength router]]></title>
+  <g transform=" scale(1.000000) ">
+    <!--converted by libvisio2svg-->
+    <g transform=" translate(284.300800,382.266100) ">
+      <!--emf-blob start-->
+      <g transform="translate(-339.2161, 497.7531)">
+        <path d="M 382.0240,-489.7819 L 382.0240,-478.5633 L 371.6911,-470.2969 L 350.4347,-470.2969 L 339.5113,-478.5633 L 339.5113,-489.7819 Z " fill="#126D99" stroke-width="1px" stroke="#126D99"/>
+        <path d="M 382.0240,-489.7819 L 382.0240,-478.5633 L 371.6911,-470.2969 L 350.4347,-470.2969 L 339.5113,-478.5633 L 339.5113,-489.7819 " stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 371.3958,-498.0483 L 350.4347,-498.0483 L 339.5113,-489.7819 L 350.4347,-481.5156 L 371.6911,-481.5156 L 382.0240,-489.7819 L 371.3958,-498.0483 Z " fill="#126D99" stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter"/>
+        <path d="M 356.6345,-493.0294 L 358.4058,-490.3724 L 352.2061,-489.1915 L 353.3870,-490.0772 L 345.4158,-491.8485 L 348.0729,-493.6199 L 355.4536,-492.1438 L 356.6345,-493.0294 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 365.4913,-487.1249 L 364.3104,-489.4867 L 369.9197,-490.6676 L 368.7388,-489.7819 L 377.0051,-488.3058 L 374.9386,-486.5344 L 366.6722,-488.0106 L 365.4913,-487.1249 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 362.8342,-494.8008 L 369.0340,-496.5722 L 369.0340,-493.9151 L 367.5579,-494.2104 L 364.6056,-491.5533 L 361.6533,-492.1438 L 364.6056,-494.5056 L 362.8342,-494.8008 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 358.9963,-484.1726 L 353.0917,-482.9917 L 352.7965,-485.9440 L 354.5679,-485.3535 L 357.8154,-488.3058 L 360.7677,-487.7154 L 357.2249,-484.7631 L 358.9963,-484.1726 Z " fill="#FFFFFF" stroke-width="1px" stroke="#FFFFFF"/>
+        <path d="M 350.1395,-470.5922 L 350.1395,-481.5156 " stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+        <path d="M 371.6911,-470.5922 L 371.6911,-481.5156 " stroke="#FFFFFF" stroke-width="1.7714" stroke-linecap="butt" stroke-linejoin="miter" fill="none"/>
+      </g>
+      <!--emf-blob end-->
+    </g>
+  </g>
+</svg>
