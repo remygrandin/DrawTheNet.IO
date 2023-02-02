@@ -52,8 +52,14 @@ html, body, #svg {
 <script type="text/javascript">
 
   function dodraw(){
-    var design = clone(window.opener.design);
-    draw(design);
+    if(window.location.hash) {
+      var design = JSON.parse(atob(window.location.hash.substring(1)));
+    } else {
+      var design = JSON.parse(atob(window.opener.design));
+    }
+
+    
+    draw(jsyaml.load(design));
     document.title = 'DrawtheNet.io: ' + design.title.text
   }
 

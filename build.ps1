@@ -629,8 +629,8 @@ function EndCleanup {
 
 Write-Output "Starting DrawTheNet build process..."
 
-InitCleanup
-DownloadIcons
+#InitCleanup
+#DownloadIcons
 CopySrc
 #EndCleanup
 
