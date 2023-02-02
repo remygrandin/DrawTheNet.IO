@@ -6,40 +6,48 @@ diagram:
 title:
   text: Labels
   heightPercentage: 0
-azure: &azure
-  color: "#004BAF"
-  fill: "#E1E000"
-  iconFill: "#54565B"
-  iconStroke: "none"
-  iconFamily: "azureEnterprise"
-  stroke: "#A8A8AA"
-  icon: "gateway"
+defs:
+  icon: &icon
+    color: "#004BAF"
+    fill: "#E1E000"
+    iconFill: "#54565B"
+    iconStroke: "none"
+    stroke: "#A8A8AA"
+  internet: &internet
+    <<: *icon
+    iconFamily: "M365"
+    icon: "globe_internet"
+  gateway: &gateway
+    <<: *icon
+    iconFamily: "azure"
+    icon: "local-network-gateways"
+
 icons:
-  internet: {<<: *azure, x: 3, y: 3, icon: "internet"}
-  gateway1: {<<: *azure, x: 0, y: 6, icon: "gateway"}
-  gateway2: {<<: *azure, x: "+1"}
-  gateway3: {<<: *azure, x: "+1"}
-  gateway4: {<<: *azure, x: "+1"}
-  gateway5: {<<: *azure, x: "+1"}
-  gateway6: {<<: *azure, x: "+1"}
-  gateway7: {<<: *azure, x: "+1"}
-  gateway8: {<<: *azure, y: "-1"}
-  gateway9: {<<: *azure, y: "-1"}
-  gateway10: {<<: *azure, y: "-1"}
-  gateway11: {<<: *azure, y: "-1"}
-  gateway12: {<<: *azure, y: "-1"}
-  gateway13: {<<: *azure, y: "-1"}
-  gateway14: {<<: *azure, x: "-1"}
-  gateway15: {<<: *azure, x: "-1"}
-  gateway16: {<<: *azure, x: "-1"}
-  gateway17: {<<: *azure, x: "-1"}
-  gateway18: {<<: *azure, x: "-1"}
-  gateway19: {<<: *azure, x: "-1"}
-  gateway20: {<<: *azure, y: "+1"}
-  gateway21: {<<: *azure, y: "+1"}
-  gateway22: {<<: *azure, y: "+1"}
-  gateway23: {<<: *azure, y: "+1"}
-  gateway24: {<<: *azure, y: "+1"}
+  internet: {<<: *internet, x: 3, y: 3}
+  gateway1: {<<: *gateway, x: 0, y: 6}
+  gateway2: {<<: *gateway, x: "+1"}
+  gateway3: {<<: *gateway, x: "+1"}
+  gateway4: {<<: *gateway, x: "+1"}
+  gateway5: {<<: *gateway, x: "+1"}
+  gateway6: {<<: *gateway, x: "+1"}
+  gateway7: {<<: *gateway, x: "+1"}
+  gateway8: {<<: *gateway, y: "-1"}
+  gateway9: {<<: *gateway, y: "-1"}
+  gateway10: {<<: *gateway, y: "-1"}
+  gateway11: {<<: *gateway, y: "-1"}
+  gateway12: {<<: *gateway, y: "-1"}
+  gateway13: {<<: *gateway, y: "-1"}
+  gateway14: {<<: *gateway, x: "-1"}
+  gateway15: {<<: *gateway, x: "-1"}
+  gateway16: {<<: *gateway, x: "-1"}
+  gateway17: {<<: *gateway, x: "-1"}
+  gateway18: {<<: *gateway, x: "-1"}
+  gateway19: {<<: *gateway, x: "-1"}
+  gateway20: {<<: *gateway, y: "+1"}
+  gateway21: {<<: *gateway, y: "+1"}
+  gateway22: {<<: *gateway, y: "+1"}
+  gateway23: {<<: *gateway, y: "+1"}
+  gateway24: {<<: *gateway, y: "+1"}
 connection: &connection
   color: "#A8A8AA"
   stroke: "#A8A8AA"

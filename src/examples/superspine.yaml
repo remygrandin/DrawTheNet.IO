@@ -62,10 +62,10 @@ decom: &decom { stroke: *coreblack7, color: *coreblack7, iconFill: white, iconSt
 
 crt001: &crt001 { <<: *current, text: "chddc1crt001", icon: "router", x: "+1" }
 crt002: &crt002 { <<: *current, text: "chddc1crt002", icon: "router", x: "+1" }
-crt004: &crt004 { <<: *current, text: "chddc1crt004", icon: "nexus7000", x: "+1"}
-crt005: &crt005 { <<: *current, text: "chddc1crt005", icon: "nexus7000", x: "+1" }
-srt003: &srt003 { <<: *current, text: "chddc1srt003", icon: "nexus7000", x: "+1"}
-srt004: &srt004 { <<: *current, text: "chddc1srt004", icon: "nexus7000", x: "+1" }
+crt004: &crt004 { <<: *current, text: "chddc1crt004", icon: "nexus_7000", x: "+1"}
+crt005: &crt005 { <<: *current, text: "chddc1crt005", icon: "nexus_7000", x: "+1" }
+srt003: &srt003 { <<: *current, text: "chddc1srt003", icon: "nexus_7000", x: "+1"}
+srt004: &srt004 { <<: *current, text: "chddc1srt004", icon: "nexus_7000", x: "+1" }
 srt001a: &srt001a { <<: *current, text: "chddc1srt001", icon: "vss", x: "+1" }
 srt001b: &srt001b { <<: *srt001a, x: "+1" }
 rrt001: &rrt001 { <<: *current, text: "chddc1rrt001", icon: "router", x: "+1" }
@@ -73,8 +73,8 @@ rrt002: &rrt002 { <<: *current, text: "chddc1rrt002", icon: "router", x: "+1" }
 ert005: &ert005 { <<: *current, text: "chddc1ert005", icon: "router", x: "+1" }
 ert006: &ert006 { <<: *current, text: "chddc1ert006", icon: "router", x: "+1" }
 
-spine: &spine { text: Spine, icon: "nexus5000", x: "+1" }
-borderLeaf: &borderLeaf { text: Border Leaf, icon: "nexus5000", x: "+1" }
+spine: &spine { text: Spine, icon: "nexus_5000", x: "+1" }
+borderLeaf: &borderLeaf { text: Border Leaf, icon: "nexus_5000", x: "+1" }
 
 icons:
   need: { <<: *spine, <<: *need, text: procure, x: 16, y: 16}

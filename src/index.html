@@ -201,14 +201,22 @@
         .then(response => response.text())
         .then(function (res) {
           var doc = jsyaml.load(res);
-          let width = 15;
+          //let width = 25;
 
-          doc.diagram.columns = width;          
-          doc.diagram.rows = Math.ceil(Data.Icons[familyName].length / width);
+          let ratio = 1/2;
+
+          let height = Math.ceil(Math.sqrt(Data.Icons[familyName].length * ratio));
+          let width = Math.ceil(height / ratio);
+                  
+          doc.diagram.rows = height;
+          doc.diagram.columns = Math.ceil(Data.Icons[familyName].length / height);
 
           let screenRatio = window.innerWidth / window.innerHeight;          
 
-          doc.diagram.aspectRatio = `${window.innerWidth}:${Math.max(window.innerHeight, doc.diagram.rows * 40)}`;
+          //doc.diagram.aspectRatio = `${window.innerWidth}:${Math.max(window.innerHeight, doc.diagram.rows * 40)}`;
+          doc.diagram.aspectRatio = `${window.innerWidth}:${window.innerHeight}`;
+
+          doc.icon.iconFamily = familyName;
 
           var x = 0
           var y = doc.diagram.rows - 1

@@ -16,11 +16,11 @@ title:
 azure: &azure
   color: "#00a1f1"
   fill: "white"
-  iconFamily: "azureCloud"
+  iconFamily: "azure"
   iconFill: "#00a1f1"
   iconStroke: "none"
   stroke: "#00a1f1"
-  icon: "virtualmachine"
+  icon: "virtual-machine"
 icons:
   topLeft: {<<: *azure, textLocation: "topLeft", x: 1, y: 4 }
   topMiddle: {<<: *azure, textLocation: "topMiddle", x: "+1" }
@@ -39,13 +39,12 @@ icons:
   bottomRight: {<<: *azure, textLocation: "bottomRight", x: "+1" }
   NSG4: {<<: *azure, color: "#00a1f1", textLocation: "bottomMiddle", x: "+1" }
   Center:
-    iconFill: "white"
     iconStroke: "white"
     fill: "none"
     stroke: none
-    iconFamily: "azureEnterprise"
-    icon: "cloud"
-    color: "#00a1f1"
+    iconFamily: "azure"
+    icon: "dashboard"
+    color: "#333333"
     textLocation: "center"
     x: 5
     y: 3

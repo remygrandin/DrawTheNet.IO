@@ -16,10 +16,9 @@ title:
 person: &person
   stroke: "none"
   color: "white"
-  iconFill: "white"
   iconStroke: "none"
-  iconFamily: "azureEnterprise"
-  icon: "userenterprise"
+  iconFamily: "azure"
+  icon: "my-customers"
   fill: "slategrey"
 teamA: &teamA
   <<: *person

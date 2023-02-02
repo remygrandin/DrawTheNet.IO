@@ -23,12 +23,12 @@ cisco: &cisco
 spine: &spine
   <<: *cisco
   x: "+1"
-  icon: "nexus7000"
+  icon: "nexus_7000"
   textLocation: "topMiddle"
 leaf: &leaf
   <<: *cisco
   x: "+1"
-  icon: "nexus2000"
+  icon: "nexus_2000_fabric_extender"
 icons:
   spine1: {<<: *spine, x: 3, y: 3}
   spine2: {<<: *spine }

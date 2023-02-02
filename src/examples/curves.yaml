@@ -13,14 +13,14 @@ title:
 azure: &azure
   color: "black"
   fill: "darkgrey"
-  iconFamily: "azureEnterprise"
+  iconFamily: "M365"
   iconFill: "white"
   iconStroke: "none"
   stroke: "none"
 icons:
-  serverrack1: {<<: *azure, x: 0, y: 4, icon: "serverrack"}
-  serverrack2: {<<: *azure, x: 3, y: 2, icon: "serverrack"}
-  serverrack3: {<<: *azure, x: 6, y: 0, icon: "serverrack"}
+  serverrack1: {<<: *azure, x: 0, y: 4, icon: "mainframe"}
+  serverrack2: {<<: *azure, x: 3, y: 2, icon: "mainframe-blue"}
+  serverrack3: {<<: *azure, x: 6, y: 0, icon: "mainframe"}
 connection: &connection
   color: "black"
   stroke: "black"
