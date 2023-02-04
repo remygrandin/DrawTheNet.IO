@@ -2,118 +2,178 @@
 <html>
 
 <head>
-  <!-- META -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-  <meta name="robots" content="index,follow">
-  <meta name="description" content="Diagrams as code for engineers">
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Diagrams as code for engineers">
 
-  <base href="./">
+    <base href="./">
 
-  <link rel="icon" type="image/png" href="res/images/radial.png" />
-  <base href="/">
+    <link rel="icon" type="image/png" href="res/images/radial.png" />
+    <base href="/">
 
-  <title>Diagrams as code for engineers</title>
+    <title>Diagrams as code for engineers</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
-  <link rel="stylesheet" href="res/css/notes.css">
+    <link rel="stylesheet" href="res/css/notes.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.1/js-yaml.min.js"
-    integrity="sha512-JQlOhDTypJSgnt1e3jAF1nxzCSxPcvGF6huciW7zILxyV5wr1zYx9wTsT8D3B0FD9Fu9/UcynkpuK6o7mZp0ZQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"
-    integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js"
-    integrity="sha512-Y6V2Rql5jIHKCjgae9pQYnqAZ5R1cTU0USHwk+9K8S1UTgxO3GX9nfzbW5WD3k5dVEsaTcNwXnAP7P6eN0bJfQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/showdown-prettify@1.3.0/dist/showdown-prettify.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"
-    integrity="sha512-/9uQgrROuVyGVQMh4f61rF2MTLjDVN+tFGn20kq66J+kTZu/q83X8oJ6i4I9MCl3psbB5ByQfIwtZcHDHc2ngQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.1/js-yaml.min.js"
+        integrity="sha512-JQlOhDTypJSgnt1e3jAF1nxzCSxPcvGF6huciW7zILxyV5wr1zYx9wTsT8D3B0FD9Fu9/UcynkpuK6o7mZp0ZQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"
+        integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js"
+        integrity="sha512-Y6V2Rql5jIHKCjgae9pQYnqAZ5R1cTU0USHwk+9K8S1UTgxO3GX9nfzbW5WD3k5dVEsaTcNwXnAP7P6eN0bJfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/showdown-prettify@1.3.0/dist/showdown-prettify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"
+        integrity="sha512-/9uQgrROuVyGVQMh4f61rF2MTLjDVN+tFGn20kq66J+kTZu/q83X8oJ6i4I9MCl3psbB5ByQfIwtZcHDHc2ngQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <!-- Ace Editor -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/ace.min.js"
-    integrity="sha512-e1Y1L6lY7YKDe+zseybZUG8MYUMLA1jxMQAPJqRYiA4L8NPaXfW+h52QQTLurHW4w3b21LxH/u1sZYMBtoB70w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/mode-yaml.min.js"
-    integrity="sha512-WcvQVyf7ECu3mkQRpaJJ2l05xJAIlFM1bscCbwduQBztxzoGUWqkAawsMdLr6tkD9ke4V6soIh6aufeAuW1ruw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/theme-ambiance.min.js"
-    integrity="sha512-tTo2Gz5V15OGM+yTrIzVup7DDVtFCMIzwfa+PBd8uqOZ4KzWxyZSzbRZSKSPMuhME9kMnCxSTiIO7zPG4IyvuA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/worker-yaml.min.js"
-    integrity="sha512-3uAdHtL2/tsdK3FjUOV/zAWO4cfGB6ixvUiXl1yU1t+eBP6EEr1KqABsOHcEPnMbEH32Zafz5vcDNuC5FCQ+Jg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Ace Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/ace.min.js"
+        integrity="sha512-e1Y1L6lY7YKDe+zseybZUG8MYUMLA1jxMQAPJqRYiA4L8NPaXfW+h52QQTLurHW4w3b21LxH/u1sZYMBtoB70w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/worker-yaml.min.js"
+        integrity="sha512-3uAdHtL2/tsdK3FjUOV/zAWO4cfGB6ixvUiXl1yU1t+eBP6EEr1KqABsOHcEPnMbEH32Zafz5vcDNuC5FCQ+Jg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/mode-yaml.min.js"
+        integrity="sha512-WcvQVyf7ECu3mkQRpaJJ2l05xJAIlFM1bscCbwduQBztxzoGUWqkAawsMdLr6tkD9ke4V6soIh6aufeAuW1ruw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/theme-sqlserver.min.js"
+        integrity="sha512-EfWHp7T1DMifLCzbLRFvR28FjD2Hlk0f/bwJQOUZFmK2YeW8Qo/0eKLAdpbv59tgfMyuifav7MVIxcCBb+VPMw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-    crossorigin="anonymous"></script>
 
-  <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 
-  <script type="text/javascript" src="res/js/dld4e-connections.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-draw.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-gridlines.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-groups.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-icons.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-title.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-notes.js"></script>
-  <script type="text/javascript" src="res/js/dld4e-process.js"></script>
-  <script type="text/javascript" src="res/js/app.js"></script>
-  <script type="text/javascript" src="res/js/saveSvgAsPng.js"></script>
-  <style type="text/css" media="screen">
-    html,
-    body {
-      height: 100%;
-    }
+    <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"
+        integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    #editor {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <script type="text/javascript" src="res/js/dld4e-connections.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-draw.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-gridlines.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-groups.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-icons.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-title.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-notes.js"></script>
+    <script type="text/javascript" src="res/js/dld4e-process.js"></script>
+    <script type="text/javascript" src="res/js/app.js"></script>
+    <script type="text/javascript" src="res/js/saveSvgAsPng.js"></script>
+    <style type="text/css" media="screen">
+        html,
+        body {
+            height: 100%;
+        }
+
+        #editor {
+            width: 100%;
+            height: 100%;
+        }
+
+        .iconCardIcon {
+            height: 50px;
+        }
+
+        #iconOffcanvas {
+            height: 60vh;
+        }
+    </style>
 </head>
 
-<body class="bg-dark-subtle" data-bs-theme="dark">
-  <div class="container-fluid min-vh-100 d-flex flex-column">
-    <div class="row">
-      <div class="col">
-        <nav class="navbar navbar-expand-lg bg-dark">
-          <div class="container-fluid">
-            <button type="button" class="btn btn-primary"><iconify-icon inline
-                icon="fluent:save-arrow-right-24-regular"></iconify-icon> Save</button>
+<body class="">
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+        <div class="row">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg bg-secondary">
+                    <div class="container-fluid">
+                        <button class="btn btn-primary" type="button"><iconify-icon inline
+                                icon="fluent:save-arrow-right-24-regular"></iconify-icon> Save</button>
 
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#iconOffcanvas">Icons</button>
+                    </div>
 
-          </div>
-
-        </nav>
-      </div>
-    </div>
-    <div class="row flex-grow-1 gx-0">
-      <div class="col border border-dark">
-        <div id="editor">function foo(items) {
-          var x = "All this is syntax highlighted";
-          return x;
-          }</div>
-      </div>
-      <div class="col bg-dark bg-gradient border border-dark p-3">
-        <div class="card">
-          <div class="card-body">
-            This is some text within a card body.
-          </div>
+                </nav>
+            </div>
         </div>
-      </div>
+        <div class="row flex-grow-1 gx-0">
+            <div class="col border border-dark">
+                <div id="editor">function foo(items) {
+                    var x = "All this is syntax highlighted";
+                    return x;
+                    }</div>
+            </div>
+            <div class="col bg-dark bg-gradient border border-dark p-3">
+                <div class="card">
+                    <div class="card-body">
+                        This is some text within a card body.
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!--
+
+
+
+
+    <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="iconOffcanvas" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header bg-warning-subtle">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="mt-2">Icons Explorer</h4>
+                    </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            <input type="search" class="form-control" id="txtSearchIcon" placeholder="Search">
+                            <label for="txtSearchIcon">Search</label>
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn-close float-end mt-2" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offcanvas-body bg-light">
+            <div class="row g-2" id="iconCards">
+                <div class="col-sm-1 col-xs-2">
+                    <div class="card h-100 text-center">
+                        <div class="card-header">
+                            {{family}}
+                        </div>
+                        <div class="card-body">
+                            <img src="{{url}}" class="iconCardIcon" class="card-img-top">
+                        </div>
+                        <div class="card-footer">
+                            {{icon}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--
   <uib-alert class="col-sm-6 col-sm-offset-3" ng-repeat="alert in alerts" type="{{alert.type}}"
     close="closeAlert($index)">
     <span ng-bind-html="alert.msg"></span>
@@ -212,287 +272,369 @@
 
 <script>
 
-  $(function () {
-    var Data = {};
+    $(function () {
+        var Data = {};
 
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/ambiance");
-    editor.session.setMode("ace/mode/yaml");
-
-    fetch("./res/icons/icons.json")
-      .then(response => response.json())
-      .then(function (res) {
-        Object.keys(res).forEach(function (key) {
-          $("#icons").append(`<li class="icon-family"><a href="#">${key}</a></li>`);
-        });
-
-        Data.Icons = res;
-      });
-
-    $("#icons").on("click", "li.icon-family", function (event) {
-      event.preventDefault();
-
-      let familyName = $(this).text();
-
-      var win = window.open('about:blank', '_blank');
+        // Ace editor Instatiation & settings
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/sqlserver");
+        editor.session.setMode("ace/mode/yaml");
+        editor.setOption("tabSize", 2);
 
 
-      var size = Data.Icons[familyName].length
-      var bestFit = Math.ceil(Math.sqrt(size))
+        // load icon sets
+        fetch("./res/icons/icons.json")
+            .then(response => response.json())
+            .then(function (res) {
+                Object.keys(res).forEach(function (key) {
+                    $("#icons").append(`<li class="icon-family"><a href="#">${key}</a></li>`);
+                });
 
-      fetch('./res/icons/contactSheet.yaml')
-        .then(response => response.text())
-        .then(function (res) {
-          var doc = jsyaml.load(res);
+                Data.Icons = res;
 
-          let ratio = 1 / 2;
+                let flattenIcons = [];
 
-          let height = Math.ceil(Math.sqrt(Data.Icons[familyName].length * ratio));
-          let width = Math.ceil(height / ratio);
+                Object.keys(res).forEach(key => {
+                    res[key].forEach(key2 => {
+                        flattenIcons.push({ Icon: key2, Family: key });
+                    });
+                });
 
-          doc.diagram.rows = height;
-          doc.diagram.columns = Math.ceil(Data.Icons[familyName].length / height);
+                Data.IconsFlat = flattenIcons;
+            });
 
-          let screenRatio = window.innerWidth / window.innerHeight;
-
-          doc.diagram.aspectRatio = `${window.innerWidth}:${window.innerHeight}`;
-
-          doc.icon.iconFamily = familyName;
-
-          var x = 0
-          var y = doc.diagram.rows - 1
-          doc.icons = {}
-          for (var icon in Data.Icons[familyName]) {
-            doc.icons[Data.Icons[familyName][icon]] = Object.assign({ x: x, y: y, icon: Data.Icons[familyName][icon] }, doc.icon)
-            x += 1
-            if (x == doc.diagram.columns) {
-              x = 0
-              y -= 1
-            }
-          }
-          window.design = btoa(JSON.stringify(jsyaml.dump(doc)));
-          win.location.href = 'fullscreen.html';
-        });
-
-    });
-  });
-
-  /*
-    angular
-      .module("dld4e", ['ui.bootstrap', 'ui.ace'])
-      .controller("mainController", mainController)
-  
-    mainController.$inject = ["$scope", "$http", "$sce", "$log", "$window", "$location", "$timeout", "$animate"];
-  
-    function mainController($scope, $http, $sce, $log, $window, $location, $timeout, $animate) {
-      var w = angular.element($window);
-  
-      w.bind('resize', function () {
-        $scope.drawClick()
-      });
-      $scope.mode = " Hide editor"
-      $scope.shown = true
-      $scope.design = "";
-      $scope.gistURL = "";
-      $scope.dbURL = "https://syg5y0qnyf.execute-api.us-west-2.amazonaws.com/prod/"
-      $scope.saveIcon = "glyphicon glyphicon-floppy-disk"
-      $scope.linkText = " Link"
-      $scope.docId = $window.location.hash.substring(2)
-      if ($scope.docId) {
-        $scope.url = $scope.dbURL + $scope.docId
-        $scope.state = "Update";
-        var leftSide = angular.element(document.querySelector('#leftSide'));
-        var rightSide = angular.element(document.querySelector('#rightSide'));
-        $scope.shown = false
-        $scope.mode = " Show editor"
-        $animate.setClass(leftSide, 'ng-hide', 'ng-show').then(function () {
-          $animate.setClass(rightSide, 'col-sm-12', 'col-sm-6').then(function () {
-            $http.get($scope.url)
-              .then(function (res) {
-                $scope.acedata = res.data;
-                $scope.drawClick()
-              });
-          })
-        })
-      } else {
-        $scope.url = 'examples/NTP.yaml'
-        $scope.state = "Save";
-        $http.get($scope.url)
-          .then(function (res) {
-            $scope.acedata = res.data;
-            $scope.drawClick()
-          });
-      }
-  
-      $scope.aceyamlOptions = {
-        onLoad: function (_ace) {
-          _ace.getSession().setMode("ace/mode/yaml");
-          _ace.$blockScrolling = Infinity;
-          _ace.commands.addCommand({
-            name: 'saveFile',
-            bindKey: {
-              win: 'Ctrl-S',
-              mac: 'Command-S',
-              sender: 'editor|cli'
-            },
-            exec: function (env, args, request) {
-              $scope.saveFile();
-            }
-          });
-          _ace.setOption("tabSize", 2);
+        let iconCardTemplate = $("#iconCards").html();
+        $("#iconCards").empty();
+        let searchOptions = {
+            includeScore: true,
+            keys: ['Icon', 'Family']
         }
-      };
-      $scope.opend3js = function (greeting) {
-        $window.design = jsyaml.load($scope.acedata) || {};
-        var w = $window.open("fullscreen.html");
-      };
-  
-      $scope.example = function (file) {
-        $http.get("examples/" + file)
-          .then(function (res) {
-            $scope.acedata = res.data;
-            $window.location.hash = ""
-            $scope.state = "Save"
-            $scope.drawClick();
-          });
-      }
-  
-      $scope.drawClick = function () {
-        let design = jsyaml.load($scope.acedata) || {};
-  
-        $window.design = btoa(JSON.stringify($scope.acedata));
-        draw(design);
-        $window.document.title = 'drawthe.net: ' + design.title.text
-      }
-  
-  
-      $scope.gist = function () {
-        var parts = $scope.gistURL.split('/')
-        var githubUser = parts[3]
-        var githubGist = parts[4]
-        $http.get('//gist.githubusercontent.com/' + githubUser + '/' + githubGist + '/raw')
-          .then(function (res) {
-            $scope.acedata = res.data;
-            $scope.drawClick()
-          })
-        $scope.gistURL = ""
-        $window.location.hash = ""
-        $scope.state = "Save"
-      }
-  
-      $scope.link = function () {
-        copyToClipboard($location.absUrl())
-        $scope.linkText = " Copied to clipboard"
-        $timeout(function () {
-          $scope.linkText = "Link"
-        }, 200);
-      }
-  
-      $scope.fork = function () {
-        $scope.state = "Save"
-        $scope.save()
-      }
-  
-      $scope.fullScreen = function () {
-        var leftSide = angular.element(document.querySelector('#leftSide'));
-        var rightSide = angular.element(document.querySelector('#rightSide'));
-  
-        if ($scope.shown) {
+
+        function searchIcons(search) {
+            fetch("http://api.iconify.design/search?query=" + search)
+                .then(response => response.json())
+                .then(function (res) {
+
+                    let iconifyIcons = res.icons.map(icon => {
+                        return { Icon: icon, Family: "Iconify" };
+                    });
+
+                    let allIcons = Data.IconsFlat.concat(iconifyIcons);
+
+                    const fuse = new Fuse(allIcons, searchOptions)
+
+                    let searchRes = fuse.search(search)
+
+                    if (searchRes.length == 0) {
+                        $("#iconCards").html("<div class='col-md-12'><h3>No results found</h3></div>");
+                        return;
+                    }
+
+                    if (searchRes.length > 100) {
+                        searchRes.length = 100;
+                    }
+
+                    $("#iconCards").empty();
+
+                    searchRes.forEach(res => {
+                        let icon = res.item.Icon;
+                        let family = res.item.Family;
+
+                        let url = `res/icons/${family}/${icon}.svg`;
+
+                        if (family == "Iconify") {
+                            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                        }
+
+                        let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", url);
+
+                        $("#iconCards").append(card);
+                    });
+                });
+        }
+
+        let debounceTimer;
+        $("#txtSearchIcon").on("input", function (event) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $("#icons").on("click", "li.icon-family", function (event) {
+            event.preventDefault();
+
+            let familyName = $(this).text();
+
+            var win = window.open('about:blank', '_blank');
+
+
+            var size = Data.Icons[familyName].length
+            var bestFit = Math.ceil(Math.sqrt(size))
+
+            fetch('./res/icons/contactSheet.yaml')
+                .then(response => response.text())
+                .then(function (res) {
+                    var doc = jsyaml.load(res);
+
+                    let ratio = 1 / 2;
+
+                    let height = Math.ceil(Math.sqrt(Data.Icons[familyName].length * ratio));
+                    let width = Math.ceil(height / ratio);
+
+                    doc.diagram.rows = height;
+                    doc.diagram.columns = Math.ceil(Data.Icons[familyName].length / height);
+
+                    let screenRatio = window.innerWidth / window.innerHeight;
+
+                    doc.diagram.aspectRatio = `${window.innerWidth}:${window.innerHeight}`;
+
+                    doc.icon.iconFamily = familyName;
+
+                    var x = 0
+                    var y = doc.diagram.rows - 1
+                    doc.icons = {}
+                    for (var icon in Data.Icons[familyName]) {
+                        doc.icons[Data.Icons[familyName][icon]] = Object.assign({ x: x, y: y, icon: Data.Icons[familyName][icon] }, doc.icon)
+                        x += 1
+                        if (x == doc.diagram.columns) {
+                            x = 0
+                            y -= 1
+                        }
+                    }
+                    window.design = btoa(JSON.stringify(jsyaml.dump(doc)));
+                    win.location.href = 'fullscreen.html';
+                });
+
+        });
+    });
+
+    /*
+      angular
+        .module("dld4e", ['ui.bootstrap', 'ui.ace'])
+        .controller("mainController", mainController)
+    
+      mainController.$inject = ["$scope", "$http", "$sce", "$log", "$window", "$location", "$timeout", "$animate"];
+    
+      function mainController($scope, $http, $sce, $log, $window, $location, $timeout, $animate) {
+        var w = angular.element($window);
+    
+        w.bind('resize', function () {
+          $scope.drawClick()
+        });
+        $scope.mode = " Hide editor"
+        $scope.shown = true
+        $scope.design = "";
+        $scope.gistURL = "";
+        $scope.dbURL = "https://syg5y0qnyf.execute-api.us-west-2.amazonaws.com/prod/"
+        $scope.saveIcon = "glyphicon glyphicon-floppy-disk"
+        $scope.linkText = " Link"
+        $scope.docId = $window.location.hash.substring(2)
+        if ($scope.docId) {
+          $scope.url = $scope.dbURL + $scope.docId
+          $scope.state = "Update";
+          var leftSide = angular.element(document.querySelector('#leftSide'));
+          var rightSide = angular.element(document.querySelector('#rightSide'));
           $scope.shown = false
           $scope.mode = " Show editor"
           $animate.setClass(leftSide, 'ng-hide', 'ng-show').then(function () {
             $animate.setClass(rightSide, 'col-sm-12', 'col-sm-6').then(function () {
-              $scope.drawClick();
+              $http.get($scope.url)
+                .then(function (res) {
+                  $scope.acedata = res.data;
+                  $scope.drawClick()
+                });
             })
           })
         } else {
-          $scope.shown = true
-          $scope.mode = " Hide editor"
-          $animate.setClass(leftSide, 'ng-show', 'ng-hide').then(function () {
-            $animate.setClass(rightSide, 'col-sm-6', 'col-sm-12').then(function () {
+          $scope.url = 'examples/NTP.yaml'
+          $scope.state = "Save";
+          $http.get($scope.url)
+            .then(function (res) {
+              $scope.acedata = res.data;
+              $scope.drawClick()
+            });
+        }
+    
+        $scope.aceyamlOptions = {
+          onLoad: function (_ace) {
+            _ace.getSession().setMode("ace/mode/yaml");
+            _ace.$blockScrolling = Infinity;
+            _ace.commands.addCommand({
+              name: 'saveFile',
+              bindKey: {
+                win: 'Ctrl-S',
+                mac: 'Command-S',
+                sender: 'editor|cli'
+              },
+              exec: function (env, args, request) {
+                $scope.saveFile();
+              }
+            });
+            _ace.setOption("tabSize", 2);
+          }
+        };
+        $scope.opend3js = function (greeting) {
+          $window.design = jsyaml.load($scope.acedata) || {};
+          var w = $window.open("fullscreen.html");
+        };
+    
+        $scope.example = function (file) {
+          $http.get("examples/" + file)
+            .then(function (res) {
+              $scope.acedata = res.data;
+              $window.location.hash = ""
+              $scope.state = "Save"
               $scope.drawClick();
+            });
+        }
+    
+        $scope.drawClick = function () {
+          let design = jsyaml.load($scope.acedata) || {};
+    
+          $window.design = btoa(JSON.stringify($scope.acedata));
+          draw(design);
+          $window.document.title = 'drawthe.net: ' + design.title.text
+        }
+    
+    
+        $scope.gist = function () {
+          var parts = $scope.gistURL.split('/')
+          var githubUser = parts[3]
+          var githubGist = parts[4]
+          $http.get('//gist.githubusercontent.com/' + githubUser + '/' + githubGist + '/raw')
+            .then(function (res) {
+              $scope.acedata = res.data;
+              $scope.drawClick()
             })
-          })
+          $scope.gistURL = ""
+          $window.location.hash = ""
+          $scope.state = "Save"
         }
-      }
-  
-  
-      $scope.save = function () {
-        if ($scope.state == "Save") {
-          $scope.saveIcon = "glyphicon glyphicon-hourglass"
-          var data = $scope.acedata;
-          var config = {
-            headers: {
-              'Content-Type': 'text/x-yaml'
-            }
-          }
-          $http.post($scope.dbURL, data, config)
-            .then(
-              function (response) {
-                $scope.docId = response.data.docId
-                $window.location.hash = response.data.docId
-                $scope.saveIcon = "glyphicon glyphicon-ok-circle"
-                $timeout(function () {
-                  $scope.saveIcon = "glyphicon glyphicon-floppy-disk";
-                  $scope.state = "Update";
-                }, 200);
-              },
-              function (response) {
-                $scope.saveIcon = "glyphicon glyphicon-alert";
-                console.log(response)
-              }
-            );
-        } else if ($scope.state == "Update") {
-          $scope.saveIcon = "glyphicon glyphicon-hourglass"
-          var url = $scope.dbURL + $scope.docId;
-          var data = $scope.acedata;
-          var config = {
-            headers: {
-              'Content-Type': 'text/x-yaml'
-            }
-          }
-          $http.put(url, data, config)
-            .then(
-              function (response) {
-                $window.location.hash = response.data.docId
-                $scope.saveIcon = "glyphicon glyphicon-ok-circle"
-                $timeout(function () {
-                  $scope.saveIcon = "glyphicon glyphicon-floppy-disk"
-                }, 200);
-  
-              },
-              function (response) {
-                $scope.saveIcon = "glyphicon glyphicon-alert";
-                console.log(response)
-              }
-            );
+    
+        $scope.link = function () {
+          copyToClipboard($location.absUrl())
+          $scope.linkText = " Copied to clipboard"
+          $timeout(function () {
+            $scope.linkText = "Link"
+          }, 200);
         }
-      }
-      $scope.saveFile = function () {
-        var data = $scope.acedata,
-          blob = new Blob([data], { type: 'text/plain' }),
-          url = $window.URL || $window.webkitURL;
-        design = jsyaml.load(data) || {};
-        fileName = `${design.title.text || 'dld4e'}-v${design.title.version || '1.01'}.yaml`
-        url = url.createObjectURL(blob); //do
-        var downloadLink = document.createElement("a");
-        downloadLink.href = url;
-        downloadLink.download = fileName;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      }
-  
-      $scope.saveImage = function () {
-        saveSvgAsPng(
-          document.querySelector('svg'),
-          design.title.text + '.png',
-          { scale: 4, backgroundColor: 'white' }
-        );
-      }
-  
-    };
-  */
+    
+        $scope.fork = function () {
+          $scope.state = "Save"
+          $scope.save()
+        }
+    
+        $scope.fullScreen = function () {
+          var leftSide = angular.element(document.querySelector('#leftSide'));
+          var rightSide = angular.element(document.querySelector('#rightSide'));
+    
+          if ($scope.shown) {
+            $scope.shown = false
+            $scope.mode = " Show editor"
+            $animate.setClass(leftSide, 'ng-hide', 'ng-show').then(function () {
+              $animate.setClass(rightSide, 'col-sm-12', 'col-sm-6').then(function () {
+                $scope.drawClick();
+              })
+            })
+          } else {
+            $scope.shown = true
+            $scope.mode = " Hide editor"
+            $animate.setClass(leftSide, 'ng-show', 'ng-hide').then(function () {
+              $animate.setClass(rightSide, 'col-sm-6', 'col-sm-12').then(function () {
+                $scope.drawClick();
+              })
+            })
+          }
+        }
+    
+    
+        $scope.save = function () {
+          if ($scope.state == "Save") {
+            $scope.saveIcon = "glyphicon glyphicon-hourglass"
+            var data = $scope.acedata;
+            var config = {
+              headers: {
+                'Content-Type': 'text/x-yaml'
+              }
+            }
+            $http.post($scope.dbURL, data, config)
+              .then(
+                function (response) {
+                  $scope.docId = response.data.docId
+                  $window.location.hash = response.data.docId
+                  $scope.saveIcon = "glyphicon glyphicon-ok-circle"
+                  $timeout(function () {
+                    $scope.saveIcon = "glyphicon glyphicon-floppy-disk";
+                    $scope.state = "Update";
+                  }, 200);
+                },
+                function (response) {
+                  $scope.saveIcon = "glyphicon glyphicon-alert";
+                  console.log(response)
+                }
+              );
+          } else if ($scope.state == "Update") {
+            $scope.saveIcon = "glyphicon glyphicon-hourglass"
+            var url = $scope.dbURL + $scope.docId;
+            var data = $scope.acedata;
+            var config = {
+              headers: {
+                'Content-Type': 'text/x-yaml'
+              }
+            }
+            $http.put(url, data, config)
+              .then(
+                function (response) {
+                  $window.location.hash = response.data.docId
+                  $scope.saveIcon = "glyphicon glyphicon-ok-circle"
+                  $timeout(function () {
+                    $scope.saveIcon = "glyphicon glyphicon-floppy-disk"
+                  }, 200);
+    
+                },
+                function (response) {
+                  $scope.saveIcon = "glyphicon glyphicon-alert";
+                  console.log(response)
+                }
+              );
+          }
+        }
+        $scope.saveFile = function () {
+          var data = $scope.acedata,
+            blob = new Blob([data], { type: 'text/plain' }),
+            url = $window.URL || $window.webkitURL;
+          design = jsyaml.load(data) || {};
+          fileName = `${design.title.text || 'dld4e'}-v${design.title.version || '1.01'}.yaml`
+          url = url.createObjectURL(blob); //do
+          var downloadLink = document.createElement("a");
+          downloadLink.href = url;
+          downloadLink.download = fileName;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+        }
+    
+        $scope.saveImage = function () {
+          saveSvgAsPng(
+            document.querySelector('svg'),
+            design.title.text + '.png',
+            { scale: 4, backgroundColor: 'white' }
+          );
+        }
+    
+      };
+    */
 
 </script>
 
