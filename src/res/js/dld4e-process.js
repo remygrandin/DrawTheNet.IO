@@ -7,39 +7,43 @@ var processEntities = function (svg, diagram, icons) {
     textLocation: "bottomMiddle"
   }
 
-  var previous = {}
+  var previous = {};
   for(var key in icons) {
-    icons[key] = Object.assign({}, defaults, icons[key])
-    icons[key].w = icons[key].w || 1
-    icons[key].h = icons[key].h || 1
+    console.log(`Processing ${key}`);
+    console.log(`previous ${JSON.stringify(previous)}`);
+    icons[key] = Object.assign({}, defaults, icons[key]);
+    icons[key].w = icons[key].w || 1;
+    icons[key].h = icons[key].h || 1;
     if (!("x" in icons[key])) {
-      icons[key].x = previous.x
+      icons[key].x = parseInt(previous.x);
     } else if (icons[key].x.toString().startsWith('+')) {
-      icons[key].x = parseInt(previous.x) + parseInt(icons[key].x.toString().split('+')[1])
+      icons[key].x = parseInt(previous.x) + parseInt(icons[key].x.toString().split('+')[1]);
     } else if (icons[key].x.toString().startsWith('-')) {
-      icons[key].x = parseInt(previous.x) - parseInt(icons[key].x.toString().split('-')[1])
+      icons[key].x = parseInt(previous.x) - parseInt(icons[key].x.toString().split('-')[1]);
     }
-    icons[key].x1 = diagram.xBand(icons[key].x)
+    icons[key].x = parseInt(icons[key].x)
+    icons[key].x1 = diagram.xBand(parseInt(icons[key].x))
     if (!("y" in icons[key])) {
-      icons[key].y = previous.y
+      icons[key].y = parseInt(previous.y);
     } else if (icons[key].y.toString().startsWith('+')) {
-      icons[key].y = parseInt(previous.y) + parseInt(icons[key].y.toString().split('+')[1])
+      icons[key].y = parseInt(previous.y) + parseInt(icons[key].y.toString().split('+')[1]);
     } else if (icons[key].y.toString().startsWith('-')) {
-      icons[key].y = parseInt(previous.y) - parseInt(icons[key].y.toString().split('-')[1])
+      icons[key].y = parseInt(previous.y) - parseInt(icons[key].y.toString().split('-')[1]);
     }
-    icons[key].y1 = diagram.yBand(icons[key].y)
-    icons[key].width = diagram.xBand.bandwidth() + ((icons[key].w - 1) * diagram.xBand.step())
-    icons[key].height = diagram.yBand.bandwidth() + ((icons[key].h - 1) * diagram.yBand.step())
-    icons[key].x2 = icons[key].x1 + icons[key].width
-    icons[key].y2 = icons[key].y1 + icons[key].height
-    icons[key].centerX = icons[key].x1 + icons[key].width/2
-    icons[key].centerY = icons[key].y1 + icons[key].height/2
-    icons[key].rx = diagram.xBand.bandwidth() * .05
-    icons[key].ry = diagram.yBand.bandwidth() * .05
-    icons[key].padding = Math.min(diagram.yBand.bandwidth() * .05, diagram.xBand.bandwidth() * .05)
-    icons[key].iconPaddingX = parseFloat("5%")/100
-    icons[key].iconPaddingY = parseFloat("5%")/100
-    previous = icons[key]
+    icons[key].y = parseInt(icons[key].y)
+    icons[key].y1 = diagram.yBand(parseInt(icons[key].y));
+    icons[key].width = diagram.xBand.bandwidth() + ((icons[key].w - 1) * diagram.xBand.step());
+    icons[key].height = diagram.yBand.bandwidth() + ((icons[key].h - 1) * diagram.yBand.step());
+    icons[key].x2 = icons[key].x1 + icons[key].width;
+    icons[key].y2 = icons[key].y1 + icons[key].height;
+    icons[key].centerX = icons[key].x1 + icons[key].width/2;
+    icons[key].centerY = icons[key].y1 + icons[key].height/2;
+    icons[key].rx = diagram.xBand.bandwidth() * .05;
+    icons[key].ry = diagram.yBand.bandwidth() * .05;
+    icons[key].padding = Math.min(diagram.yBand.bandwidth() * .05, diagram.xBand.bandwidth() * .05);
+    icons[key].iconPaddingX = parseFloat("5%")/100;
+    icons[key].iconPaddingY = parseFloat("5%")/100;
+    previous = icons[key];
   }
   return icons
 }
