@@ -23,9 +23,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
         integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.1/js-yaml.min.js"
-        integrity="sha512-JQlOhDTypJSgnt1e3jAF1nxzCSxPcvGF6huciW7zILxyV5wr1zYx9wTsT8D3B0FD9Fu9/UcynkpuK6o7mZp0ZQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"
         integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -61,7 +58,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"
         integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.js"
+        integrity="sha512-CwxrLIN0dww6lRc/oKeZiI9oGlOob2HPMU0Yu0g+P3/G1cuTii+tt0jpyEKhilfrV7D/zmvKiVPIHUDU6xbBxg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"
+        integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css"
+        integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" src="res/js/dld4e-connections.js"></script>
     <script type="text/javascript" src="res/js/dld4e-draw.js"></script>
     <script type="text/javascript" src="res/js/dld4e-gridlines.js"></script>
@@ -111,69 +117,96 @@
         </div>
         <div class="row flex-grow-1 gx-0">
             <div class="col border border-dark">
-                <div id="editor">function foo(items) {
-                    var x = "All this is syntax highlighted";
-                    return x;
-                    }</div>
-            </div>
-            <div class="col bg-dark bg-gradient border border-dark p-3">
-                <div class="card">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
+                <div id="editor">diagram:
+                    aspectRatio: "14:8.5"
+                    columns: 7
+                    fill: "lightgrey"
+                    rows: 5
+                    title:
+                    color: black
+                    fill: "none"
+                    logoFill: none
+                    stroke: "black"
+                    text: "Curves"
+                    type: "bar"
+                    azure: &azure
+                    color: "black"
+                    fill: "darkgrey"
+                    iconFamily: "M365"
+                    iconFill: "white"
+                    iconStroke: "none"
+                    stroke: "none"
+                    icons:
+                    serverrack1: {<<: *azure, x: 0, y: 4, icon: "mainframe" } serverrack2: {<<: *azure, x: 3, y: 2,
+                        icon: "mainframe-blue" } serverrack3: {<<: *azure, x: 6, y: 0, icon: "mainframe" } connection:
+                        &connection color: "black" stroke: "black" strokeDashArray: "0,0" connections: - { <<:
+                        *connection, curve: curveLinear, endpoints:
+                        ["serverrack1:curveLinear", "serverrack2:curveLinear" ] } - { <<: *connection, curve:
+                        curveStepBefore, endpoints: ["serverrack1:curveStepBefore", "serverrack2:curveStepBefore" ] } -
+                        { <<: *connection, curve: curveStepAfter, endpoints:
+                        ["serverrack1:curveStepAfter", "serverrack2:curveStepAfter" ] } - { <<: *connection, curve:
+                        curveStep, endpoints: ["serverrack2:curveStep", "serverrack3:curveStep" ] } </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-    <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-        id="iconOffcanvas" aria-labelledby="offcanvasScrollingLabel">
-        <div class="offcanvas-header bg-warning-subtle">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col">
-                        <h4 class="mt-2">Icons Explorer</h4>
-                    </div>
-                    <div class="col">
-                        <div class="form-floating">
-                            <input type="search" class="form-control" id="txtSearchIcon" placeholder="Search">
-                            <label for="txtSearchIcon">Search</label>
-                        </div>
-
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn-close float-end mt-2" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="offcanvas-body bg-light">
-            <div class="row g-2" id="iconCards">
-                <div class="col-sm-1 col-xs-2">
-                    <div class="card h-100 text-center">
-                        <div class="card-header">
-                            {{family}}
-                        </div>
+                <div class="col bg-dark bg-gradient border border-dark p-3">
+                    <div class="card h-100">
                         <div class="card-body">
-                            <img src="{{url}}" class="iconCardIcon" class="card-img-top">
-                        </div>
-                        <div class="card-footer">
-                            {{icon}}
+                            <div class="h-100" id="svg">
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
-    <!--
+
+
+        <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+            id="iconOffcanvas" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header bg-warning-subtle">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="mt-2">Icons Explorer</h4>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="search" class="form-control" id="txtSearchIcon" placeholder="Search">
+                                <label for="txtSearchIcon">Search</label>
+                            </div>
+
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn-close float-end mt-2" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="offcanvas-body bg-light">
+                <div class="row g-2" id="iconCards">
+                    <div class="col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-4">
+                        <div class="card h-100 text-center">
+                            <div class="card-header">
+                                {{family}}
+                            </div>
+                            <div class="card-body">
+                                <img src="{{url}}" class="iconCardIcon" class="card-img-top">
+                            </div>
+                            <div class="card-footer px-1">
+                                {{icon}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--
   <uib-alert class="col-sm-6 col-sm-offset-3" ng-repeat="alert in alerts" type="{{alert.type}}"
     close="closeAlert($index)">
     <span ng-bind-html="alert.msg"></span>
@@ -280,6 +313,39 @@
         editor.setTheme("ace/theme/sqlserver");
         editor.session.setMode("ace/mode/yaml");
         editor.setOption("tabSize", 2);
+        editor.setShowPrintMargin(false);
+
+        let debounceEditTimer;
+        editor.session.on('change', function (delta) {
+            clearTimeout(debounceSearchIconTimer);
+            debounceSearchIconTimer = setTimeout(() => {
+                try {
+                    let text = editor.session.getValue();
+
+                    let doc = jsyaml.load(text);
+
+                    draw(doc);
+                    history.pushState(null, null, '#' + btoa(text));
+
+                } catch (e) {
+                    console.log(e);
+                    $.toast({
+                        text: `<pre>${e.message}</pre>`,
+                        heading: 'Error in document',
+                        icon: 'error',
+                        showHideTransition: 'slide', 
+                        allowToastClose: true,
+                        hideAfter: false,
+                        stack: false,
+                        position: 'top-right',
+                        loader: true
+                    });
+                    return;
+                }
+            }, 2000);
+        });
+
+
 
 
         // load icon sets
@@ -353,12 +419,11 @@
                 });
         }
 
-        let debounceTimer;
+        let debounceSearchIconTimer;
         $("#txtSearchIcon").on("input", function (event) {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
+            clearTimeout(debounceSearchIconTimer);
+            debounceSearchIconTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
         });
-
 
 
 

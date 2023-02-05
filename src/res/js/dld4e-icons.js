@@ -1,15 +1,15 @@
 var drawIcons = function (svg, diagram, icons, iconTextRatio) {
   var deviceCellsAll = svg.selectAll("cells")
-    .data(d3.entries(icons))
+    .data(Object.entries(icons))
     .enter()
 
   var cells = deviceCellsAll.append("g")
-    .attr("id", function(d) { return d.key })
-    .attr("transform", function(d) { return "translate(" + diagram.xBand(d.value.x) + "," + diagram.yBand(d.value.y) + ")" })
+    .attr("id", function(d) { return d[0] })
+    .attr("transform", function(d) { return "translate(" + diagram.xBand(d[1].x) + "," + diagram.yBand(d[1].y) + ")" })
     .on("mouseenter", handleMouseOver)
     .on("mouseleave", handleMouseOut)
     .each( function (d) {
-      if (d.value.metadata) {
+      if (d[1].metadata) {
         var text = d3.select(this)
         text.style("cursor", "pointer")
       }
@@ -17,67 +17,67 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
 
   var cellFill = cells
     .append("rect")
-    .attr("rx", function(d) { return d.value.rx })
-    .attr("ry", function(d) { return d.value.ry })
-    .attr("width", function(d) { return d.value.width })
-    .attr("height", function(d) { return d.value.height })
-    .attr("fill", function(d) { return d.value.fill || "orange"})
-    .style("stroke", function(d) { return d.value.stroke || "orange" })
-    .style("stroke-dasharray", function(d) { return d.value.strokeDashArray || [0,0] })
+    .attr("rx", function(d) { return d[1].rx })
+    .attr("ry", function(d) { return d[1].ry })
+    .attr("width", function(d) { return d[1].width })
+    .attr("height", function(d) { return d[1].height })
+    .attr("fill", function(d) { return d[1].fill || "orange"})
+    .style("stroke", function(d) { return d[1].stroke || "orange" })
+    .style("stroke-dasharray", function(d) { return d[1].strokeDashArray || [0,0] })
 
 
   var cellText = cells
     .append("text")
     .attr('class', 'iconLabel')
-    .text( function (d) { return d.value.text || d.key })
+    .text( function (d) { return d[1].text || d[0] })
     .each( function(d) {
-      d.value.fontSize = Math.floor(Math.min(d.value.width*.9 / this.getComputedTextLength() * 12, d.value.height/2*iconTextRatio))
-      d.value.textPosition = textPositions(0,0,d.value.width,d.value.height,d.value.fontSize + 2)[d.value.textLocation]
-      if (d.value.url) {
+      d[1].fontSize = Math.floor(Math.min(d[1].width*.9 / this.getComputedTextLength() * 12, d[1].height/2*iconTextRatio))
+      d[1].textPosition = textPositions(0,0,d[1].width,d[1].height,d[1].fontSize + 2)[d[1].textLocation]
+      if (d[1].url) {
         var text = d3.select(this)
-        text.on("click", function() { window.open(d.value.url); })
+        text.on("click", function() { window.open(d[1].url); })
         text.style("cursor", "pointer")
         text.style("text-decoration", "underline")
       }
     })
-    .style("font-size", function(d) { return d.value.fontSize + "px"; })
-    .attr("id", function(d) { return d.key + '-text'})
-    .attr("transform", function(d) { return "translate(" + d.value.textPosition.x + "," + d.value.textPosition.y + ")rotate(" + d.value.textPosition.rotate + ")" })
-    .attr('fill', function(d) { return d.value.color || "orange"} )
-    .attr("text-anchor", function(d) { return d.value.textPosition.textAnchor})
+    .style("font-size", function(d) { return d[1].fontSize + "px"; })
+    .attr("id", function(d) { return d[0] + '-text'})
+    .attr("transform", function(d) { return "translate(" + d[1].textPosition.x + "," + d[1].textPosition.y + ")rotate(" + d[1].textPosition.rotate + ")" })
+    .attr('fill', function(d) { return d[1].color || "orange"} )
+    .attr("text-anchor", function(d) { return d[1].textPosition.textAnchor})
     .attr("dominant-baseline", "central")
 
   var icon = cells
     .each ( function(d) {
-      var cell = document.getElementById(d.key)
-      var cellText = document.getElementById(d.key + "-text")
+      var cell = document.getElementById(d[0])
+      var cellText = document.getElementById(d[0] + "-text")
       var fontSize =  Math.ceil(parseFloat(cellText.style.fontSize))
       // center
-      var x = (d.value.width*d.value.iconPaddingX)
-      var y = (d.value.height*d.value.iconPaddingY)
-      var width = d.value.width*(1-2*d.value.iconPaddingX)
-      var height = (d.value.height)*(1-2*d.value.iconPaddingY)
+      var x = (d[1].width*d[1].iconPaddingX)
+      var y = (d[1].height*d[1].iconPaddingY)
+      var width = d[1].width*(1-2*d[1].iconPaddingX)
+      var height = (d[1].height)*(1-2*d[1].iconPaddingY)
       switch (true) {
-        case d.value.textLocation.startsWith('top'):
+        case d[1].textLocation.startsWith('top'):
           y += fontSize
-          height = (d.value.height - fontSize)*(1-2*d.value.iconPaddingY)
+          height = (d[1].height - fontSize)*(1-2*d[1].iconPaddingY)
           break;
-        case d.value.textLocation.startsWith('left'):
+        case d[1].textLocation.startsWith('left'):
           x += fontSize
-          width = (d.value.width - fontSize)*(1-2*d.value.iconPaddingX)
+          width = (d[1].width - fontSize)*(1-2*d[1].iconPaddingX)
           break;
-        case d.value.textLocation.startsWith('right'):
-          width = (d.value.width - fontSize)*(1-2*d.value.iconPaddingX)
+        case d[1].textLocation.startsWith('right'):
+          width = (d[1].width - fontSize)*(1-2*d[1].iconPaddingX)
           break;
-        case d.value.textLocation.startsWith('bottom'):
-          height = (d.value.height - fontSize)*(1-2*d.value.iconPaddingY)
+        case d[1].textLocation.startsWith('bottom'):
+          height = (d[1].height - fontSize)*(1-2*d[1].iconPaddingY)
           break;
       }
 
-      let family = d.value.iconFamily
-      let icon = d.value.icon
+      let family = d[1].iconFamily
+      let icon = d[1].icon
       var url = "res/icons/" + family + "/" + icon + ".svg"
-      d3.xml(url).mimeType("image/svg+xml").get(function(error, xml) {
+      d3.svg(url).then(function(xml) {
         var svg = xml.getElementsByTagName("svg")[0]
         svg.setAttribute("x", x)
         svg.setAttribute("y", y)
@@ -85,16 +85,16 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
         svg.setAttribute("height", height)
         var paths = xml.getElementsByTagName("path")
         for (i = 0; i < paths.length; i++) {
-          if ((d.value.preserveWhite) && (paths[i].getAttribute("fill") == '#fff')) {
-            //paths[i].setAttribute("fill", d.value.replaceWhite)
-          } else if ((d.value.iconFill) && (paths[i].getAttribute("fill") != 'none')) {
-            paths[i].setAttribute("fill", d.value.iconFill)
+          if ((d[1].preserveWhite) && (paths[i].getAttribute("fill") == '#fff')) {
+            //paths[i].setAttribute("fill", d[1].replaceWhite)
+          } else if ((d[1].iconFill) && (paths[i].getAttribute("fill") != 'none')) {
+            paths[i].setAttribute("fill", d[1].iconFill)
           }
-          if ((d.value.iconStroke) && (paths[i].getAttribute("stroke") != 'none')) {
-            paths[i].setAttribute("stroke", d.value.iconStroke)
+          if ((d[1].iconStroke) && (paths[i].getAttribute("stroke") != 'none')) {
+            paths[i].setAttribute("stroke", d[1].iconStroke)
           }
-          if ((d.value.iconStrokeWidth) && (paths[i].getAttribute("stroke-width"))) {
-            paths[i].setAttribute("stroke-width", d.value.iconStrokeWidth)
+          if ((d[1].iconStrokeWidth) && (paths[i].getAttribute("stroke-width"))) {
+            paths[i].setAttribute("stroke-width", d[1].iconStrokeWidth)
           }
         }
         cell.insertBefore(xml.documentElement.cloneNode(true), cellText);
@@ -102,25 +102,25 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
     })
 
     function handleMouseOver(d, i) {
-      if ((d.value.metadata) && (d.value.metadata.url)) {
-        var url = d.value.metadata.url
+      if ((i[1].metadata) && (i[1].metadata.url)) {
+        var url = i[1].metadata.url
         var replacements = url.match(/{{\s*[\w\.]+\s*}}/g)
         if (replacements) {
           replacements.forEach(function(replacement){
             var inner = replacement.match(/[\w\.]+/)[0]
             if (inner == 'key') {
-              url = url.replace(replacement, d.key)
+              url = url.replace(replacement, i[0])
             } else {
-              url = url.replace(replacement, d.value[inner])
+              url = url.replace(replacement, i[1][inner])
             }
           })
         }
         d3.json(url, function (error, json) {
           if (error) {
-            var metadata = Object.assign({}, d.value.metadata);
+            var metadata = Object.assign({}, i[1].metadata);
             delete metadata.url
-            if (d.value.metadata.errorText) {
-              metadata.note = d.value.metadata.errorText
+            if (i[1].metadata.errorText) {
+              metadata.note = i[1].metadata.errorText
               delete metadata.errorText
             } else {
               metadata.status = "HTTP:" + error.target.status
@@ -129,15 +129,15 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
             mouseOver(d,i,metadata)
             return
           } else {
-            var metadata = Object.assign({},json, d.value.metadata);
+            var metadata = Object.assign({},json, i[1].metadata);
             delete metadata.url
             delete metadata.errorText
             mouseOver(d,i,metadata)
             return
           }
         });
-      } else if (d.value.metadata) {
-        mouseOver(d,i,d.value.metadata)
+      } else if (i[1].metadata) {
+        mouseOver(d,i,i[1].metadata)
       }
     }
 
@@ -148,23 +148,23 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
         var jc = "flex-start"
         var meta = svg
           .append("foreignObject")
-          .attr("id", "t" + d.value.x + "-" + d.value.y + "-" + i)
+          .attr("id", "t" + i[1].x + "-" + i[1].y + "-" + i)
           .attr("class", "mouseOver")
           .attr("x", function() {
-            if ((d.value.x2 + d.value.width * 2) < diagram.width) {
-              return d.value.x2
+            if ((i[1].x2 + i[1].width * 2) < diagram.width) {
+              return i[1].x2
             } else {
               jc = "flex-end"
-              return d.value.x1 - (d.value.width * 3)
+              return i[1].x1 - (i[1].width * 3)
             }
-            return d.value.x2; })
-          .attr("y", function() { return d.value.centerY - (length * d.value.fontSize) })
+            return i[1].x2; })
+          .attr("y", function() { return i[1].centerY - (length * i[1].fontSize) })
           .append("xhtml:div")
           .attr("class", "metadata")
-          .style("width", function() { return d.value.width * 3 + "px" })
-          .style("height", function() { return length * d.value.fontSize })
+          .style("width", function() { return i[1].width * 3 + "px" })
+          .style("height", function() { return length * i[1].fontSize })
           .style("justify-content", jc)
-          .style("font-size", function() { return d.value.fontSize + "px"; })
+          .style("font-size", function() { return i[1].fontSize + "px"; })
           .html(function() {
             var text = "<table>"
             for (key in metadata) {

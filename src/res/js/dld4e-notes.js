@@ -32,7 +32,7 @@ var drawNotes = function (svg, diagram, notes) {
   }
 
   var notes = svg.selectAll("notes")
-    .data(d3.entries(notes))
+    .data(Object.entries(notes))
     .enter()
 
   var notesg = notes.append("g")

@@ -37,7 +37,7 @@ function draw(doc) {
   var title = Object.assign(titleDefaults, doc.title || {})
 
   // set the background color of the whole page
-  document.body.style.background = diagram.fill
+  //document.body.style.background = diagram.fill
 
   // find a good fit for the diagram
   var parentBox = d3.select("#svg").node().getBoundingClientRect()
@@ -93,8 +93,8 @@ function draw(doc) {
     .attr("width", parentBox.width )
     .attr("height", parentBox.height )
     .style("background-color", diagram.fill )
-    .call(d3.zoom().on("zoom", function () {
-        svg.attr("transform", d3.event.transform)
+    .call(d3.zoom().on("zoom", function (e) {
+        svg.attr("transform", e.transform)
     }))
     .append("g")
       .attr("transform", "translate(" + (parentBox.width - svgWidth)/2 + "," + (parentBox.height - svgHeight)/2 + ")");
