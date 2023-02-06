@@ -2,13 +2,12 @@ param(
     [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "EndCleanup")
 )
 
-$tempPath = Join-Path $PSScriptRoot "tmp"
-$buildPath = Join-Path $PSScriptRoot "dist"
-$vendorsPath = Join-Path $PSScriptRoot "vendors"
+$tempPath = Join-Path $PSScriptRoot .. "tmp"
+$buildPath = Join-Path $PSScriptRoot .. "dist"
+$vendorsPath = Join-Path $PSScriptRoot .. "vendors"
 $iconsPath = Join-Path $buildPath "res" "icons"
 $iconsJSONPath = Join-Path $iconsPath "icons.json"
-
-$srcPath = Join-Path $PSScriptRoot "src"
+$srcPath = Join-Path $PSScriptRoot .. "src"
 
 function DownloadIcons {
     Write-Output "====== Downloading & processing icons ======"
