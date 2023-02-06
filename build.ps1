@@ -1,3 +1,7 @@
+param(
+    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "EndCleanup")
+)
+
 $tempPath = Join-Path $PSScriptRoot "tmp"
 $buildPath = Join-Path $PSScriptRoot "dist"
 $vendorsPath = Join-Path $PSScriptRoot "vendors"
@@ -629,9 +633,21 @@ function EndCleanup {
 
 Write-Output "Starting DrawTheNet build process..."
 
-InitCleanup
-DownloadIcons
-CopySrc
-EndCleanup
+if($steps -contains "InitCleanup")
+{
+    InitCleanup
+}
+if($steps -contains "DownloadIcons")
+{
+    DownloadIcons
+}
+if($steps -contains "CopySrc")
+{
+    CopySrc
+}
+if($steps -contains "EndCleanup")
+{
+    EndCleanup
+}
 
 Write-Output "All Done"
