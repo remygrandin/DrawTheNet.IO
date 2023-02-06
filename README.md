@@ -1,16 +1,31 @@
-## drawthe.net: Decent looking diagrams for engineers.
+## drawthenet.io: Diagrams as code for engineers.
 
-drawthe.net draws network diagrams dynamically from a text file describing the placement, layout and icons. Given a yaml file describing the hierarchy of the network and it's connections, a resulting diagram will be created.
+drawthenet.io draws network diagrams dynamically from a text file describing the placement, layout and icons. 
+Given a yaml file describing the hierarchy of the network and it's connections, a resulting diagram will be created. 
 
-![screenshot](https://github.com/cidrblock/drawthe.net/raw/master/screenshot_gc.png)
+![screenshot](docs/screenshot_gc.png)
 
-## Motivation
+# Table of contents
+  * [Motivation](#motivation)
+  * [Quick Start](#quick-start)
+  * [Reference](#reference)
+    * [Custom sections](#custom-sections)
+    * [Placement](#placement)
+    * [Basic styling](#basic-styling)
+    * [Icons](#icons)
+      * [
+    * [Groups](#groups)
+    * [Connections](#connections)
+    * [Notes](#notes)
 
-Complex network diagrams typically involve specific place of icons, connections and labels using a tool like Visio or OmniGraffle using a mouse and constantly zooming in and out for single pixel placement.  The goal behind drawthe.net, was to be able to describe the digram in a text file and have it rendered in SVG in the browser.  
+# Motivation
 
+Complex network diagrams typically involve specific place of icons, connections and labels using a tool like Visio or OmniGraffle using a mouse and constantly zooming in and out for single pixel placement. 
+The goal behind drawthenet.io is to be able to describe the digram in a text file and have it rendered in SVG in the browser. 
 I simply wanted to be able to draw network diagrams as fast as it could be done on a dry-erase board without using a mouse.
+Also, being able to store a diagram as text makes it easy to version control and share.
 
-## Quick start
+# Quick start
 
 http://go.drawthe.net
 
@@ -74,30 +89,47 @@ notes:
 
 Hopefully, the following diagram is created.
 
-![screenshot](https://github.com/cidrblock/drawthe.net/raw/master/quick_start.png)
+![screenshot](docs/quick_start.png)
 
-## Overview
+## Reference
 
 The YAML document has major sections which describe the diagram. These are the basic root types:
 
-**diagram**: The page on which the diagram will be drawn.  
-**title**: Information about the diagram.  
-**icons**:  Objects to be placed on the diagram.  
-**notes**: Text boxes with information.  
-**connections**:  Lines drawn between objects.  
-**groups**: Collections of objects.  
+* **diagram**: The page on which the diagram will be drawn.  
+* **title**: Information about the diagram.  
+* **icons**:  Objects to be placed on the diagram.  
+* **notes**: Text boxes with information.  
+* **connections**:  Lines drawn between objects.  
+* **groups**: Collections of objects.  
 
-### Custom sections
-The YAML document above has the following additional custom sections:
+## Custom sections
+Apart from those listed above, you can declare any number of custom sections.
+These sections can be used to define common attributes for icons, groups, connections and notes and can be referenced later in the document.
 
-**iconDefaults**: A YAML anchor which describes common icon attributes which will be inherited later.  
-**groupDefaults:** A YAML anchor which describes common group attributes which will be inherited later.  
-**connectionDefaults:** A YAML anchor which describes common connection attributes which will be inherited later.  
-**noteDefaults:** A YAML anchor which describes common note attributes which will be inherited later.  
+To define a custom section, use the following syntax (here we define a section referenced as 'sectionRef'):
+
+```yaml
+sectionName: &sectionRef
+  color: black
+  fill: white
+  ....
+```
+
+then reference the section using the following syntax `(<<: *sectionRef)`:
+
+```yaml
+icons:
+  myIcon:
+    <<: *sectionRef
+    x: 0
+    y: 0
+    icon: cmpt_ec2_instance
+    .....
+```
 
 YAML reference: https://en.wikipedia.org/wiki/YAML
 
-### Placement
+## Placement
 
 Icons and notes have the following attributes, which allows the object to be placed and sized on the place.
 
@@ -106,24 +138,45 @@ Icons and notes have the following attributes, which allows the object to be pla
 **w:** The width of the object, in X coordinate steps, extending right toward the right side of the screen.  
 **h:** The height of the object, in Y coordinate steps, extending down toward the bottom of the diagram.  
 
-### Basic styling
+## Basic styling
 Common to most entities are the following:
 
 **color:** The color of the text.  
 **fill:** Sets the color inside the object.  
 **stroke:** Sets the color of the line drawn around the object.  
 
+## Icons
+### Icon families
+You can reference any of the following icon set (refered here as a family) :
+- AWS (Amazon Web Services, from https://aws.amazon.com/architecture/icons/?nc1=h_ls)
+- Azure (Microsoft Azure, from https://learn.microsoft.com/fr-fr/azure/architecture/icons/)
+- M365 (Microsoft 365, from https://learn.microsoft.com/fr-fr/microsoft-365/solutions/architecture-icons-templates)
+- D365 (Microsoft Dynamics 365, from https://learn.microsoft.com/fr-fr/dynamics365/get-started/icons)
+- PowerPlatform (Microsoft Power Platform, from https://learn.microsoft.com/fr-fr/power-platform/guidance/icons)
+- Cisco (Cisco, from https://www.cisco.com/c/en/us/about/brand-center/network-topology-icons.html)
+- Iconify* (Special Case, see bellow, from https://iconify.design/)
+
+*Iconify is a special case, as it is not a single set of icons, but a set of icon families. Each family has a different set of icons. To use an icon from Iconify, you need to specify `Iconify` as the family name and the name of the icon set and the icon itself as the name. 
+
+For exemple, to use the icon 'account-heart' from the 'mdi' family, you would use the following syntax:
+
+```yaml
+icons:
+  myIcon:
+    iconFamily: Iconify
+    icon: mdi:account-heart
+```
+
+This should be easy as it's the same syntax as the iconify website.
+
 ### Icons
-The following icon families are available:
-- aws
-- azureCloud
-- azureEnterprise
-- cisco
 
 Icons have the following basic attributes:
 
 **iconFamily:** The family from which to pull the icon.  
 **icon:** The name of the icon within the family.  
+
+
 **iconFill:** Set the color inside the icon.  
 **iconStroke:** Sets the color of the line drawn within the icon.  
 
@@ -353,12 +406,17 @@ Notes can also contain markdown converted by: Showdown.js https://github.com/sho
 
 ## Built with great open source software
 
-- **Ace editor:** https://ace.c9.io
-- **Angular:** https://angularjs.org
-- **D3.js:** https://d3js.org
+- **JQuery** https://jquery.com/
+- **Bootstrap** https://getbootstrap.com/
+- **D3.js:** https://d3js.org/
+- **Ace editor:** https://ace.c9.io/
+- **Iconify:** https://iconify.design/
+- **Fuse.js:** https://fusejs.io/
 - **js-yaml:** https://github.com/nodeca/js-yaml
+- **JQuery Toast** https://kamranahmed.info/toast
 - **Showdown:** https://github.com/showdownjs/showdown
-- **Prettify:** https://github.com/google/code-prettify
+- **Highlight.js:** https://highlightjs.org/
+
 
 ## Contributing
 
@@ -367,14 +425,16 @@ Please do.
 ## Versioning
 
 1.0 Initial release.
+2.0 Updated frameworks & added new saves and icons features.
 
 ## Authors
 
-* **Bradley Thornton** - *Initial work* - [cidrblock](https://github.com/cidrblock)
+* **Bradley Thornton** - 2016-2022 *Initial work* - [cidrblock](https://github.com/cidrblock)
+* **Rémy Grandin** - 2023-Today *Rework & modernization* - [remygrandin](https://github.com/remygrandin)
 
 ## License
 
-This project is licensed under the MIT License. [MIT License](http://www.opensource.org/licenses/MIT).
+This project is licensed under the MIT License. (see LISENCE.TXT)
 
 ------------------------
 
