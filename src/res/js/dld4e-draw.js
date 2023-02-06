@@ -112,7 +112,6 @@ function draw(doc) {
   drawConnections(svg, diagram, connections, icons, notes)
   drawIcons(svg, diagram, icons, diagram.iconTextRatio)
   drawNotes(svg, diagram, notes)
-  PR.prettyPrint()
 
   // move all the labels to the front
   svg.selectAll('.connectionLabel')

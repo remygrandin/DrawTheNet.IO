@@ -1,0 +1,16 @@
+{
+    "Test": "test.yaml",
+    "Coffee colors": "coffee.yaml",
+    "Curves types": "curves.yaml",
+    "Group Connection": "group_connection.yaml",
+    "Groups": "groups.yaml",
+    "Labels": "labels.yaml",
+    "Mouseover": "mouseover.yaml",
+    "Notes": "notes.yaml",
+    "NTP": "ntp.yaml",
+    "Relative Positioning": "relative_positions.yaml",
+    "Sample": "sample.yaml",
+    "Super Spine": "superspine.yaml",
+    "Text Locations": "text_locations.yaml",
+    "URLs": "urls.yaml"
+}

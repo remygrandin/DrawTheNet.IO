@@ -119,7 +119,7 @@ notes:
     alignItems: stretch
     justifyContent: space-around
     text: |
-        #Relative positiong
+        #Relative positioning
         **x can be one of:**
 
         not defined: assumes  x of previous object
