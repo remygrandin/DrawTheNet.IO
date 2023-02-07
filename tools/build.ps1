@@ -1,5 +1,5 @@
 param(
-    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "EndCleanup")
+    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "AllLowercase", "EndCleanup")
 )
 
 $tempPath = Join-Path $PSScriptRoot .. "tmp"
@@ -657,20 +657,45 @@ function EndCleanup {
     Remove-Item -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
+function AllLowercase {
+    Write-Output "====== Moving all to lowercase ======"
+    $items = Get-ChildItem -Path $buildPath -Recurse
+
+    $baseLength = $buildPath.Length + 1
+
+    foreach ($item in $items) {
+        $newPath = $item.FullName.ToLower()
+        $newPath = $newPath.Substring(0, $baseLength) + $newPath.Substring($baseLength)
+
+        if ($item.FullName -ne $newPath) {
+            Write-Output "    Moving $($item.FullName) to $($newPath)"
+            Move-Item -Path $item.FullName -Destination $newPath -Force
+        }
+    }
+}
+
 Write-Output "Starting DrawTheNet build process..."
 
 if($steps -contains "InitCleanup")
 {
     InitCleanup
 }
+
 if($steps -contains "DownloadIcons")
 {
     DownloadIcons
 }
+
 if($steps -contains "CopySrc")
 {
     CopySrc
 }
+
+if($steps -contains "AllLowercase")
+{
+    AllLowercase
+}
+
 if($steps -contains "EndCleanup")
 {
     EndCleanup
