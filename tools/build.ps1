@@ -665,9 +665,9 @@ function AllLowercase {
 
     foreach ($item in $items) {
         $newPath = $item.FullName.ToLower()
-        $newPath = $newPath.Substring(0, $baseLength) + $newPath.Substring($baseLength)
+        $newPath = $item.FullName.Substring(0, $baseLength) + $newPath.Substring($baseLength)
 
-        if ($item.FullName -ne $newPath) {
+        if ($item.FullName -cne $newPath) {
             Write-Output "    Moving $($item.FullName) to $($newPath)"
             Move-Item -Path $item.FullName -Destination $newPath -Force
         }
