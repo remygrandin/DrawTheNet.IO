@@ -49,7 +49,7 @@ function DownloadAWSIcons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         if($obj.FullName.Contains("Architecture-Service-Icons"))
@@ -144,7 +144,7 @@ function DownloadAzureIcons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         $obj.FileName -match "(?:\d{5}-icon-service-)(.*).svg" | Out-Null
@@ -231,7 +231,7 @@ function DownloadM365Icons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         $obj.FileName -match "(.*).svg" | Out-Null
@@ -321,7 +321,7 @@ function DownloadD365Icons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         $obj.FileName -match "(.*)_?_scalable.svg" | Out-Null
@@ -411,7 +411,7 @@ function DownloadPowerPlatformIcons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         $obj.FileName -match "(.*)_scalable.svg" | Out-Null
@@ -483,7 +483,7 @@ function DownloadGCPIcons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         $obj.FileName -match "(.*).svg" | Out-Null
@@ -605,7 +605,7 @@ function DownloadCiscoIcons {
     foreach ($svgFile in $svgFilesRaw) {       
         $obj = [PSCustomObject]@{
             FullName = $svgFile
-            FileName = $svgFile.Split("\")[-1]
+            FileName = Split-Path $svgFile -leaf
         }
 
         $obj.FileName -match "(.*).svg" | Out-Null
