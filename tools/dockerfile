@@ -16,24 +16,3 @@ WORKDIR /tmp/drawthenet.io/drawthenet.io/tools
 run pwsh ./build.ps1
 
 
-# ==== RUNNER ====
-FROM ubuntu:latest
-
-## Application Port
-EXPOSE 80
-
-# Installing Nginx
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt -y install nginx ca-certificates
-
-COPY --from=builder /tmp/drawthenet.io/drawthenet.io/dist /opt/drawthenet.io
-
-RUN rm /etc/nginx/sites-available/default && rm /etc/nginx/sites-enabled/default
-COPY drawthenet.io.nginx.conf /etc/nginx/sites-available/drawthenet.io.nginx.conf
-RUN ln -s /etc/nginx/sites-available/drawthenet.io.nginx.conf /etc/nginx/sites-enabled/drawthenet.io.nginx.conf
-
-# Run the specified command within the container.
-CMD ["nginx", "-g", "daemon off;"]
-
-
-

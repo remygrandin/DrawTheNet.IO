@@ -659,10 +659,22 @@ function EndCleanup {
 
 function AllLowercase {
     Write-Output "====== Moving all to lowercase ======"
-    $items = Get-ChildItem -Path $buildPath -Recurse
+    $items = Get-ChildItem -Directory -Path $buildPath -Recurse
 
-    $baseLength = $buildPath.Length + 1
+    $baseLength = (Join-Path $buildPath "" -Resolve).Length + 1
 
+    foreach ($item in $items) {
+        $newPath = $item.FullName.ToLower()
+        $newPath = $item.FullName.Substring(0, $baseLength) + $newPath.Substring($baseLength)
+
+        if ($item.FullName -cne $newPath) {
+            Write-Output "    Moving $($item.FullName) to $($newPath)"
+            Move-Item -Path $item.FullName -Destination $newPath -Force
+        }
+    }
+
+    $items = Get-ChildItem -File -Path $buildPath -Recurse
+    
     foreach ($item in $items) {
         $newPath = $item.FullName.ToLower()
         $newPath = $item.FullName.Substring(0, $baseLength) + $newPath.Substring($baseLength)
