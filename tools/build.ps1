@@ -4,10 +4,11 @@ param(
 
 $tempPath = Join-Path $PSScriptRoot .. "tmp"
 $buildPath = Join-Path $PSScriptRoot .. "dist"
-$vendorsPath = Join-Path $PSScriptRoot .. "vendors"
 $iconsPath = Join-Path $buildPath "res" "icons"
 $iconsJSONPath = Join-Path $iconsPath "icons.json"
 $srcPath = Join-Path $PSScriptRoot .. "src"
+
+$vssConvInstalled = $null -ne (Get-Command "vss2svg-conv" -ErrorAction SilentlyContinue)
 
 function DownloadIcons {
     Write-Output "====== Downloading & processing icons ======"
@@ -53,7 +54,7 @@ function DownloadAWSIcons {
 
         if($obj.FullName.Contains("Architecture-Service-Icons"))
         {
-            $obj.FullName -match "\\Arch_([\da-zA-Z-_]*)\\(?:Arch_)?\d\d\\(?:Arch_ ?(?:Amazon|AWS)?-?)([\da-zA-Z-&_]*) ?_(\d\d)_?.svg" | Out-Null
+            $obj.FullName -match "[\\/]Arch_([\da-zA-Z-_]*)[\\/](?:Arch_)?\d\d[\\/](?:Arch_ ?(?:Amazon|AWS)?-?)([\da-zA-Z-&_]*) ?_(\d\d)_?.svg" | Out-Null
 
             $obj | Add-Member -MemberType NoteProperty -Name "Size" -Value ([int]($Matches[3]))
             $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])_$($Matches[2])"
@@ -61,7 +62,7 @@ function DownloadAWSIcons {
             $obj | Add-Member -MemberType NoteProperty -Name "DestName" -Value "$($obj.BaseName).svg"
         }
         elseif ($obj.FullName.Contains("Category-Icons")) {
-            $obj.FullName -match "\\Arch-Category_\d\d\\Arch-([\da-zA-Z-_]*)_(\d\d).svg" | Out-Null
+            $obj.FullName -match "[\\/]Arch-Category_\d\d[\\/]Arch-([\da-zA-Z-_]*)_(\d\d).svg" | Out-Null
 
             $obj | Add-Member -MemberType NoteProperty -Name "Size" -Value ([int]($Matches[2]))
             $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])"
@@ -69,7 +70,7 @@ function DownloadAWSIcons {
             $obj | Add-Member -MemberType NoteProperty -Name "DestName" -Value "$($obj.BaseName).svg"
         }
         elseif ($obj.FullName.Contains("Res_")) {
-            $obj.FullName -match "\\Res_([\dA-Za-z-_]*)\\[\dA-Za-z-_]*\\Res_(?:AWS|Amazon)?-?([\dA-Za-z-_\.]*) ?_(\d\d)_(Light|Dark).svg" | Out-Null
+            $obj.FullName -match "[\\/]Res_([\dA-Za-z-_]*)[\\/][\dA-Za-z-_]*[\\/]Res_(?:AWS|Amazon)?-?([\dA-Za-z-_\.]*) ?_(\d\d)_(Light|Dark).svg" | Out-Null
 
             $obj | Add-Member -MemberType NoteProperty -Name "Size" -Value ([int]($Matches[3]))
             $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])_$($Matches[2])_$($Matches[4])"
@@ -521,9 +522,36 @@ function DownloadGCPIcons {
 
 function DownloadCiscoIcons {
     Write-Output "------ Cisco ------"
-    $sourcePath = join-path $vendorsPath "Cisco"
+
+    if(-not $vssConvInstalled)
+    {
+        Write-Output "vss2svg-conv not installed, skipping Cisco icons download & format"
+        return
+    }
+
+    $zipPath = join-path $tempPath "Cisco.zip"
     $extractPath = join-path $tempPath "Cisco"
     $destPath = join-path $iconsPath "Cisco"
+
+
+    Write-Output "Download..."
+    Invoke-WebRequest -Uri "https://www.cisco.com/c/dam/en_us/about/ac50/ac47/3015VSS.zip" -OutFile $zipPath
+    Write-Output "Done"
+
+    Write-Output "Extract..."
+    New-Item -Type Directory -Path $extractPath -Force | Out-Null
+    Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+    Write-Output "Done"
+
+    Write-Output "Convert..."
+    $vssFiles = Get-ChildItem -Recurse -Path $extractPath | Where-Object { $_.Name.EndsWith(".vss") }
+    foreach($vss in $vssFiles)
+    {
+        Write-Output "    Converting $($vss.FullName) ..."
+        vss2svg-conv -i $vss -o $extractPath
+    }
+    Write-Output "Done"
+
 
     Write-Output "Local copy..."
     Copy-Item -Path $sourcePath -Destination $tempPath -Force -Recurse
@@ -540,7 +568,6 @@ function DownloadCiscoIcons {
 
         $iconSVG = $iconSVG -replace 'transform=" scale([\d\.]*) "', ""
         $iconSVG = $iconSVG -replace ' transform=" ?translate\([-\d\.]*, ?[-\d\.]*\) ?\"', ""
-        #$iconSVG = $iconSVG -replace 'stroke-width="[\d\.]*(?:px)?"', "stroke-width=""0.5"""
         
 
         $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label="X"; expression={$_.Groups[1].Value}},@{label="Y"; expression={$_.Groups[2].Value}}

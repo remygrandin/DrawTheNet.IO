@@ -1,47 +1,19 @@
 # ==== BUILDER ====
 FROM mcr.microsoft.com/powershell:lts-7.2-ubuntu-22.04 AS builder
-
+run 
 WORKDIR /tmp/drawthenet.io
 
-# Installing NodeJS V17
-RUN apt update
-RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates build-essential 
+RUN apt update && apt -y install git wget build-essential cmake libemf2svg-dev librevenge-dev libwmf-dev libvisio-dev
 
-# Installing Git
-RUN apt -y install git
-
-# Installing unzip
-RUN apt -y install unzip
-
-# Installing wget
-RUN apt -y install wget
-
-# Installing Build Tools
-RUN apt -y install cmake libemf2svg-dev librevenge-dev libwmf-dev libvisio-dev
+RUN git clone https://github.com/kakwa/libvisio2svg.git -b master
+WORKDIR /tmp/drawthenet.io/libvisio2svg
+RUN cmake . -DCMAKE_INSTALL_PREFIX=/usr/ && make && make install
 
 # Build drawthenet.io
-RUN git clone https://github.com/remygrandin/drawthenet.io.git
-WORKDIR /tmp/drawthenet.io/drawthenet.io
-RUN git checkout master
+WORKDIR /tmp/drawthenet.io/
+RUN git clone https://github.com/remygrandin/drawthenet.io.git -b master
+WORKDIR /tmp/drawthenet.io/drawthenet.io/tools
+run pwsh ./build.ps1
 
-RUN unzip -o *.zip
 
-# ==== RUNNER ====
-FROM ubuntu:latest
 
-## Application Port
-EXPOSE 80
-
-# Installing Nginx
-RUN apt update
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt -y install nginx ca-certificates
-
-COPY --from=builder /tmp/cyberchef/CyberChef/build/prod /opt/cyberchef
-
-RUN rm /etc/nginx/sites-available/default && rm /etc/nginx/sites-enabled/default
-COPY cyberchef.conf /etc/nginx/sites-available/cyberchef.conf
-RUN ln -s /etc/nginx/sites-available/cyberchef.conf /etc/nginx/sites-enabled/cyberchef.conf
-
-# Run the specified command within the container.
-CMD ["nginx", "-g", "daemon off;"]
