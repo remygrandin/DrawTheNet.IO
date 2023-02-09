@@ -552,11 +552,6 @@ function DownloadCiscoIcons {
     }
     Write-Output "Done"
 
-
-    Write-Output "Local copy..."
-    Copy-Item -Path $sourcePath -Destination $tempPath -Force -Recurse
-    Write-Output "Done"
-
     Write-Output "Edit Icons :"
     $icons = Get-ChildItem -Recurse -Path $extractPath | `
         Where-Object { $_.Name.EndsWith(".svg") } 
@@ -674,7 +669,7 @@ function AllLowercase {
     }
 
     $items = Get-ChildItem -File -Path $buildPath -Recurse
-    
+
     foreach ($item in $items) {
         $newPath = $item.FullName.ToLower()
         $newPath = $item.FullName.Substring(0, $baseLength) + $newPath.Substring($baseLength)
