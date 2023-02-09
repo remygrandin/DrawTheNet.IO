@@ -7,14 +7,12 @@ var drawNotes = function (svg, diagram, notes) {
                 var left = "<pre><code\\b[^>]*>",
                     right = "</code></pre>",
                     flags = "g";
-                hljs.initLineNumbersOnLoad({
-                    singleLine: false
-                });
+                
                 var replacement = function (wholeMatch, match, left, right) {
                     var lang = (left.match(/class=\"([^ \"]+)/) || [])[1];
                     left = left.slice(0, 18) + 'hljs ' + left.slice(18);
                     if (lang && hljs.getLanguage(lang)) {
-                        return left + hljs.highlight(lang, match).value + right;
+                        return left + hljs.highlight(match, {language:lang}).value + right;
                     } else {
                         return left + hljs.highlightAuto(match).value + right;
                     }
@@ -92,4 +90,9 @@ var drawNotes = function (svg, diagram, notes) {
         .style('justify-content', function (d) { return d[1].justifyContent || yAlign[d[1].yAlign].justifyContent })
         .style('text-align', function (d) { return d[1].textAlign || xAlign[d[1].xAlign].textAlign })
         .html(function (d) { return converter.makeHtml(d[1].text || "Missing text in note") })
+
+        hljs.initLineNumbersOnLoad({
+            singleLine: false
+        });
+
 }

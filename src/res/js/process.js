@@ -9,8 +9,6 @@ var processEntities = function (svg, diagram, icons) {
 
   var previous = {};
   for(var key in icons) {
-    console.log(`Processing ${key}`);
-    console.log(`previous ${JSON.stringify(previous)}`);
     icons[key] = Object.assign({}, defaults, icons[key]);
     icons[key].w = icons[key].w || 1;
     icons[key].h = icons[key].h || 1;

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <!-- META -->
     <meta charset="utf-8">
@@ -10,10 +9,10 @@
 
     <base href="./">
 
-    <link rel="icon" type="image/png" href="res/images/radial.png" />
-    <base href="/">
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 
-    <title>DrawtheNet.IO</title>
+    <title>DrawTheNet.IO</title>
 
     <!-- JQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
@@ -81,6 +80,11 @@
         integrity="sha512-mb7hVnqouaHmHLJYLhdY+kUld4843IHJuRbVbhLXD41EJreUz0AeYU9t0XhwDFtnRVRvnLkbT/Xbjl1sajvpFQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"
+        integrity="sha512-axd5V66bnXpNVQzm1c7u1M614TVRXXtouyWCE+eMYl8ALK8ePJEs96Xtx7VVrPBc0UraCn63U1+ARFI3ofW+aA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <!-- svg2png -->
     <script src="https://unpkg.com/svg2png-wasm"></script>
 
@@ -115,6 +119,11 @@
         #iconOffcanvas {
             height: 60vh;
         }
+        
+        #titleText {
+            font-family: monospace;
+        }
+
     </style>
 </head>
 
@@ -125,42 +134,38 @@
                 <nav class="navbar navbar-expand-lg bg-secondary">
                     <div class="container-fluid">
                         <div class="navbar-nav">
-                            <button class="btn btn-primary" type="button">
+                            <img src="res/logo.png" class="me-2" alt="DrawTheNet.IO" width="50" height="50">
+                            <h2 id="titleText" class="me-2">
+                                DrawTheNet.IO
+                            </h2>
+                            <button class="btn btn-primary me-2" type="button" id="btnSaveYAML">
                                 <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
-                                Save YML code
+                                Save YAML code
                             </button>
-
+                            <button class="btn btn-primary me-2" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#iconOffcanvas">
+                                Icon Explorer
+                            </button>
+                            <div class="dropdown me-2" id="drpSamples">
+                                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Samples
+                                </button>
+                                <ul class="dropdown-menu"></ul>
+                            </div>
                         </div>
-                        <button class="btn btn-warning" type="button" id="btnSaveSVG">
-                            <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
-                            Export SVG
-                        </button>
-                        <button class="btn btn-success" type="button" id="btnSavePNG">
-                            <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
-                            Export PNG
-                        </button>
 
                         <div class="d-flex">
-                            <div class="dropdown me-2" id="drpExemples">
-                                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Exemples
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-warning" type="button" id="btnSaveSVG">
+                                    <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
+                                    Export SVG
                                 </button>
-                                <ul class="dropdown-menu">
-
-                                </ul>
-                            </div>
-                            <div class="dropdown me-2" id="drpIconsSets">
-                                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Icons Contact Sheets
+                                <button class="btn btn-success" type="button" id="btnSavePNG">
+                                    <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
+                                    Export PNG
                                 </button>
-                                <ul class="dropdown-menu">
-
-                                </ul>
                             </div>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#iconOffcanvas">Icon Explorer</button>
                         </div>
                     </div>
 
@@ -290,16 +295,18 @@
             }
         }
 
-        // load exemples
-        fetch("./exemples/exemples.json")
+        // =============================================
+        // ================== Samples ==================
+        // =============================================
+        fetch("./samples/samples.json")
             .then(response => response.json())
             .then(function (res) {
                 Object.keys(res).forEach(function (key) {
-                    $("#drpExemples .dropdown-menu").append(`<li file="${res[key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
+                    $("#drpSamples .dropdown-menu").append(`<li file="${res[key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
                 });
             });
 
-        $("#drpExemples").on("click", "li", function (event) {
+        $("#drpSamples").on("click", "li", function (event) {
             event.preventDefault();
 
             let fileName = $(this).attr("file");
@@ -313,7 +320,9 @@
         });
 
 
-        // load icon sets
+        // =============================================
+        // ======= Icons Search & Contact Sheets =======
+        // =============================================
         fetch("./res/icons/icons.json")
             .then(response => response.json())
             .then(function (res) {
@@ -440,6 +449,28 @@
         });
 
 
+        // =============================================
+        // ================= Exports ===================
+        // =============================================
+
+        function saveAs(blob, title) {
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = title;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        $("#btnSaveYAML").on("click", function (event) {
+            event.preventDefault();
+
+            let text = editor.session.getValue();
+            let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+            let title = `${(new Date()).toISOString()}-drawthenetio.yaml`
+
+            saveAs(blob, title);
+        });
+
         $("#btnSaveSVG").on("click", function (event) {
             event.preventDefault();
 
@@ -452,23 +483,9 @@
 
             let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
 
-            let text = editor.session.getValue();
-
-            let doc = jsyaml.load(text);
-
             let title = `${(new Date()).toISOString()}-drawthenetio.svg`
 
-            let link = document.createElement("a");
-
-            link.href = URL.createObjectURL(blob);
-
-            // Add file name
-            link.download = title;
-
-            // Add click event to <a> tag to save file.
-            link.click();
-            URL.revokeObjectURL(link.href);
-
+            saveAs(blob, title);
         });
 
         svg2pngWasm.initialize(fetch('https://unpkg.com/svg2png-wasm/svg2png_wasm_bg.wasm'))
@@ -499,13 +516,7 @@
             let blob = new Blob([png], { type: 'image/png' });
             let title = `${(new Date()).toISOString()}-drawthenetio.png`
 
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = title;
-
-            // Add click event to <a> tag to save file.
-            link.click();
-            URL.revokeObjectURL(link.href);
+            saveAs(blob, title);
         });
     });
 
