@@ -840,21 +840,16 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                 Optional URL link target for the icon text to point to.
                             </td>
                         </tr>
-
-
-
-
-
                         <tr>
                             <td>
-                                <pre><code class="language-yaml">logoFill</code></pre>
+                                <pre><code class="language-yaml">color</code></pre>
                             </td>
                             <td>string</td>
                             <td>
-                                <pre><code class="language-yaml">null</code></pre>
+                                <pre><code class="language-yaml">"black"</code></pre>
                             </td>
                             <td>
-                                The background color behind the logo.<br>
+                                The text color<br>
                                 Can be either:
                                 <ul>
                                     <li>
@@ -874,7 +869,101 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                         between 0 and 255 for the red, green and blue component of the color.
                                     </li>
                                 </ul>
-                                If undefined or null, the diagram fill color will be used.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <pre><code class="language-yaml">fill</code></pre>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <pre><code class="language-yaml">"white"</code></pre>
+                            </td>
+                            <td>
+                                The fill color for the icon bounding box<br>
+                                Can be either:
+                                <ul>
+                                    <li>
+                                        Color keyword, like <code>white</code>,<code>blue</code>,<code>green</code>,...
+                                        (as specified int the
+                                        <a href="https://www.w3.org/TR/SVG11/types.html#ColorKeywords">SVG specs</a>).
+                                    </li>
+                                    <li>
+                                        Hexadecimal color code as
+                                        <code>#XXYYZZ</code> where
+                                        <code>XX</code>, <code>YY</code> and <code>ZZ</code> are hexadecimal values
+                                        between 00 and FF for the red, green and blue component of the color.
+                                    </li>
+                                    <li>
+                                        <code>rgb(XXX,YYY,ZZZ)</code> where
+                                        <code>XXX</code>, <code>YYY</code> and <code>ZZZ</code> are decimal values
+                                        between 0 and 255 for the red, green and blue component of the color.
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <pre><code class="language-yaml">iconFill</code></pre>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <pre><code class="language-yaml"></code></pre>
+                            </td>
+                            <td>
+                                Override the fill color for the icon<br>
+                                Can be either:
+                                <ul>
+                                    <li>
+                                        Color keyword, like <code>white</code>,<code>blue</code>,<code>green</code>,...
+                                        (as specified int the
+                                        <a href="https://www.w3.org/TR/SVG11/types.html#ColorKeywords">SVG specs</a>).
+                                    </li>
+                                    <li>
+                                        Hexadecimal color code as
+                                        <code>#XXYYZZ</code> where
+                                        <code>XX</code>, <code>YY</code> and <code>ZZ</code> are hexadecimal values
+                                        between 00 and FF for the red, green and blue component of the color.
+                                    </li>
+                                    <li>
+                                        <code>rgb(XXX,YYY,ZZZ)</code> where
+                                        <code>XXX</code>, <code>YYY</code> and <code>ZZZ</code> are decimal values
+                                        between 0 and 255 for the red, green and blue component of the color.
+                                    </li>
+                                </ul>
+                                If not specified, the icon won't be altered from the original.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <pre><code class="language-yaml">iconStroke</code></pre>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <pre><code class="language-yaml"></code></pre>
+                            </td>
+                            <td>
+                                Override the fill color for the icon<br>
+                                Can be either:
+                                <ul>
+                                    <li>
+                                        Color keyword, like <code>white</code>,<code>blue</code>,<code>green</code>,...
+                                        (as specified int the
+                                        <a href="https://www.w3.org/TR/SVG11/types.html#ColorKeywords">SVG specs</a>).
+                                    </li>
+                                    <li>
+                                        Hexadecimal color code as
+                                        <code>#XXYYZZ</code> where
+                                        <code>XX</code>, <code>YY</code> and <code>ZZ</code> are hexadecimal values
+                                        between 00 and FF for the red, green and blue component of the color.
+                                    </li>
+                                    <li>
+                                        <code>rgb(XXX,YYY,ZZZ)</code> where
+                                        <code>XXX</code>, <code>YYY</code> and <code>ZZZ</code> are decimal values
+                                        between 0 and 255 for the red, green and blue component of the color.
+                                    </li>
+                                </ul>
+                                If not specified, the icon won't be altered from the original.
                             </td>
                         </tr>
                     </tbody>
