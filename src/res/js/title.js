@@ -18,9 +18,9 @@ var drawTitle = function (svg, drawing, title) {
             
                 link.append("text")
                 .attr("transform", "translate(" + title.x1 + "," + title.y1 + ")")
-                .attr("x", title.width * 1 / 2)
+                .attr("x", title.width)
                 .attr("y", title.height * 7 / 8)
-                .attr("text-anchor", "middle")
+                .attr("text-anchor", "end")
                 .attr("dominant-baseline", "middle")
                 .style("fill", title.color)
                 .style('font-size', title.height * .2 + 'px')

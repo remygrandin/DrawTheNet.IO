@@ -109,19 +109,24 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
     function handleMouseOver(d, i) {
         if ((i[1].metadata) && (i[1].metadata.url)) {
             var url = i[1].metadata.url
-            var replacements = url.match(/{{\s*[\w\.]+\s*}}/g)
-            if (replacements) {
-                replacements.forEach(function (replacement) {
-                    var inner = replacement.match(/[\w\.]+/)[0]
-                    if (inner == 'key') {
-                        url = url.replace(replacement, i[0])
-                    } else {
-                        url = url.replace(replacement, i[1][inner])
-                    }
-                })
+            for (const match of url.matchAll(/{{\s*([-_\w\.]+)\s*}}/g)) {
+                let inner = match[1]
+                if (inner == 'key') {
+                    url = url.replace(match[0], i[0])
+                } else {
+                    url = url.replace(match[0], i[1][inner])
+                }
+
             }
-            d3.json(url, function (error, json) {
-                if (error) {
+            
+            fetch(url).then((response) => response.json())
+                .then(function (json) {
+                    var metadata = Object.assign({}, json, i[1].metadata);
+                    delete metadata.url
+                    delete metadata.errorText
+                    mouseOver(d, i, metadata)
+                })
+                .catch(function (error) {
                     var metadata = Object.assign({}, i[1].metadata);
                     delete metadata.url
                     if (i[1].metadata.errorText) {
@@ -132,15 +137,8 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
                         metadata.statusText = error.target.statusText
                     }
                     mouseOver(d, i, metadata)
-                    return
-                } else {
-                    var metadata = Object.assign({}, json, i[1].metadata);
-                    delete metadata.url
-                    delete metadata.errorText
-                    mouseOver(d, i, metadata)
-                    return
-                }
-            });
+
+                })
         } else if (i[1].metadata) {
             mouseOver(d, i, i[1].metadata)
         }
@@ -153,7 +151,7 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
             var jc = "flex-start"
             var meta = svg
                 .append("foreignObject")
-                .attr("id", "t" + i[1].x + "-" + i[1].y + "-" + i)
+                .attr("id", "t" + i[1].x + "-" + i[1].y + "-" + i[0])
                 .attr("class", "mouseOver")
                 .attr("x", function () {
                     if ((i[1].x2 + i[1].width * 2) < diagram.width) {

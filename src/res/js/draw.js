@@ -24,7 +24,7 @@ function draw(doc) {
         stroke: "red",
         fill: null,
         heightPercentage: 6, // percent of total height
-        logoUrl: "./res/logo.png",
+        logoUrl: "./res/logo.svg",
         logoFill: null
     }
     // incase there are none
