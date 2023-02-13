@@ -1,7 +1,7 @@
 function draw(doc) {
     // set the drawing defaults
     var drawingDefaults = {
-        fill: "orange",
+        fill: "white",
         aspectRatio: "1:1",
         rows: 10,
         columns: 10,
@@ -9,22 +9,23 @@ function draw(doc) {
         gridLines: true,
         gridPaddingInner: .4, // the space between icons (%)
         iconTextRatio: .33,
-        margins: { top: 20, right: 20, bottom: 50, left: 20 }
+        margins: { top: 20, right: 20, bottom: 50, left: 20 },
+        watermark: true
     }
     // set the title defaults
     var titleDefaults = {
-        text: "Decent looking diagrams for engineers",
-        subText: "More information can be found at http://github.com/cidrblock/dld4e",
-        author: "Bradley A. Thornton",
-        company: "Self",
+        text: "Diagram title",
+        subText: null,
+        author: "Unknown",
+        company: null,
         date: new Date().toLocaleDateString(),
-        version: 1.01,
-        color: "orange",
-        stroke: "orange",
-        fill: "orange",
+        version: 1,
+        color: "black",
+        stroke: "red",
+        fill: null,
         heightPercentage: 6, // percent of total height
-        logoUrl: "./res/images/radial.png",
-        logoFill: "orange"
+        logoUrl: "./res/logo.png",
+        logoFill: null
     }
     // incase there are none
     var connections = doc.connections || [];
