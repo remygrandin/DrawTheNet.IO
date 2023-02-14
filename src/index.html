@@ -182,7 +182,18 @@
             height: 100%;
         }
 
-        #contAutoSave *, #contAutoUpdate * {
+        #contAutoSave *,
+        #contAutoUpdate * {
+            cursor: pointer;
+        }
+
+        .jq-toast-wrap {
+            width: 500px;
+        }
+
+        .icon-family,
+        .icon-full,
+        .icon-name {
             cursor: pointer;
         }
     </style>
@@ -203,7 +214,7 @@
                                 <li class="nav-item">
                                     <button class="btn btn-primary me-2" type="button" id="btnSaveYAML">
                                         <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
-                                        Save YAML code
+                                        Export YAML code
                                     </button>
                                 </li>
                                 <li class="nav-item">
@@ -213,7 +224,8 @@
                                     </button>
                                 </li>
                                 <li>
-                                    <div class="p-2 pb-1 me-4 ms-2 text-black bg-info-subtle rounded fs-6" id="contAutoSave">
+                                    <div class="p-2 pb-1 me-4 ms-2 text-black bg-info-subtle rounded fs-6"
+                                        id="contAutoSave">
                                         <div class="form-check form-switch ">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                 id="inpAutoSave" checked>
@@ -252,7 +264,8 @@
                                 Update
                             </button>
 
-                            <div class="p-2 pb-1 me-4 ms-2 text-black bg-success-subtle rounded fs-6" id="contAutoUpdate">
+                            <div class="p-2 pb-1 me-4 ms-2 text-black bg-success-subtle rounded fs-6"
+                                id="contAutoUpdate">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="inpAutoUpdate"
                                         checked>
@@ -306,8 +319,9 @@
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">
                         <small>DrawTheNet.IO</small> - Help & Infos
-                        <a href="./help.html" target="_blank"><iconify-icon inline
-                                icon="material-symbols:open-in-new"></iconify-icon></a>
+                        <a href="./help.html" target="_blank" title="Open in a separate tab">
+                            <iconify-icon inline icon="material-symbols:open-in-new"></iconify-icon>
+                        </a>
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -344,13 +358,13 @@
             <div class="row g-2" id="iconCards">
                 <div class="col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-4">
                     <div class="card h-100 text-center">
-                        <div class="card-header">
+                        <div class="card-header icon-family">
                             {{family}}
                         </div>
-                        <div class="card-body">
-                            <img src="{{url}}" class="iconCardIcon" class="card-img-top">
+                        <div class="card-body bg-light bg-gradient icon-full">
+                            <img {{url}} class="iconCardIcon" class="card-img-top">
                         </div>
-                        <div class="card-footer px-1">
+                        <div class="card-footer px-1 icon-name">
                             {{icon}}
                         </div>
                     </div>
@@ -445,6 +459,10 @@
             }, maxDelay);
         }
 
+        if ($('#inpAutoUpdate').is(":checked")) {
+            Render(0);
+        }
+
         $("#btnUpdate").click(function () {
             Render(0);
         });
@@ -492,7 +510,7 @@
 
 
         // =============================================
-        // ======= Icons Search & Contact Sheets =======
+        // =============== Icons Search ================
         // =============================================
         fetch("./res/icons/icons.json")
             .then(response => response.json())
@@ -557,7 +575,7 @@
                             url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
                         }
 
-                        let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", url);
+                        let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", `src="${url}"`);
 
                         $("#iconCards").append(card);
                     });
@@ -617,6 +635,100 @@
                     win.location.href = `fullscreen.html#${btoa(JSON.stringify(jsyaml.dump(doc)))}`;
                 });
 
+        });
+
+        $("#iconCards").on("click", ".icon-family", function (event) {
+            event.preventDefault();
+
+            let text = $(this).text().trim();
+
+            navigator.clipboard.writeText(`"${text}"`).then(
+                () => {
+                    $.toast({
+                        heading: 'Icon family copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                },
+                () => {
+                    $.toast({
+                        heading: 'Icon family copying to clipboard failed. Please allow permission and try again',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            );
+        });
+
+        $("#iconCards").on("click", ".icon-name", function (event) {
+            event.preventDefault();
+
+            let text = $(this).text().trim();
+
+            navigator.clipboard.writeText(`"${text}"`).then(
+                () => {
+                    $.toast({
+                        heading: 'Icon name copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                },
+                () => {
+                    $.toast({
+                        heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            );
+        });
+
+        $("#iconCards").on("click", ".icon-full", function (event) {
+            event.preventDefault();
+
+            let family = $(this).parents(".card").children(".icon-family").text().trim();
+            let name = $(this).parents(".card").children(".icon-name").text().trim();
+
+            navigator.clipboard.writeText(`iconFamily: "${family}", icon: "${name}"`).then(
+                () => {
+                    $.toast({
+                        heading: 'Icon name copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                },
+                () => {
+                    $.toast({
+                        heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            );
         });
 
         // =============================================

@@ -61,47 +61,204 @@
                 type="button" role="tab">Icons</button>
             <button class="nav-link" id="nav-help-groups-tab" data-bs-toggle="tab" data-bs-target="#nav-help-groups"
                 type="button" role="tab">Groups</button>
-            <button class="nav-link" id="nav-help-connections-tab" data-bs-toggle="tab"
-                data-bs-target="#nav-help-connections" type="button" role="tab">Connections</button>
             <button class="nav-link" id="nav-help-notes-tab" data-bs-toggle="tab" data-bs-target="#nav-help-notes"
                 type="button" role="tab">Notes</button>
+            <button class="nav-link" id="nav-help-connections-tab" data-bs-toggle="tab"
+                data-bs-target="#nav-help-connections" type="button" role="tab">Connections</button>
+
             <button class="nav-link" id="nav-help-ref-tab" data-bs-toggle="tab" data-bs-target="#nav-help-ref"
                 type="button" role="tab">Reference</button>
         </div>
     </nav>
     <div class="tab-content" id="nav-help-tabContent">
-        <div class="tab-pane fade show active" id="nav-help-about" role="tabpanel" tabindex="0">
+        <div class="tab-pane fade" id="nav-help-about" role="tabpanel" tabindex="0">
             <h2 class="mt-2">About</h2>
             <p>
                 DrawTheNet.IO is a web application to draw network diagrams with simple yaml code.<br>
+            </p>
+            <h4>Why this app ?</h4>
+
+            <p>
+                I needed a simple way to draw network diagrams for my documentation.
+                I found some existing tools on the web but I didn't like the way to store the diagrams.<br>
+                I wanted something more simple and more "code" like. You can easily store your diagram source in a git
+                repository, or any documentation system. You can even use the generated URL to jump on the editor
+                quickly.
+
                 More info on <a href="https://github.com/remygrandin/drawthenet.io">
-                    <span class="badge bg-success">GitHub</span></a>
+                    <span class="badge bg-success"><iconify-icon inline icon="mdi:github"></iconify-icon>
+                        GitHub</span></a>
 
             </p>
         </div>
-        <div class="tab-pane fade" id="nav-help-interface" role="tabpanel" tabindex="0">
+        <div class="tab-pane fade show active" id="nav-help-interface" role="tabpanel" tabindex="0">
             <h2 class="mt-2">Interface</h2>
-            <p>
-                The interface is divided in 2 parts:
-            </p>
-            <ul>
-                <li>
-                    <strong>Editor</strong> (left side) : where you can write your yaml code
-                </li>
-                <li>
-                    <strong>Preview</strong> (right side) : where you can see the result of your code
-                </li>
-            </ul>
-            <p>
-                The preview is automatibly refreshed when you change the code in the editor.
+            <div class="row mb-2">
+                <div class="col-7">
+                    <img src="./res/help/interface.png" class="w-100">
+                </div>
+                <div class="col-5">
+                    <p>
+                        The interface is divided in 3 parts:
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Menu</strong> (Top) : buttons to save, exports, etc...
+                        </li>
+                        <li>
+                            <strong>Editor</strong> (left side) : where you can write your yaml code
+                        </li>
+                        <li>
+                            <strong>Render</strong> (right side) : where you can see the result of your code
+                        </li>
+                    </ul>
+                    <h3>Menu</h3>
+                    <div class="row">
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-primary btn-sm" type="button">
+                                <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
+                                Export YAML code
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Download the current document as an YAML file.
+                            </span>
+                        </div>
 
-                You can also press the <button class="btn btn-success btn-sm" type="button">
-                    <iconify-icon inline icon="zondicons:reload"></iconify-icon>
-                    Update
-                </button> button to force the refresh.
-            </p>
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-info btn-sm" type="button">
+                                <iconify-icon inline icon="material-symbols:save"></iconify-icon>
+                                Save
+                            </button>
+                        </div>
+                        <div class="col-8">
+
+                            Save localy (in local storage) and in the url (encoded as base64).
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn bg-info-subtle btn-sm" type="button">
+                                Auto-Save
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Trigger a save on each render. (Default <strong>ON</strong>)
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-success btn-sm" type="button">
+                                <iconify-icon inline
+                                    icon="material-symbols:screen-search-desktop-outline-rounded"></iconify-icon>
+                                Icon Explorer
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Popup the icon explorer (see bellow).
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-light btn-sm" type="button">
+                                Samples
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Load one of the provided samples.
+                            </span>
+                        </div>
+
+                        <hr>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-success btn-sm" type="button">
+                                <iconify-icon inline icon="zondicons:reload"></iconify-icon>
+                                Update
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Render the document.
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn bg-success-subtle btn-sm" type="button">
+                                Auto-Update
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Trigger a render after a few seconds of inactivity. (Default <strong>ON</strong>)
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-warning btn-sm" type="button">
+                                <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
+                                Export SVG
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Download the current render as a SVG file.
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-primary btn-sm" type="button">
+                                <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
+                                Export PNG
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Download the current render as a PNG file.
+                            </span>
+                        </div>
+
+                        <div class="col-4 mb-2 text-end">
+                            <button class="btn btn-light btn-sm px-3" type="button">
+                                ?
+                            </button>
+                        </div>
+                        <div class="col-8">
+                            <span class="align-middle">
+                                Open this help
+                            </span>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
             <hr>
-            <h4>Exports</h4>
+            <h3>Editor</h3>
+
+            This is where you input your diagram code. Refer to the next section for more details on the document structure.<br>
+            The editor provide syntax check for standard YAML document but not for the diagram specific syntax.<br>
+            You can refer to the <a href="https://yaml.org/spec/1.2/spec.html" target="_blank">YAML 1.2 specification</a> 
+            for the language detail.<br>
+            If a syntax error is found by the editor, It will be shown next to the line number:<br>
+            <img src="./res/help/editor-error.png"><br>
+            You can get a detail of the error by hovering the mouse on the error mark.<br>
+
+            <hr>
+            <h3>Render</h3>
+            This space will contain the render of your document.<br>
+            You can drag the diagram by clicking and dragging the mouse.<br>
+            You can also use the mouse wheel to zoom in and out.<br>
+            If your render fail, you will have a notification of the error in the top right corner<br>
+            <img src="./res/help/render-error.png"><br>
+
+
+
+            <hr>
+            <h4>Icon Explorer</h4>
             <ul>
                 <li>
                     <button class="btn btn-warning btn-sm" type="button">
@@ -1381,15 +1538,18 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                 Alignment of the text along the x axis.<br>
                                 <ul>
                                     <li>
-                                        <strong>left</strong> : Align the text to the left side of the note's bounding box.<br>
+                                        <strong>left</strong> : Align the text to the left side of the note's bounding
+                                        box.<br>
                                         This set <code>textAlign: "left", alignItems: "flex-start"</code>
                                     </li>
                                     <li>
-                                        <strong>center</strong> : Align the text in the middle of the note's bounding box along the x axis.<br>
+                                        <strong>center</strong> : Align the text in the middle of the note's bounding
+                                        box along the x axis.<br>
                                         This set <code>textAlign: "center", alignItems: "center"</code>
                                     </li>
                                     <li>
-                                        <strong>right</strong> : Align the text to the right side of the note's bounding box.<br>
+                                        <strong>right</strong> : Align the text to the right side of the note's bounding
+                                        box.<br>
                                         This set <code>textAlign: "right", alignItems: "flex-end"</code>
                                     </li>
                                 </ul>
@@ -1411,11 +1571,13 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                         This set <code>justifyContent: "flex-start"</code>
                                     </li>
                                     <li>
-                                        <strong>center</strong> : Align the text to the bottom side of the note's bounding box.<br>
+                                        <strong>center</strong> : Align the text to the bottom side of the note's
+                                        bounding box.<br>
                                         This set <code>justifyContent: "center"</code>
                                     </li>
                                     <li>
-                                        <strong>bottom</strong> : Align the text in the middle of the note's bounding box along the y axis.<br>
+                                        <strong>bottom</strong> : Align the text in the middle of the note's bounding
+                                        box along the y axis.<br>
                                         This set <code>justifyContent: "flex-end"</code>
                                     </li>
                                 </ul>
@@ -1430,14 +1592,18 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                 <pre><code class="language-yaml">"flex-start"</code></pre>
                             </td>
                             <td>
-                                This defines the default behaviour for how flex items are laid out along the cross axis on the current line.<br>
-                                Think of it as the justify-content version for the cross-axis (perpendicular to the main-axis).
+                                This defines the default behaviour for how flex items are laid out along the cross axis
+                                on the current line.<br>
+                                Think of it as the justify-content version for the cross-axis (perpendicular to the
+                                main-axis).
                                 <ul>
                                     <li>
-                                        <strong>flex-start</strong> : Cross-start margin edge of the items is placed on the cross-start line.
+                                        <strong>flex-start</strong> : Cross-start margin edge of the items is placed on
+                                        the cross-start line.
                                     </li>
                                     <li>
-                                        <strong>flex-end</strong> : Cross-end margin edge of the items is placed on the cross-end line.
+                                        <strong>flex-end</strong> : Cross-end margin edge of the items is placed on the
+                                        cross-end line.
                                     </li>
                                     <li>
                                         <strong>center</strong> : Items are centered in the cross-axis.
@@ -1446,7 +1612,8 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                         <strong>baseline</strong> : Items are aligned such as their baselines align.
                                     </li>
                                     <li>
-                                        <strong>stretch</strong> : Stretch to fill the container (still respect min-width/max-width).
+                                        <strong>stretch</strong> : Stretch to fill the container (still respect
+                                        min-width/max-width).
                                     </li>
                                 </ul>
                             </td>
@@ -1498,12 +1665,16 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                         <strong>center</strong> : Items are centered along the line.
                                     </li>
                                     <li>
-                                        <strong>space-between</strong> : items are evenly distributed in the line; first item is on the start line, last item on the end line.
+                                        <strong>space-between</strong> : items are evenly distributed in the line; first
+                                        item is on the start line, last item on the end line.
                                     </li>
                                     <li>
-                                        <strong>space-around</strong> : Items are evenly distributed in the line with equal space around them. 
-                                        Note that visually the spaces aren't equal, since all the items have equal space on both sides. 
-                                        The first item will have one unit of space against the container edge, but two units of space between
+                                        <strong>space-around</strong> : Items are evenly distributed in the line with
+                                        equal space around them.
+                                        Note that visually the spaces aren't equal, since all the items have equal space
+                                        on both sides.
+                                        The first item will have one unit of space against the container edge, but two
+                                        units of space between
                                         the next item because that next item has its own spacing that applies.
                                     </li>
                                 </ul>
@@ -1702,15 +1873,18 @@ myOthericon: { icon: router, iconFamily: Cisco, color: #ff0000 }
                                         <strong>curveLinear</strong> : Draws a line directly connecting the endpoints.
                                     </li>
                                     <li>
-                                        <strong>curveStep</strong> : Draws a line consisting of alternating horizontal and vertical lines. 
+                                        <strong>curveStep</strong> : Draws a line consisting of alternating horizontal
+                                        and vertical lines.
                                         The y-value changes at the midpoint of each pair of adjacent x-values.
                                     </li>
                                     <li>
-                                        <strong>curveStepAfter</strong> : Draws a line consisting of alternating horizontal and vertical lines. 
+                                        <strong>curveStepAfter</strong> : Draws a line consisting of alternating
+                                        horizontal and vertical lines.
                                         The y-value changes after the x-value.
                                     </li>
                                     <li>
-                                        <strong>curveStepBefore</strong> : Draws a line consisting of alternating horizontal and vertical lines. 
+                                        <strong>curveStepBefore</strong> : Draws a line consisting of alternating
+                                        horizontal and vertical lines.
                                         The y-value changes before the x-value.
                                     </li>
                                 </ul>
