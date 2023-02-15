@@ -1,16 +1,21 @@
-## DrawTheNet.IO : Diagrams as code for engineers.
+# DrawTheNet.IO : Diagrams as code for engineers.
 
 ![Logo](docs/logo.png)
 
-DrawTheNet.IO draws network diagrams dynamically from a text file describing the placement, layout and icons. 
+DrawTheNet.IO draws network diagrams dynamically from a text file describing the placement, layout and icons.
+
+## See in live :  https://drawthenet.io
+
 Given a yaml file describing the hierarchy of the network and it's connections, a resulting diagram will be created. 
 
-![screenshot](docs/screenshot_gc.png)
+![screenshot](docs/interface.png)
 
 # Motivation
 
 Complex network diagrams typically involve specific place of icons, connections and labels using a tool like Visio or OmniGraffle using a mouse and constantly zooming in and out for single pixel placement. 
-The goal behind drawthenet.io is to be able to describe the digram in a text file and have it rendered in SVG in the browser. 
+
+The goal behind drawthenet.io is to be able to describe the digram in a text file and have it rendered in SVG in the browser.
+
 I simply wanted to be able to draw network diagrams as fast as it could be done on a dry-erase board without using a mouse.
 Also, being able to store a diagram as text makes it easy to version control and share.
 
@@ -19,8 +24,8 @@ Also, being able to store a diagram as text makes it easy to version control and
 Go to https://drawthenet.io and start creating diagrams.
 
 # More Info
-You can find a detaile help guide, including a full list of availalble properties integrated into the app by using the ? button in the top left corner of it, [direcly in github](./src/help.html), or [on the website](https://drawthenet.io/help.html)
 
+You can find a detailed help guide, including a full list of availalble properties integrated into the app by using the ? button in the top left corner of it, or [here](https://drawthenet.io/help.html)
 
 # Vendors Icons
 The follwing vendors are available by default:
@@ -30,6 +35,7 @@ The follwing vendors are available by default:
  - Microsoft Dynamics 365 (as D365), from https://learn.microsoft.com/fr-fr/dynamics365/get-started/icons
  - Microsoft Power Platform (as PowerPlatform), from https://learn.microsoft.com/fr-fr/power-platform/guidance/icons
  - Cisco (as Cisco), from https://www.cisco.com/c/en/us/about/brand-center/network-topology-icons.html
+ - Fortinet (as Fortinet), from https://www.fortinet.com/resources/icon-library
  
 You also have access to all the icons from [Iconify](https://icon-sets.iconify.design/)
 
@@ -40,15 +46,14 @@ Tha app was designed to be used in a browser and does not require any installati
 # Build Instruction
 ## Docker Build (Prefered)
 
-You can easily build the tool to host locally with the provided [docker file](./tools/Dockerfile)
+You can easily build the tool to host locally with the provided [docker file](./tools/Dockerfile):
 
 ```
 cd ./tools/
 docker build -t local/drawthenet.io .
 ```
-It will build the docker image from scratch, including downloading the icons from alland you can run it with the following command:
 
-
+It will build the docker image from scratch, including downloading the icons from all vendor specified above. It will run the app with nginx, listening on port 80.
 
 ## Local Build
 You need [libvisio2svg](https://github.com/kakwa/libvisio2svg) installed and available in you path for the full build to work.
@@ -62,7 +67,11 @@ pwsh ./build.ps1
 
 Additional arguments can be passed to the script to only run parts of the build process, refer to the script for more information.
 
-## Built with great open source software
+The result will be created in the ./dist/ folder.
+
+As it is a fully static website, you can host it on any webserver.
+
+# Built with great open source software
 
 - **JQuery** https://jquery.com/
 - **Bootstrap** https://getbootstrap.com/
@@ -74,23 +83,24 @@ Additional arguments can be passed to the script to only run parts of the build 
 - **JQuery Toast** https://kamranahmed.info/toast
 - **Showdown:** https://github.com/showdownjs/showdown
 - **Highlight.js:** https://highlightjs.org/
+- **libvisio2svg** https://github.com/kakwa/libvisio2svg
 
 
-## Contributing
+# Contributing
 
 Please do.
 
-## Versioning
+# Versioning
 
 1.0 Initial release.
 2.0 Updated frameworks & added new saves and icons features.
 
-## Authors
+# Authors
 
 * **Bradley Thornton** - 2016-2022 *Initial work* - [cidrblock](https://github.com/cidrblock)
 * **Rémy Grandin** - 2023-Today *Rework & modernization* - [remygrandin](https://github.com/remygrandin)
 
-## License
+# License
 
 This project is licensed under the MIT License. (see LISENCE.TXT)
 

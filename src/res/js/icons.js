@@ -21,8 +21,8 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
         .attr("ry", function (d) { return d[1].ry })
         .attr("width", function (d) { return d[1].width })
         .attr("height", function (d) { return d[1].height })
-        .attr("fill", function (d) { return d[1].fill || "orange" })
-        .style("stroke", function (d) { return d[1].stroke || "orange" })
+        .attr("fill", function (d) { return d[1].fill || "white" })
+        .style("stroke", function (d) { return d[1].stroke || "black" })
         .style("stroke-dasharray", function (d) { return d[1].strokeDashArray || [0, 0] })
 
 
@@ -43,7 +43,7 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
         .style("font-size", function (d) { return d[1].fontSize + "px"; })
         .attr("id", function (d) { return d[0] + '-text' })
         .attr("transform", function (d) { return "translate(" + d[1].textPosition.x + "," + d[1].textPosition.y + ")rotate(" + d[1].textPosition.rotate + ")" })
-        .attr('fill', function (d) { return d[1].color || "orange" })
+        .attr('fill', function (d) { return d[1].color || "black" })
         .attr("text-anchor", function (d) { return d[1].textPosition.textAnchor })
         .attr("dominant-baseline", "central")
 
