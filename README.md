@@ -19,7 +19,7 @@ Also, being able to store a diagram as text makes it easy to version control and
 Go to https://drawthenet.io and start creating diagrams.
 
 # More Info
-You can find a detaile help guide, including a full list of availalble properties integrated into the app by using the ? button in the top left corner of it, or at (./src/help.html)
+You can find a detaile help guide, including a full list of availalble properties integrated into the app by using the ? button in the top left corner of it, [direcly in github](./src/help.html), or [on the website](https://drawthenet.io/help.html)
 
 
 # Vendors Icons
@@ -35,7 +35,7 @@ You also have access to all the icons from [Iconify](https://icon-sets.iconify.d
 
 # Privacy notice
 
-Tha app was designed to be used in a browser and does not require any installation. No diagram a store anywhere but locally to your PC
+Tha app was designed to be used in a browser and does not require any installation. No diagram are stored anywhere but locally to your PC.
 
 # Build Instruction
 ## Docker Build (Prefered)
@@ -48,12 +48,19 @@ docker build -t local/drawthenet.io .
 ```
 It will build the docker image from scratch, including downloading the icons from alland you can run it with the following command:
 
-```
+
 
 ## Local Build
+You need [libvisio2svg](https://github.com/kakwa/libvisio2svg) installed and available in you path for the full build to work.
+If not, some icons set (Cisco, Fortinet) will not be generated and avaialable.
+You can find the build script in the [tools folder](./tools/build.ps1)
 
+```
+cd ./tools/
+pwsh ./build.ps1
+```
 
-
+Additional arguments can be passed to the script to only run parts of the build process, refer to the script for more information.
 
 ## Built with great open source software
 

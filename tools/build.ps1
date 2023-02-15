@@ -13,7 +13,7 @@ $vssConvInstalled = $null -ne (Get-Command "vss2svg-conv" -ErrorAction SilentlyC
 function DownloadIcons {
     Write-Output "====== Downloading & processing icons ======"
     New-Item -Type Directory -Path $tempPath -Force | Out-Null
-    
+    <#
     DownloadAWSIcons
     DownloadAzureIcons
     DownloadM365Icons
@@ -21,6 +21,8 @@ function DownloadIcons {
     DownloadPowerPlatformIcons
     DownloadGCPIcons
     DownloadCiscoIcons
+    #>
+    DownloadFortinetIcons
 }
 
 function DownloadAWSIcons {
