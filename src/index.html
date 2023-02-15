@@ -440,6 +440,7 @@
                     }
 
                     let doc = jsyaml.load(text);
+                    $("#svg svg").removeAttr("width height");
                     draw(doc);
                 } catch (e) {
                     console.log(e);
