@@ -34,6 +34,7 @@ The follwing vendors are available by default:
  - Microsoft 365 (as M365), from https://learn.microsoft.com/fr-fr/microsoft-365/solutions/architecture-icons-templates
  - Microsoft Dynamics 365 (as D365), from https://learn.microsoft.com/fr-fr/dynamics365/get-started/icons
  - Microsoft Power Platform (as PowerPlatform), from https://learn.microsoft.com/fr-fr/power-platform/guidance/icons
+ - Google Cloud Platform (as GCP), from https://cloud.google.com/icons?hl=fr
  - Cisco (as Cisco), from https://www.cisco.com/c/en/us/about/brand-center/network-topology-icons.html
  - Fortinet (as Fortinet), from https://www.fortinet.com/resources/icon-library
  

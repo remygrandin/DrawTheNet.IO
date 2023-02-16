@@ -21,7 +21,7 @@ function draw(doc) {
         date: new Date().toLocaleDateString(),
         version: 1,
         color: "black",
-        stroke: "red",
+        stroke: "black",
         fill: null,
         heightPercentage: 6, // percent of total height
         logoUrl: "./res/logo.svg",
