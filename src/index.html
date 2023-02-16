@@ -80,14 +80,14 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/atelier-cave-light.min.css"
         integrity="sha512-mb7hVnqouaHmHLJYLhdY+kUld4843IHJuRbVbhLXD41EJreUz0AeYU9t0XhwDFtnRVRvnLkbT/Xbjl1sajvpFQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"
         integrity="sha512-axd5V66bnXpNVQzm1c7u1M614TVRXXtouyWCE+eMYl8ALK8ePJEs96Xtx7VVrPBc0UraCn63U1+ARFI3ofW+aA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- svg2png -->
-    <script src="https://unpkg.com/svg2png-wasm"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"
+        integrity="sha512-qoCTmFwBtCPvFhA+WAqatSOrghwpDhFHxwAGh+cppWonXbHA09nG1z5zi4/NGnp8dUhXiVrzA6EnKgJA+fyrpw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Renderer -->
     <script type="text/javascript" src="res/js/connections.js"></script>
@@ -98,6 +98,7 @@
     <script type="text/javascript" src="res/js/title.js"></script>
     <script type="text/javascript" src="res/js/notes.js"></script>
     <script type="text/javascript" src="res/js/process.js"></script>
+
 
     <!-- Local Styles -->
     <link rel="stylesheet" href="res/css/notes.css">
@@ -374,7 +375,8 @@
     </div>
 </body>
 
-<script>
+<script type="module">
+    import { Canvg } from 'https://cdn.skypack.dev/canvg';
 
     $(function () {
 
@@ -416,12 +418,12 @@
         });
 
         if (window.location.hash) {
-            let design = atob(window.location.hash.substring(1));
+            let design = LZString.decompressFromEncodedURIComponent(window.location.hash.substring(1));
             editor.setValue(design, -1);
         }
         else {
             if (localStorage.getItem("lastDoc") !== null) {
-                editor.setValue(localStorage.getItem("lastDoc"), -1);
+                editor.setValue(LZString.decompressFromEncodedURIComponent(localStorage.getItem("lastDoc")), -1);
             }
         }
 
@@ -435,12 +437,13 @@
                     let text = editor.session.getValue();
 
                     if ($("#inpAutoSave").is(":checked")) {
-                        localStorage.setItem('lastDoc', text);
-                        history.pushState(null, null, '#' + btoa(text));
+                        let compressed = LZString.compressToEncodedURIComponent(text);
+                        localStorage.setItem('lastDoc', compressed);
+                        history.pushState(null, null, '#' + compressed);
                     }
 
                     let doc = jsyaml.load(text);
-                    $("#svg svg").removeAttr("width height");
+                    $("#svg > svg").removeAttr("width height");
                     draw(doc);
                 } catch (e) {
                     console.log(e);
@@ -788,11 +791,14 @@
             saveAs(blob, title);
         });
 
-        svg2pngWasm.initialize(fetch('https://unpkg.com/svg2png-wasm/svg2png_wasm_bg.wasm'))
-
         $("#btnSavePNG").on("click", async function (event) {
             event.preventDefault();
 
+            let title = `${(new Date()).toISOString()}-drawthenetio.png`
+
+            var offscreen = new OffscreenCanvas(1000, 1000);
+
+            var context = offscreen.getContext('2d');
 
             let svg = $("#svg").html();
 
@@ -801,22 +807,10 @@
 
             svg = svg.replace(`<svg width="${width}" height="${height}"`, `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} ${height}"`);
 
-            //let png = await svg2pngWasm.svg2png(svg);
-            let font = await fetch('https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2').then((res) => res.arrayBuffer());
+            let canvg = await Canvg.fromString(context, svg);
+            await canvg.render()
 
-            let png = await svg2pngWasm.svg2png(svg, {
-                scale: 2,
-                fonts: [new Uint8Array(font)], // require, If you use text in svg
-                defaultFontFamily: {
-                    // optional
-                    sansSerif: 'Roboto',
-                }
-            })
-
-            let blob = new Blob([png], { type: 'image/png' });
-            let title = `${(new Date()).toISOString()}-drawthenetio.png`
-
-            saveAs(blob, title);
+            offscreen.convertToBlob().then(blob => saveAs(blob, title));
         });
     });
 
