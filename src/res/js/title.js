@@ -1,17 +1,16 @@
-var drawTitle = function (svg, drawing, title) {
+var drawTitle = function (svg, document, title) {
     if (title.heightPercentage > 0) {
         // title bar
-        axisPadding = 20
-        title.x1 = drawing.x - axisPadding
-        title.y1 = drawing.height + drawing.y + axisPadding
-        title.x2 = drawing.x + drawing.width + axisPadding
-        title.y2 = title.y1 + title.height + axisPadding
-        title.width = title.x2 - title.x1
+        title.width = document.width;
+        title.x1 = 0;
+        title.y1 = document.height;
+        title.x2 = title.x1 + title.width;
+        title.y2 = title.y1 + title.height;
 
         var titleBox = svg.append("g")
             .attr("transform", "translate(" + title.x1 + "," + title.y1 + ")")
 
-        if (drawing.watermark) {
+        if (document.watermark) {
             let link = svg.append("a")
                 .attr("href", "https://drawthenet.io")
                 .attr("target", "_blank")
@@ -28,7 +27,7 @@ var drawTitle = function (svg, drawing, title) {
         }
 
         if (title.type == "bar") {
-            let fill = drawing.fill;
+            let fill = document.fill;
 
             if (typeof title.fill !== 'undefined' && title.fill != null && title.fill != "none"
                 && title.fill != "transparent" && title.fill != "") {
@@ -41,7 +40,7 @@ var drawTitle = function (svg, drawing, title) {
                 .attr("x2", title.width)
         }
         else if (title.type == "box") {
-            let fill = drawing.fill;
+            let fill = document.fill;
 
             if (typeof title.fill !== 'undefined' && title.fill != null && title.fill != "none"
                 && title.fill != "transparent" && title.fill != "") {
@@ -78,7 +77,7 @@ var drawTitle = function (svg, drawing, title) {
             logo.append("rect")
                 .attr('width', title.height - 2 * padding)
                 .attr('height', title.height - 2 * padding)
-                .attr("fill", drawing.fill)
+                .attr("fill", document.fill)
         }
         logo.append("svg:image")
             .attr('width', title.height - 2 * padding)

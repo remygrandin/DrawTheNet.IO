@@ -2,14 +2,14 @@ function draw(doc) {
     // set the drawing defaults
     var drawingDefaults = {
         fill: "white",
-        aspectRatio: "1:1",
+        aspectRatio: null,
         rows: 10,
         columns: 10,
         groupPadding: .33,
         gridLines: true,
         gridPaddingInner: .4, // the space between icons (%)
         iconTextRatio: .33,
-        margins: { top: 20, right: 20, bottom: 50, left: 20 },
+        margins: { top: 20, right: 20, bottom: 20, left: 20 },
         watermark: true
     }
     // set the title defaults
@@ -42,53 +42,80 @@ function draw(doc) {
 
     // find a good fit for the diagram
     var parentBox = d3.select("#svg").node().getBoundingClientRect()
-    var ratios = diagram.aspectRatio.split(':')
-
-    // set the desired h/w
-    var availbleHeight = parentBox.height - diagram.margins.top - diagram.margins.bottom
-    var availbleWidth = parentBox.width - diagram.margins.left - diagram.margins.right
-
-    if (availbleHeight < availbleWidth) {
-        svgHeight = availbleHeight
-        svgWidth = svgHeight / ratios[1] * ratios[0]
-    } else if (availbleWidth < availbleHeight) {
-        svgWidth = availbleWidth
-        svgHeight = svgWidth / ratios[0] * ratios[1]
-    } else {
-        svgWidth = availbleWidth
-        svgHeight = availbleHeight
-    }
-    // downsize if outside the bounds
-    if (svgHeight > availbleHeight) {
-        svgHeight = availbleHeight
-        svgWidth = svgHeight / ratios[1] * ratios[0]
-    }
-    if (svgWidth > availbleWidth) {
-        svgWidth = availbleWidth
-        svgHeight = svgWidth / ratios[0] * ratios[1]
-    }
-
-    // using the svg dimentions, set the title and digrams
-    title.height = svgHeight * title.heightPercentage / 100
-    diagram.height = svgHeight - title.height
-    diagram.width = diagram.height / ratios[1] * ratios[0]
-    diagram.x = (svgWidth - diagram.width) / 2
-    diagram.y = (svgHeight - title.height - diagram.height)
-
-    // create our bands
-    diagram.xBand = d3.scaleBand()
-        .domain(Array.from(Array(diagram.columns).keys()))
-        .rangeRound([diagram.x, diagram.width + diagram.x])
-        .paddingInner(diagram.gridPaddingInner);
-
-    diagram.yBand = d3.scaleBand()
-        .domain(Array.from(Array(diagram.rows).keys()).reverse())
-        .rangeRound([diagram.y, diagram.height + diagram.y])
-        .paddingInner(diagram.gridPaddingInner);
 
     // remove the old diagram
     d3.select("svg").remove();
 
+    if (diagram.aspectRatio == null) {
+        var availbleHeight = parentBox.height - diagram.margins.top - diagram.margins.bottom;
+        var availbleWidth = parentBox.width - diagram.margins.left - diagram.margins.right;
+
+        var svgWidth = availbleWidth;
+        var svgHeight = availbleHeight;
+
+        title.height = svgHeight * title.heightPercentage / 100;
+        diagram.height = svgHeight - title.height;
+        diagram.width = svgWidth;
+
+        diagram.x = diagram.margins.top;
+        diagram.y = diagram.margins.left;
+
+    }
+    else {
+        var ratios = diagram.aspectRatio.split(':')
+
+        // set the desired h/w
+        var availbleHeight = parentBox.height - diagram.margins.top - diagram.margins.bottom
+        var availbleWidth = parentBox.width - diagram.margins.left - diagram.margins.right
+
+        if (availbleHeight < availbleWidth) {
+            svgHeight = availbleHeight
+            svgWidth = svgHeight / ratios[1] * ratios[0]
+        } else if (availbleWidth < availbleHeight) {
+            svgWidth = availbleWidth
+            svgHeight = svgWidth / ratios[0] * ratios[1]
+        } else {
+            svgWidth = availbleWidth
+            svgHeight = availbleHeight
+        }
+        // downsize if outside the bounds
+        if (svgHeight > availbleHeight) {
+            svgHeight = availbleHeight
+            svgWidth = svgHeight / ratios[1] * ratios[0]
+        }
+        if (svgWidth > availbleWidth) {
+            svgWidth = availbleWidth
+            svgHeight = svgWidth / ratios[0] * ratios[1]
+        }
+
+        // using the svg dimentions, set the title and digrams
+        title.height = svgHeight * title.heightPercentage / 100
+        diagram.height = svgHeight - title.height
+        diagram.width = diagram.height / ratios[1] * ratios[0]
+        /*
+        diagram.x = (svgWidth - diagram.width) / 2
+        diagram.y = (svgHeight - title.height - diagram.height)
+        */
+        diagram.x = 0
+        diagram.y = 0
+
+
+    }
+
+
+    // create our bands
+    diagram.xBand = new Scaler(0, diagram.columns - 1, diagram.x, diagram.width, 1);
+
+    if (diagram.invertY) {
+        diagram.yBand = new Scaler(0, diagram.rows - 1, diagram.height, diagram.y, 1);
+    }
+    else {
+        diagram.yBand = new Scaler(0, diagram.rows - 1, diagram.y, diagram.height, 1);
+    }
+
+
+    console.log("Init xBand: " + diagram.xBand.toString());
+    console.log("Init yBand: " + diagram.yBand.toString());
     // and add the svg
     var svg = d3.select("#svg").append("svg")
         .attr("width", parentBox.width)
@@ -98,7 +125,7 @@ function draw(doc) {
             svg.attr("transform", e.transform)
         }))
         .append("g")
-        .attr("transform", "translate(" + (parentBox.width - svgWidth) / 2 + "," + (parentBox.height - svgHeight) / 2 + ")");
+        .attr("transform", "translate(" + diagram.x + "," + diagram.y + ")");
 
     // set x1,y1,x2,y2,width,height,centerX and centerY for all the stuff
     notes = processEntities(svg, diagram, notes)

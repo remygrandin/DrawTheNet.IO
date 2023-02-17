@@ -5,7 +5,7 @@ var drawIcons = function (svg, diagram, icons, iconTextRatio) {
 
     var cells = deviceCellsAll.append("g")
         .attr("id", function (d) { return d[0] })
-        .attr("transform", function (d) { return "translate(" + diagram.xBand(d[1].x) + "," + diagram.yBand(d[1].y) + ")" })
+        .attr("transform", function (d) { return "translate(" + diagram.xBand.Scale(d[1].x) + "," + diagram.yBand.Scale(d[1].y) + ")" })
         .on("mouseenter", handleMouseOver)
         .on("mouseleave", handleMouseOut)
         .each(function (d) {

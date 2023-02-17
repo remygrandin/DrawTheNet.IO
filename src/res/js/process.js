@@ -13,32 +13,36 @@ var processEntities = function (svg, diagram, icons) {
     icons[key].w = icons[key].w || 1;
     icons[key].h = icons[key].h || 1;
     if (!("x" in icons[key])) {
-      icons[key].x = parseInt(previous.x);
+      icons[key].x = parseFloat(previous.x);
     } else if (icons[key].x.toString().startsWith('+')) {
-      icons[key].x = parseInt(previous.x) + parseInt(icons[key].x.toString().split('+')[1]);
+      icons[key].x = parseFloat(previous.x) + parseFloat(icons[key].x.toString().split('+')[1]);
     } else if (icons[key].x.toString().startsWith('-')) {
-      icons[key].x = parseInt(previous.x) - parseInt(icons[key].x.toString().split('-')[1]);
+      icons[key].x = parseFloat(previous.x) - parseFloat(icons[key].x.toString().split('-')[1]);
     }
-    icons[key].x = parseInt(icons[key].x)
-    icons[key].x1 = diagram.xBand(parseInt(icons[key].x))
+    icons[key].x = parseFloat(icons[key].x)
+    icons[key].x1 = diagram.xBand.Scale(parseFloat(icons[key].x))
+
     if (!("y" in icons[key])) {
-      icons[key].y = parseInt(previous.y);
+      icons[key].y = parseFloat(previous.y);
     } else if (icons[key].y.toString().startsWith('+')) {
-      icons[key].y = parseInt(previous.y) + parseInt(icons[key].y.toString().split('+')[1]);
+      icons[key].y = parseFloat(previous.y) + parseFloat(icons[key].y.toString().split('+')[1]);
     } else if (icons[key].y.toString().startsWith('-')) {
-      icons[key].y = parseInt(previous.y) - parseInt(icons[key].y.toString().split('-')[1]);
+      icons[key].y = parseFloat(previous.y) - parseFloat(icons[key].y.toString().split('-')[1]);
     }
-    icons[key].y = parseInt(icons[key].y)
-    icons[key].y1 = diagram.yBand(parseInt(icons[key].y));
-    icons[key].width = diagram.xBand.bandwidth() + ((icons[key].w - 1) * diagram.xBand.step());
-    icons[key].height = diagram.yBand.bandwidth() + ((icons[key].h - 1) * diagram.yBand.step());
+    icons[key].y = parseFloat(icons[key].y)
+    icons[key].y1 = diagram.yBand.Scale(parseFloat(icons[key].y));
+
+
+    icons[key].width = diagram.xBand.UnitStep * (icons[key].w) - diagram.xBand.UnitStep * diagram.gridPaddingInner;
+    icons[key].height = diagram.yBand.UnitStep * (icons[key].h) - diagram.yBand.UnitStep * diagram.gridPaddingInner;
+    
     icons[key].x2 = icons[key].x1 + icons[key].width;
     icons[key].y2 = icons[key].y1 + icons[key].height;
     icons[key].centerX = icons[key].x1 + icons[key].width/2;
     icons[key].centerY = icons[key].y1 + icons[key].height/2;
-    icons[key].rx = diagram.xBand.bandwidth() * .05;
-    icons[key].ry = diagram.yBand.bandwidth() * .05;
-    icons[key].padding = Math.min(diagram.yBand.bandwidth() * .05, diagram.xBand.bandwidth() * .05);
+    icons[key].rx = diagram.xBand.UnitStep * .05;
+    icons[key].ry = diagram.yBand.UnitStep * .05;
+    icons[key].padding = Math.min(diagram.yBand.UnitStep * .05, diagram.xBand.UnitStep * .05);
     icons[key].iconPaddingX = parseFloat("5%")/100;
     icons[key].iconPaddingY = parseFloat("5%")/100;
     previous = icons[key];
@@ -123,10 +127,10 @@ var processGroups = function(groups, diagram, icons) {
       }
       groups[key].members = groups[key].members.concat(additionalMembers)
     }
-    var xpad = (diagram.xBand.step() - diagram.xBand.bandwidth()) * diagram.groupPadding * groups[key].maxDepth
-    var ypad = (diagram.yBand.step() - diagram.yBand.bandwidth()) * diagram.groupPadding * groups[key].maxDepth
-    groups[key].x1 = diagram.xBand(d3.min(groups[key].members, function(d) {return icons[d].x })) - xpad
-    groups[key].y1 = diagram.yBand(d3.max(groups[key].members, function(d) { return icons[d].y })) - ypad
+    var xpad = diagram.xBand.UnitStep * diagram.groupPadding * diagram.gridPaddingInner * groups[key].maxDepth;
+    var ypad = diagram.yBand.UnitStep * diagram.groupPadding * diagram.gridPaddingInner * groups[key].maxDepth;
+    groups[key].x1 = diagram.xBand.Scale(d3.min(groups[key].members, function(d) {return icons[d].x })) - xpad
+    groups[key].y1 = diagram.yBand.Scale(d3.max(groups[key].members, function(d) { return icons[d].y })) - ypad
     groups[key].x2 = d3.max(groups[key].members, function(d) { return icons[d].x2 + xpad })
     groups[key].y2 = d3.max(groups[key].members, function(d) { return icons[d].y2 + ypad })
     groups[key].width = groups[key].x2 - groups[key].x1

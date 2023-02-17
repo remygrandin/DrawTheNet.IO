@@ -80,7 +80,7 @@ var drawNotes = function (svg, diagram, notes) {
         .append("xhtml:div")
         .style("width", function (d) { return d[1].width + "px" })
         .style("height", function (d) { return d[1].height + "px" })
-        .style('font-size', Math.min(diagram.yBand.bandwidth() * .125, diagram.xBand.bandwidth() * .125) + 'px')
+        .style('font-size', Math.min(diagram.yBand.UnitSize * .125, diagram.xBand.UnitSize * .125) + 'px')
         .style('display', 'flex')
         .style('padding', function (d) { return d[1].padding + "px" })
         .attr("class", "notes")

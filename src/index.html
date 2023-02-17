@@ -90,6 +90,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Renderer -->
+    <script type="text/javascript" src="res/js/scaler.js"></script>
     <script type="text/javascript" src="res/js/connections.js"></script>
     <script type="text/javascript" src="res/js/draw.js"></script>
     <script type="text/javascript" src="res/js/gridlines.js"></script>
@@ -435,6 +436,10 @@
             debounceRanderTimer = setTimeout(() => {
                 try {
                     let text = editor.session.getValue();
+
+                    if(text === "" || text === null) {
+                        return;
+                    }
 
                     if ($("#inpAutoSave").is(":checked")) {
                         let compressed = LZString.compressToEncodedURIComponent(text);
