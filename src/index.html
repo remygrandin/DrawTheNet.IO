@@ -90,6 +90,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Renderer -->
+    <!--
     <script type="text/javascript" src="res/js/scaler.js"></script>
     <script type="text/javascript" src="res/js/connections.js"></script>
     <script type="text/javascript" src="res/js/draw.js"></script>
@@ -99,7 +100,7 @@
     <script type="text/javascript" src="res/js/title.js"></script>
     <script type="text/javascript" src="res/js/notes.js"></script>
     <script type="text/javascript" src="res/js/process.js"></script>
-
+    -->
 
     <!-- Local Styles -->
     <link rel="stylesheet" href="res/css/notes.css">
@@ -378,6 +379,7 @@
 
 <script type="module">
     import { Canvg } from 'https://cdn.skypack.dev/canvg';
+    import { Render as Renderer } from './res/js/neo/render.js';
 
     $(function () {
 
@@ -448,8 +450,9 @@
                     }
 
                     let doc = jsyaml.load(text);
-                    $("#svg > svg").removeAttr("width height");
-                    draw(doc);
+                    //$("#svg > svg").removeAttr("width height");
+                    //draw(doc);
+                    Renderer("#svg", doc)
                 } catch (e) {
                     console.log(e);
                     $.toast({
@@ -463,6 +466,7 @@
                         position: 'top-right',
                         loader: true
                     });
+                    throw e;
                     return;
                 }
             }, maxDelay);

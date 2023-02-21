@@ -2,10 +2,10 @@ diagram:
   fill: "white"
   rows: 6
   columns: 8
-  aspectRatio: "8:6"
   gridLines: false
   groupPadding: .4
   gridPaddingInner: .3
+  invertY: false
 title:
   color: black
   fill: white
@@ -21,11 +21,16 @@ azure: &azure
   iconStroke: "none"
   stroke: "#00a1f1"
   icon: "virtual-machine"
+  margin:
+    top: 0.15
+    right: 0.10
+    bottom: 0.15
+    left: 0.10
 icons:
   topLeft: {<<: *azure, textLocation: "topLeft", x: 1, y: 4 }
-  topMiddle: {<<: *azure, textLocation: "topMiddle", x: "+1" }
+  topCenter: {<<: *azure, textLocation: "topCenter", x: "+1" }
   topRight: {<<: *azure, textLocation: "topRight", x: "+1" }
-  NSG1: {<<: *azure, color: "#00a1f1", textLocation: "topMiddle", x: "+1" }
+  NSG1: {<<: *azure, color: "#00a1f1", textLocation: "topCenter", x: "+1" }
   leftTop: {<<: *azure, textLocation: "leftTop", x: 1, y: 3 }
   leftMiddle: {<<: *azure, textLocation: "leftMiddle", x: "+1" }
   leftBottom: {<<: *azure, textLocation: "leftBottom", x: "+1" }
@@ -35,9 +40,9 @@ icons:
   rightBottom: {<<: *azure, textLocation: "rightBottom", x: "+1" }
   NSG3: {<<: *azure, color: "#00a1f1", textLocation: "rightMiddle", x: "+1" }
   bottomLeft: {<<: *azure, textLocation: "bottomLeft", x: 1, y: 1 }
-  bottomMiddle: {<<: *azure, textLocation: "bottomMiddle", x: "+1" }
+  bottomCenter: {<<: *azure, textLocation: "bottomCenter", x: "+1" }
   bottomRight: {<<: *azure, textLocation: "bottomRight", x: "+1" }
-  NSG4: {<<: *azure, color: "#00a1f1", textLocation: "bottomMiddle", x: "+1" }
+  NSG4: {<<: *azure, color: "#00a1f1", textLocation: "bottomCenter", x: "+1" }
   Center:
     iconStroke: "white"
     fill: "none"
@@ -46,16 +51,25 @@ icons:
     icon: "dashboard"
     color: "#333333"
     textLocation: "center"
-    x: 5
-    y: 3
+    x: 6
+    y: 2.5
     h: 2
     w: 2
 group: &group
-  - { stroke: "#7cbb00", strokeDashArray: [5,1], fill: "white", color: black }
+  stroke: "#7cbb00"
+  strokeDashArray: [5,1]
+  fill: "white"
+  textSizeRatio: 0.2
+  color: black
+  padding:
+    top: 0.1
+    right: 0.1
+    bottom: 0.1
+    left: 0.1
 groups:
- outer: { <<: *group, stroke: none, fill: "#00a1f1", textLocation: "bottomMiddle", members: [inner, Center] }
- inner: { <<: *group, stroke: none, fill: "white", textLocation: "rightMiddle", members: [T1, T4, NSG1] }
- T1: { <<: *group, textLocation: "bottomMiddle", name: Deployment A - Tier 1, members: [topLeft, topMiddle, topRight] }
- T2: { <<: *group, textLocation: "bottomMiddle", name: Deployment A - Tier 2, members: [leftTop, leftMiddle, leftBottom] }
- T3: { <<: *group, textLocation: "bottomMiddle", name: Deployment A - Tier 3, members: [rightTop, rightMiddle, rightBottom] }
- T4: { <<: *group, textLocation: "bottomMiddle", name: Deployment A - Tier 4, members: [bottomLeft, bottomMiddle, bottomRight] }
+ outer: { <<: *group, stroke: none, text: "", fill: "#00a1f1", textLocation: "bottomCenter", members: [inner, Center] }
+ inner: { <<: *group, stroke: none, text: "", fill: "white", textLocation: "rightCenter", members: [T1, T4, NSG1] }
+ T1: { <<: *group, textLocation: "bottomCenter", text: Deployment A - Tier 1, members: [topLeft, topCenter, topRight] }
+ T2: { <<: *group, textLocation: "bottomCenter", text: Deployment A - Tier 2, members: [leftTop, leftCenter, leftBottom] }
+ T3: { <<: *group, textLocation: "bottomCenter", text: Deployment A - Tier 3, members: [rightTop, rightCenter, rightBottom] }
+ T4: { <<: *group, textLocation: "bottomCenter", text: Deployment A - Tier 4, members: [bottomLeft, bottomCenter, bottomRight] }

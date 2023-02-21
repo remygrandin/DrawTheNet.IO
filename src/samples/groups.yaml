@@ -31,15 +31,17 @@ icons:
 group: &group
   - { stroke: "black", fill: "none", color: black }
 groups:
- - { <<: *group, name: topLeft, members: [router1, router2, router3, router4] }
- - { <<: *group, textLocation: "topMiddle", name: topMiddle, members: [router1, router2, router3, router4] }
- - { <<: *group, textLocation: "topRight", name: topRight, members: [router1, router2, router3, router4] }
- - { <<: *group, textLocation: "bottomLeft", name: bottomLeft, members: [router1, router2, router3, router4] }
- - { <<: *group, textLocation: "bottomMiddle", name: bottomMiddle, members: [router1, router2, router3, router4] }
- - { <<: *group, textLocation: "bottomRight", name: bottomRight, members: [router1, router2, router3, router4] }
- - { <<: *group, textLocation: "leftTop", name: leftTop, members: [router5, router6, router7, router8] }
- - { <<: *group, textLocation: "leftMiddle", name: leftMiddle, members: [router5, router6, router7, router8] }
- - { <<: *group, textLocation: "leftBottom", name: leftBottom, members: [router5, router6, router7, router8] }
- - { <<: *group, textLocation: "rightTop", name: rightTop, members: [router5, router6, router7, router8] }
- - { <<: *group, textLocation: "rightMiddle", name: rightMiddle, members: [router5, router6, router7, router8] }
- - { <<: *group, textLocation: "rightBottom", name: rightBottom, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "topLeft", text: topLeft, members: [router1, router2, router3, router4] }
+ - { <<: *group, textLocation: "topCenter", text: topCenter, members: [router1, router2, router3, router4] }
+ - { <<: *group, textLocation: "topRight", text: topRight, members: [router1, router2, router3, router4] }
+ - { <<: *group, textLocation: "bottomLeft", text: bottomLeft, members: [router1, router2, router3, router4] }
+ - { <<: *group, textLocation: "bottomCenter", text: bottomCenter, members: [router1, router2, router3, router4] }
+ - { <<: *group, textLocation: "bottomRight", text: bottomRight, members: [router1, router2, router3, router4] }
+ - { <<: *group, textLocation: "leftTop", text: leftTop, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "leftMiddle", text: leftMiddle, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "leftBottom", text: leftBottom, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "rightTop", text: rightTop, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "rightMiddle", text: rightMiddle, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "rightBottom", text: rightBottom, members: [router5, router6, router7, router8] }
+ - { <<: *group, textLocation: "bottomCenter", text: bottomCenter, members: [router4, router5] }
+ - { <<: *group, textLocation: "bottomCenter", text: bottomCenter, members: ["12"] }
