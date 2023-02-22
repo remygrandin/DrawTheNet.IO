@@ -63,6 +63,7 @@ export function Render(containerSelector, doc) {
     // Order : grid, groups, connections, notes, icons
     bringForward(diagramContainer, '.grids');
     bringForward(diagramContainer, '.groups');
+    bringForward(diagramContainer, '.connections');
     bringForward(diagramContainer, '.icons');
 
 

@@ -75,8 +75,19 @@ const groupDefaults = {
     textSizeRatio: 0.2,
     fill: "white",
     stroke: "black",
-    color: "black"
+    color: "black",
+    textLocation: "topCenter",
 }
+
+const connectionDefaults = {
+    textSizeRatio: 0.2,
+    curveType: "linear",
+    color: "black",
+    stroke: "black",
+    strokeDashArray: "0,0",
+    strokeWidth: 1
+}
+
 
 export function ApplyDefaults(doc) {
     // Merge the default into the diagram section properties
@@ -101,6 +112,14 @@ export function ApplyDefaults(doc) {
     }
     Object.keys(doc.groups).forEach(function (key, index) {
         doc.groups[key] = Object.assign(clone(groupDefaults), doc.groups[key]);
+    });
+
+    
+    if (Array.isArray(doc.connections)) {
+        doc.connections = Object.assign({}, doc.connections);
+    }
+    Object.keys(doc.connections).forEach(function (key, index) {
+        doc.connections[key] = Object.assign(clone(groupDefaults), doc.connections[key]);
     });
 
 }

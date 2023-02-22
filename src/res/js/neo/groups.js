@@ -2,7 +2,7 @@ import { ApplyTextLocation } from './common.js'
 
 export function RenderGroups(container, doc, dataBag) {
     let groupsContainer = container.append("g")
-    .attr("class", "groups");
+        .attr("class", "groups");
 
     dataBag.groups = {};
 
@@ -10,10 +10,10 @@ export function RenderGroups(container, doc, dataBag) {
         let groupContainer = groupsContainer.append("g")
             .attr("class", "group")
 
-        // Determine recursive members & max depth
-        let groupFlat = getGroupMembersRecursive(doc, key, []);
+            let computed = {};
 
-        let computed = {};
+        // Determine recursive members & max depth
+        computed.groupFlat = getGroupMembersRecursive(doc, key, []);
 
         // get min X1/y1 and max X2/y2
         computed.x1 = Number.MAX_SAFE_INTEGER;
@@ -21,7 +21,7 @@ export function RenderGroups(container, doc, dataBag) {
         computed.x2 = Number.MIN_SAFE_INTEGER;
         computed.y2 = Number.MIN_SAFE_INTEGER;
 
-        groupFlat.members.forEach(function (member, index) {
+        computed.groupFlat.members.forEach(function (member, index) {
             if (member in dataBag.icons) {
                 let icon = dataBag.icons[member];
                 computed.x1 = Math.min(computed.x1, icon.xScaled + icon.x1Marged);
@@ -38,15 +38,13 @@ export function RenderGroups(container, doc, dataBag) {
             left: doc.groups[key].padding.left * dataBag.Scaler.X.UnitStepAbs
         }
 
-        computed.x1 -= computed.scaledPadding.left * groupFlat.maxDepth;
-        computed.y1 -= computed.scaledPadding.top * groupFlat.maxDepth;
-        computed.x2 += computed.scaledPadding.right * groupFlat.maxDepth;
-        computed.y2 += computed.scaledPadding.bottom * groupFlat.maxDepth;
+        computed.x1 -= computed.scaledPadding.left * computed.groupFlat.maxDepth;
+        computed.y1 -= computed.scaledPadding.top * computed.groupFlat.maxDepth;
+        computed.x2 += computed.scaledPadding.right * computed.groupFlat.maxDepth;
+        computed.y2 += computed.scaledPadding.bottom * computed.groupFlat.maxDepth;
 
         computed.wScaled = computed.x2 - computed.x1;
         computed.hScaled = computed.y2 - computed.y1;
-
-        console.log("Group " + key + " computed: " + JSON.stringify(computed));
 
         groupContainer.attr("transform", "translate(" + computed.x1 + ", " + computed.y1 + ")");
 
@@ -84,6 +82,8 @@ export function RenderGroups(container, doc, dataBag) {
             0 + computed.scaledPadding.top * (1 / 4),
             computed.wScaled - computed.scaledPadding.right * (1 / 4),
             computed.hScaled - computed.scaledPadding.bottom * (1 / 4));
+
+        dataBag.groups[key] = computed;
     });
 }
 
