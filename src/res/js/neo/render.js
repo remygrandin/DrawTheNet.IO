@@ -1,10 +1,12 @@
 import { ApplyDefaults } from './defaults.js'
+import { Scaler } from './scaler.js'
 import { RenderTitle } from './title.js'
 import { RenderGridLines } from './gridlines.js'
-import { Scaler } from './scaler.js'
 import { RenderIcons } from './icons.js'
 import { RenderConnections } from './connections.js'
 import { RenderGroups } from './groups.js'
+import { RenderNotes } from './notes.js'
+
 
 export function Render(containerSelector, doc) {
     ApplyDefaults(doc);
@@ -57,6 +59,7 @@ export function Render(containerSelector, doc) {
 
     RenderGridLines(diagramContainer, doc, dataBag);
     RenderIcons(diagramContainer, doc, dataBag);
+    RenderNotes(diagramContainer, doc, dataBag);
     RenderGroups(diagramContainer, doc, dataBag);
     RenderConnections(diagramContainer, doc, dataBag);
 
@@ -64,11 +67,13 @@ export function Render(containerSelector, doc) {
     bringForward(diagramContainer, '.grids');
     bringForward(diagramContainer, '.groups');
     bringForward(diagramContainer, '.connections');
+    bringForward(diagramContainer, '.notes');
     bringForward(diagramContainer, '.icons');
 
 
     bringForward(diagramContainer, '.icon-label');
     bringForward(diagramContainer, '.group-label');
+    bringForward(diagramContainer, '.connection-label');
 
 
     /*

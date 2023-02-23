@@ -6,7 +6,7 @@ export function RenderIcons(container, doc, dataBag) {
 
     dataBag.icons = {};
 
-    var previous = {};
+    let previous = {};
     Object.keys(doc.icons).forEach(function (key, index) {
         let computed = {};
 
@@ -65,7 +65,6 @@ export function RenderIcons(container, doc, dataBag) {
         computed.x2Padded = computed.x2Marged - computed.scaledPadding.right;
         computed.y2Padded = computed.y2Marged - computed.scaledPadding.bottom;
 
-
         computed.wMarged = computed.wScaled - computed.scaledMargin.left - computed.scaledMargin.right;
         computed.hMarged = computed.hScaled - computed.scaledMargin.top - computed.scaledMargin.bottom;
 
@@ -90,7 +89,7 @@ export function RenderIcons(container, doc, dataBag) {
 
         // Text
 
-        let fontSize = doc.icons[key].textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs) / 2
+        let fontSize = doc.icons[key].textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs)
 
         let iconText = iconContainer.append("text")
             .attr("class", "icon-label")

@@ -1,7 +1,7 @@
 {
     "Coffee colors": "coffee.yaml",
     "Curves types": "curves.yaml",
-    "Group Connection": "group_connection.yaml",
+    "Group Connections": "group_connections.yaml",
     "Groups": "groups.yaml",
     "Labels": "labels.yaml",
     "Mouseover": "mouseover.yaml",

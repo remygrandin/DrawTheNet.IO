@@ -10,7 +10,7 @@ export function RenderGroups(container, doc, dataBag) {
         let groupContainer = groupsContainer.append("g")
             .attr("class", "group")
 
-            let computed = {};
+        let computed = {};
 
         // Determine recursive members & max depth
         computed.groupFlat = getGroupMembersRecursive(doc, key, []);
@@ -28,6 +28,13 @@ export function RenderGroups(container, doc, dataBag) {
                 computed.y1 = Math.min(computed.y1, icon.yScaled + icon.y1Marged);
                 computed.x2 = Math.max(computed.x2, icon.xScaled + icon.x2Marged);
                 computed.y2 = Math.max(computed.y2, icon.yScaled + icon.y2Marged);
+            }
+            else if (member in dataBag.notes) {
+                let note = dataBag.notes[member];
+                computed.x1 = Math.min(computed.x1, note.xScaled + note.x1Marged);
+                computed.y1 = Math.min(computed.y1, note.yScaled + note.y1Marged);
+                computed.x2 = Math.max(computed.x2, note.xScaled + note.x2Marged);
+                computed.y2 = Math.max(computed.y2, note.yScaled + note.y2Marged);
             }
         });
 
@@ -102,7 +109,7 @@ function getGroupMembersRecursive(doc, groupName, parentArray) {
             let subGroup = getGroupMembersRecursive(doc, member, parentArray.concat([groupName]));
             retObj.members = retObj.members.concat(subGroup.members);
             retObj.maxDepth = Math.max(retObj.maxDepth, subGroup.maxDepth + 1);
-        } else if (member in doc.icons) {
+        } else if (member in doc.icons || member in doc.notes) {
             retObj.members.push(member);
         }
     });

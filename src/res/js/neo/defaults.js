@@ -57,7 +57,7 @@ const iconDefaults = {
         left: 0.05
     },
     textLocation: "bottomCenter",
-    textSizeRatio: 0.2,
+    textSizeRatio: 0.1,
     fill: "white",
     stroke: "black",
     color: "black",
@@ -80,14 +80,35 @@ const groupDefaults = {
 }
 
 const connectionDefaults = {
-    textSizeRatio: 0.2,
-    curveType: "linear",
+    textSizeRatio: 0.1,
     color: "black",
     stroke: "black",
     strokeDashArray: "0,0",
-    strokeWidth: 1
+    strokeWidth: 1,
+    curve: "Linear",
+    labelOffsetRatio: 0.6
 }
 
+const noteDefaults = {
+    margin: {
+        top: 0.10,
+        right: 0.05,
+        bottom: 0.10,
+        left: 0.05
+    },
+    padding: {
+        top: 0.10,
+        right: 0.05,
+        bottom: 0.10,
+        left: 0.05
+    },
+    textSizeRatio: 0.2,
+    fill: "white",
+    stroke: "black",
+    color: "black",
+    w: 1,
+    h: 1
+}
 
 export function ApplyDefaults(doc) {
     // Merge the default into the diagram section properties
@@ -114,14 +135,19 @@ export function ApplyDefaults(doc) {
         doc.groups[key] = Object.assign(clone(groupDefaults), doc.groups[key]);
     });
 
-    
     if (Array.isArray(doc.connections)) {
         doc.connections = Object.assign({}, doc.connections);
     }
     Object.keys(doc.connections).forEach(function (key, index) {
-        doc.connections[key] = Object.assign(clone(groupDefaults), doc.connections[key]);
+        doc.connections[key] = Object.assign(clone(connectionDefaults), doc.connections[key]);
     });
 
+    if (Array.isArray(doc.notes)) {
+        doc.notes = Object.assign({}, doc.notes);
+    }
+    Object.keys(doc.notes).forEach(function (key, index) {
+        doc.notes[key] = Object.assign(clone(noteDefaults), doc.notes[key]);
+    });
 }
 
 function clone(obj){
