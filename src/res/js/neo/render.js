@@ -20,7 +20,36 @@ export function Render(containerSelector, doc) {
     if (doc.diagram.aspectRatio == null) {
         dataBag.AvailableHeight = containerBox.height - doc.diagram.margin.top - doc.diagram.margin.bottom;
         dataBag.AvailableWidth = containerBox.width - doc.diagram.margin.left - doc.diagram.margin.right;
+        dataBag.HCenterOffset = 0;
+        dataBag.VCenterOffset = 0;
     }
+    else {
+        let maxAvailalbeHeight = containerBox.height - doc.diagram.margin.top - doc.diagram.margin.bottom;
+        let maxAvailableWidth = containerBox.width - doc.diagram.margin.left - doc.diagram.margin.right;
+
+        let aspectRatio = doc.diagram.aspectRatio.split(':');
+        aspectRatio = aspectRatio[0] / aspectRatio[1];
+
+        let heightByWidth = maxAvailableWidth / aspectRatio;
+        let widthByHeight = maxAvailalbeHeight * aspectRatio;
+
+        if(heightByWidth > maxAvailalbeHeight)
+        {
+            dataBag.AvailableHeight = maxAvailalbeHeight;
+            dataBag.AvailableWidth = widthByHeight;
+            dataBag.HCenterOffset = (maxAvailableWidth - widthByHeight) / 2;
+            dataBag.VCenterOffset = 0;
+        }
+        else
+        {
+            dataBag.AvailableHeight = heightByWidth;
+            dataBag.AvailableWidth = maxAvailableWidth;
+            dataBag.HCenterOffset = 0;
+            dataBag.VCenterOffset = (maxAvailalbeHeight - heightByWidth) / 2;
+        }
+
+    }
+
 
     let mainContainer = d3.select(containerSelector)
         .append("svg")
@@ -28,13 +57,13 @@ export function Render(containerSelector, doc) {
         .attr("height", containerBox.height)
         .style("background-color", doc.diagram.fill)
         .call(d3.zoom().on("zoom", function (e) {
-            paddedContainer.attr("transform", e.transform)
+            margedContainer.attr("transform", e.transform)
         }));
 
-    let paddedContainer = mainContainer.append("g")
-        .attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top})`);
+    let margedContainer = mainContainer.append("g")
+        .attr("transform", `translate(${doc.diagram.margin.left + dataBag.HCenterOffset}, ${doc.diagram.margin.top + dataBag.VCenterOffset})`);
 
-    RenderTitle(paddedContainer, doc, dataBag);
+    RenderTitle(margedContainer, doc, dataBag);
 
     if (dataBag.TitleRendered) {
         dataBag.DiagramHeight = dataBag.AvailableHeight - dataBag.TitleHeight - doc.diagram.padding.top - doc.diagram.padding.bottom;
@@ -54,7 +83,7 @@ export function Render(containerSelector, doc) {
         dataBag.Scaler.Y = new Scaler(0, doc.diagram.rows - 1, 0, dataBag.DiagramHeight, 1);
     }
 
-    let diagramContainer = paddedContainer.append("g")
+    let diagramContainer = margedContainer.append("g")
         .attr("transform", `translate(${doc.diagram.padding.left}, ${doc.diagram.padding.top})`);
 
     RenderGridLines(diagramContainer, doc, dataBag);
@@ -74,21 +103,6 @@ export function Render(containerSelector, doc) {
     bringForward(diagramContainer, '.icon-label');
     bringForward(diagramContainer, '.group-label');
     bringForward(diagramContainer, '.connection-label');
-
-
-    /*
-    diagramContainer.selectAll('.icon-label').each(function (d) {
-        d3.select(this).each(function () {
-            this.parentNode.appendChild(this);
-        });
-    });
-
-    diagramContainer.selectAll('.group-label').each(function (d) {
-        d3.select(this).each(function () {
-            this.parentNode.appendChild(this);
-        });
-    });
-    */
 }
 
 function bringForward(container, selector)
