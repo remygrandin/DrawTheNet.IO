@@ -7,7 +7,6 @@ import { RenderConnections } from './connections.js'
 import { RenderGroups } from './groups.js'
 import { RenderNotes } from './notes.js'
 
-
 export function Render(containerSelector, doc) {
     ApplyDefaults(doc);
 
@@ -53,6 +52,7 @@ export function Render(containerSelector, doc) {
 
     let mainContainer = d3.select(containerSelector)
         .append("svg")
+        .attr("class", "render")
         .attr("width", containerBox.width)
         .attr("height", containerBox.height)
         .style("background-color", doc.diagram.fill)

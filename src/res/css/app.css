@@ -17,7 +17,7 @@ body {
 }
 
 #titleText {
-    font-family: monospace;
+    font-family: 'Roboto Mono', monospace;
     font-size: 28px;
 }
 
@@ -50,4 +50,8 @@ body {
 .icon-full,
 .icon-name {
     cursor: pointer;
+}
+
+.render *:not(code, pre, code *, pre *) {
+    font-family: 'Roboto', sans-serif;
 }

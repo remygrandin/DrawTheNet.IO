@@ -125,6 +125,7 @@ export function RenderNotes(container, doc, dataBag) {
             .attr("transform", `translate(${computed.x1Padded}, ${computed.y1Padded})`)
             
         noteFO.append("xhtml:div")
+            .attr("xmlns", "http://www.w3.org/1999/xhtml")
             .style("width", `${computed.wPadded}px`)
             .style("height", `${computed.hPadded}px`)
             .style('font-size', `${fontSize}px`)

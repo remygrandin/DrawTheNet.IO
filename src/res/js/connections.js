@@ -59,7 +59,7 @@ export function RenderConnections(container, doc, dataBag) {
         if (!computed.endp1.isGroup && !computed.endp2.isGroup) {
             drawConnection(connectionsContainer, doc.connections[key], computed.endp1, computed.endp2, pathCounter++, dataBag);
         }
-        else if (endp1.isGroup && !endp2.isGroup) {
+        else if (computed.endp1.isGroup && !computed.endp2.isGroup) {
             computed.endp1.nodeComputed.groupFlat.members.forEach(function (member, idx) {
                 let virtEndp1 = {
                     node: member,
@@ -70,7 +70,7 @@ export function RenderConnections(container, doc, dataBag) {
                 drawConnection(connectionsContainer, doc.connections[key], virtEndp1, computed.endp2, pathCounter++, dataBag);
             });
         }
-        else if (!endp1.isGroup && endp2.isGroup) {
+        else if (!computed.endp1.isGroup && computed.endp2.isGroup) {
             computed.endp2.nodeComputed.groupFlat.members.forEach(function (member, idx) {
                 let virtEndp2 = {
                     node: member,

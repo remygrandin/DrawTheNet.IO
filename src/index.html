@@ -93,9 +93,12 @@
     <link rel="stylesheet" href="res/css/notes.css">
     <link rel="stylesheet" href="res/css/app.css">
 
-    <style type="text/css" media="screen">
-        
+    <!-- Render Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
 
+    <style type="text/css" media="screen">
         /*metadata*/
 
         .metadata {
@@ -135,8 +138,6 @@
             width: 100%;
             height: 100%;
         }
-
-        
     </style>
 </head>
 
@@ -246,7 +247,7 @@
             <div class="col bg-dark bg-gradient border border-dark p-3">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="h-100" id="svg">
+                        <div class="h-100" id="preview">
                         </div>
                     </div>
                 </div>
@@ -318,6 +319,7 @@
 <script type="module">
     import { Canvg } from 'https://cdn.skypack.dev/canvg';
     import { Render as Renderer } from './res/js/render.js';
+    import { RenderPNG as RenderPNG } from './res/js/pngRenderer.js';
 
     $(function () {
 
@@ -377,7 +379,7 @@
                 try {
                     let text = editor.session.getValue();
 
-                    if(text === "" || text === null) {
+                    if (text === "" || text === null) {
                         return;
                     }
 
@@ -388,9 +390,7 @@
                     }
 
                     let doc = jsyaml.load(text);
-                    //$("#svg > svg").removeAttr("width height");
-                    //draw(doc);
-                    Renderer("#svg", doc)
+                    Renderer("#preview", doc)
                 } catch (e) {
                     console.log(e);
                     $.toast({
@@ -724,10 +724,10 @@
         $("#btnSaveSVG").on("click", function (event) {
             event.preventDefault();
 
-            let svg = $("#svg").html();
+            let svg = $("#preview").html();
 
-            let width = $("#svg > svg").attr("width");
-            let height = $("#svg > svg").attr("height");
+            let width = $(".render").attr("width");
+            let height = $(".render").attr("height");
 
             svg = svg.replace(`<svg width="${width}" height="${height}"`, `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} ${height}"`);
 
@@ -743,21 +743,11 @@
 
             let title = `${(new Date()).toISOString()}-drawthenetio.png`
 
-            var offscreen = new OffscreenCanvas(1000, 1000);
+            let blob = await RenderPNG($(".render")[0]);
 
-            var context = offscreen.getContext('2d');
+            saveAs(blob, title);
 
-            let svg = $("#svg").html();
-
-            let width = $("#svg > svg").attr("width");
-            let height = $("#svg > svg").attr("height");
-
-            svg = svg.replace(`<svg width="${width}" height="${height}"`, `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} ${height}"`);
-
-            let canvg = await Canvg.fromString(context, svg);
-            await canvg.render()
-
-            offscreen.convertToBlob().then(blob => saveAs(blob, title));
+            return;
         });
     });
 
