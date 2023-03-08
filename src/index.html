@@ -89,61 +89,12 @@
         integrity="sha512-qoCTmFwBtCPvFhA+WAqatSOrghwpDhFHxwAGh+cppWonXbHA09nG1z5zi4/NGnp8dUhXiVrzA6EnKgJA+fyrpw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Renderer -->
-    <!--
-    <script type="text/javascript" src="res/js/scaler.js"></script>
-    <script type="text/javascript" src="res/js/connections.js"></script>
-    <script type="text/javascript" src="res/js/draw.js"></script>
-    <script type="text/javascript" src="res/js/gridlines.js"></script>
-    <script type="text/javascript" src="res/js/groups.js"></script>
-    <script type="text/javascript" src="res/js/icons.js"></script>
-    <script type="text/javascript" src="res/js/title.js"></script>
-    <script type="text/javascript" src="res/js/notes.js"></script>
-    <script type="text/javascript" src="res/js/process.js"></script>
-    -->
-
     <!-- Local Styles -->
     <link rel="stylesheet" href="res/css/notes.css">
+    <link rel="stylesheet" href="res/css/app.css">
 
     <style type="text/css" media="screen">
-        html,
-        body {
-            height: 100%;
-        }
-
-        #editor {
-            width: 100%;
-            height: 100%;
-        }
-
-        .iconCardIcon {
-            height: 50px;
-        }
-
-        #iconOffcanvas {
-            height: 60vh;
-        }
-
-        #titleText {
-            font-family: monospace;
-            font-size: 28px;
-        }
-
-        .hljs-ln-n {
-            padding-right: 0.5em;
-        }
-
-
-        .grid line {
-            stroke: #AAAAAA;
-            stroke-opacity: 0.7;
-            stroke-width: 1px;
-            shape-rendering: crispEdges;
-        }
-
-        .grid path {
-            stroke-width: 0;
-        }
+        
 
         /*metadata*/
 
@@ -185,20 +136,7 @@
             height: 100%;
         }
 
-        #contAutoSave *,
-        #contAutoUpdate * {
-            cursor: pointer;
-        }
-
-        .jq-toast-wrap {
-            width: 500px;
-        }
-
-        .icon-family,
-        .icon-full,
-        .icon-name {
-            cursor: pointer;
-        }
+        
     </style>
 </head>
 
@@ -379,7 +317,7 @@
 
 <script type="module">
     import { Canvg } from 'https://cdn.skypack.dev/canvg';
-    import { Render as Renderer } from './res/js/neo/render.js';
+    import { Render as Renderer } from './res/js/render.js';
 
     $(function () {
 

@@ -1,187 +1,173 @@
-var drawTitle = function (svg, document, title) {
-    if (title.heightPercentage > 0) {
-        // title bar
-        title.width = document.width;
-        title.x1 = 0;
-        title.y1 = document.height;
-        title.x2 = title.x1 + title.width;
-        title.y2 = title.y1 + title.height;
-
-        var titleBox = svg.append("g")
-            .attr("transform", "translate(" + title.x1 + "," + title.y1 + ")")
-
-        if (document.watermark) {
-            let link = svg.append("a")
-                .attr("href", "https://drawthenet.io")
-                .attr("target", "_blank")
-            
-                link.append("text")
-                .attr("transform", "translate(" + title.x1 + "," + title.y1 + ")")
-                .attr("x", title.width)
-                .attr("y", title.height * 7 / 8)
-                .attr("text-anchor", "end")
-                .attr("dominant-baseline", "middle")
-                .style("fill", title.color)
-                .style('font-size', title.height * .2 + 'px')
-                .text("Made with DrawTheNet.IO");
-        }
-
-        if (title.type == "bar") {
-            let fill = document.fill;
-
-            if (typeof title.fill !== 'undefined' && title.fill != null && title.fill != "none"
-                && title.fill != "transparent" && title.fill != "") {
-                fill = title.fill
-            }
-
-            titleBox.append("line")
-                .attr("fill", fill)
-                .attr("stroke", title.stroke)
-                .attr("x2", title.width)
-        }
-        else if (title.type == "box") {
-            let fill = document.fill;
-
-            if (typeof title.fill !== 'undefined' && title.fill != null && title.fill != "none"
-                && title.fill != "transparent" && title.fill != "") {
-                fill = title.fill
-            }
-
-            titleBox.append("rect")
-                .attr("fill", fill)
-                .attr("stroke", title.stroke)
-                .attr('width', title.width)
-                .attr('height', title.height)
-        }
-        else if (typeof title.type === 'undefined' || title.type != null || title.type == "none") {
-            return;
-        }
-        else {
-            throw "Invalid title type: " + title.type
-        }
-
-        // image and imagefill
-        var padding = title.height * .025
-        var titleInner = titleBox.append("g")
-            .attr("transform", "translate(" + padding + "," + padding + ")")
-
-        var logo = titleInner.append("g")
-        if (typeof title.logoFill !== 'undefined' && title.logoFill != null && title.logoFill != "none"
-            && title.logoFill != "transparent" && title.logoFill != "") {
-            logo.append("rect")
-                .attr('width', title.height - 2 * padding)
-                .attr('height', title.height - 2 * padding)
-                .attr("fill", title.logoFill)
-        }
-        else {
-            logo.append("rect")
-                .attr('width', title.height - 2 * padding)
-                .attr('height', title.height - 2 * padding)
-                .attr("fill", document.fill)
-        }
-        logo.append("svg:image")
-            .attr('width', title.height - 2 * padding)
-            .attr('height', title.height - 2 * padding)
-            .attr("xlink:href", title.logoUrl)
-
-        // the text
-        titleInner.append("text")
-            .attr("x", title.height)
-            .attr("y", title.height * 2 / 5)
-            .attr("dominant-baseline", "middle")
-            .style("fill", title.color)
-            .style('font-size', title.height * .5 + 'px')
-            .text(title.text)
-
-        // the subtext
-        titleInner.append("text")
-            .attr("x", title.height)
-            .attr("y", title.height * 4 / 5)
-            .attr("dominant-baseline", "middle")
-            .style("fill", title.color)
-            .style('font-size', title.height * .25 + 'px')
-            .text(title.subText)
-
-        // credits and detail
-        // Author
-        if (typeof title.author !== 'undefined' && title.author != "" && title.author != null) {
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5)
-                .attr("y", title.height * 1 / 8)
-                .attr("dominant-baseline", "middle")
-                .attr("text-anchor", "end")  // set anchor y justification
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .style("font-weight", "bold")
-                .text("Author:")
-
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5 + 2 * padding)
-                .attr("y", title.height * 1 / 8)
-                .attr("dominant-baseline", "middle")
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .text(title.author)
-        }
-        // Company
-        if (typeof title.company !== 'undefined' && title.company != "" && title.company != null) {
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5)
-                .attr("y", title.height * 3 / 8)
-                .attr("dominant-baseline", "middle")
-                .attr("text-anchor", "end")  // set anchor y justification
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .style("font-weight", "bold")
-                .text("Company:")
-
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5 + 2 * padding)
-                .attr("y", title.height * 3 / 8)
-                .attr("dominant-baseline", "middle")
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .text(title.company)
-        }
-        // Date
-        if (typeof title.date !== 'undefined' && title.date != "" && title.date != null) {
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5)
-                .attr("y", title.height * 5 / 8)
-                .attr("dominant-baseline", "middle")
-                .attr("text-anchor", "end")  // set anchor y justification
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .style("font-weight", "bold")
-                .text("Date:")
-
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5 + 2 * padding)
-                .attr("y", title.height * 5 / 8)
-                .attr("dominant-baseline", "middle")
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .text(title.date)
-        }
-        // Version
-        if (typeof title.version !== 'undefined' && title.version != "" && title.version != null) {
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5)
-                .attr("y", title.height * 7 / 8)
-                .attr("dominant-baseline", "middle")
-                .attr("text-anchor", "end")  // set anchor y justification
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .style("font-weight", "bold")
-                .text("Version:")
-
-            titleInner.append("text")
-                .attr("x", title.width - title.width / 5 + 2 * padding)
-                .attr("y", title.height * 7 / 8)
-                .attr("dominant-baseline", "middle")
-                .style("fill", title.color)
-                .style('font-size', title.height * .25 + 'px')
-                .text(title.version)
-        }
+export function RenderTitle(container, doc, dataBag) {
+    if (doc.title.heightPercentage <= 0 || doc.title.type == null || doc.title.type == "none") {
+        dataBag.TitleRendered = false;
+        return;
     }
+
+    dataBag.TitleHeight = dataBag.AvailableHeight * doc.title.heightPercentage / 100;
+
+    let titleContainer = container.append("g")
+        .attr("transform", `translate(0, ${dataBag.AvailableHeight - dataBag.TitleHeight})`);
+
+    let fill = doc.title.fill;
+    if ([null, "none", "transparent", ""].includes(doc.title.fill)) {
+        fill = doc.diagram.fill
+    }
+
+    if (doc.title.type == "bar") {
+        titleContainer.append("line")
+            .attr("fill", fill)
+            .attr("stroke", doc.title.stroke)
+            .attr("x2", dataBag.AvailableWidth)
+    }
+    else if (doc.title.type == "box") {
+        titleContainer.append("rect")
+            .attr("fill", fill)
+            .attr("stroke", doc.title.stroke)
+            .attr('width', dataBag.AvailableWidth)
+            .attr('height', dataBag.TitleHeight);
+    }
+    else {
+        throw `Invalid title type: ${doc.title.type}`
+    }
+
+    dataBag.TitlePaddedWidth = Math.max(dataBag.AvailableWidth - doc.title.padding.left - doc.title.padding.right, 0);
+    dataBag.TitlePaddedHeight = Math.max(dataBag.TitleHeight - doc.title.padding.top - doc.title.padding.bottom, 0);
+
+    let paddedMask = titleContainer
+        .append("mask")
+        .attr("id", "titleMask")
+        .append("rect")
+        .attr("fill", "white")
+        .attr('width', dataBag.TitlePaddedWidth)
+        .attr('height', dataBag.TitlePaddedHeight);
+
+
+    let paddedContainer = titleContainer.append("g")
+        .attr("transform", `translate(${doc.title.padding.left}, ${doc.title.padding.top})`)
+        .attr("mask", "url(#titleMask)");
+
+    // Left Part : Logo
+    let logoContainer = paddedContainer.append("g");
+
+    let logoFill = doc.title.logoFill;
+    if ([null, "none", "transparent", ""].includes(doc.title.logoFill)) {
+        logoFill = doc.diagram.fill;
+    }
+    logoContainer.append("rect")
+        .attr('width', dataBag.TitlePaddedHeight)
+        .attr('height', dataBag.TitlePaddedHeight)
+        .attr("fill", logoFill);
+
+    logoContainer.append("svg:image")
+        .attr('width', dataBag.TitlePaddedHeight)
+        .attr('height', dataBag.TitlePaddedHeight)
+        .attr("xlink:href", doc.title.logoUrl)
+
+    // Left Part : Title text
+    paddedContainer.append("text")
+        .attr("x", dataBag.TitlePaddedHeight + doc.title.padding.left)
+        .attr("y", dataBag.TitlePaddedHeight * (2 / 5)) // 2/5 from the top
+        .attr("dominant-baseline", "middle")
+        .style("fill", doc.title.color)
+        .style('font-size', dataBag.TitlePaddedHeight * .5 + 'px')
+        .text(doc.title.text)
+
+    // Left Part : Title subtext
+    paddedContainer.append("text")
+        .attr("x", dataBag.TitlePaddedHeight + doc.title.padding.left)
+        .attr("y", dataBag.TitlePaddedHeight * (4 / 5)) // 4/5 from the top
+        .attr("dominant-baseline", "middle")
+        .style("fill", doc.title.color)
+        .style('font-size', dataBag.TitlePaddedHeight * .25 + 'px')
+        .text(doc.title.subText)
+
+    // Right Part Commons
+    let fontSize = dataBag.TitlePaddedHeight * (1 / 4)
+
+    // Right Part : Author
+    if (![null, "none", ""].includes(doc.title.author)) {
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5)) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (1 / 8)) // 1/8 from the top
+            .attr("dominant-baseline", "middle")
+            .attr("text-anchor", "end")
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .style("font-weight", "bold")
+            .text("Author:")
+
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5) + 5) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (1 / 8)) // 1/8 from the top
+            .attr("dominant-baseline", "middle")
+            .style("fill", doc.title.color)
+            .style('font-size', `${dataBag.TitlePaddedHeight * (1 / 4)}px`)
+            .text(doc.title.author)
+    }
+
+    // Right Part : Company
+    if (![null, "none", ""].includes(doc.title.company)) {
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5)) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (3 / 8)) // 3/8 from the top
+            .attr("dominant-baseline", "middle")
+            .attr("text-anchor", "end")  // set anchor y justification
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .style("font-weight", "bold")
+            .text("Company:")
+
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5) + 5) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (3 / 8)) // 3/8 from the top
+            .attr("dominant-baseline", "middle")
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .text(doc.title.company)
+    }
+
+    // Right Part : Date
+    if (![null, "none", ""].includes(doc.title.date)) {
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5)) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (5 / 8)) // 5/8 from the top
+            .attr("dominant-baseline", "middle")
+            .attr("text-anchor", "end")  // set anchor y justification
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .style("font-weight", "bold")
+            .text("Date:")
+
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5) + 5) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (5 / 8)) // 5/8 from the top
+            .attr("dominant-baseline", "middle")
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .text(doc.title.date)
+    }
+
+    // Right Part : Version
+    if (![null, "none", ""].includes(doc.title.version)) {
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5)) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (7 / 8)) // 7/8 from the top
+            .attr("dominant-baseline", "middle")
+            .attr("text-anchor", "end")  // set anchor y justification
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .style("font-weight", "bold")
+            .text("Version:")
+
+        paddedContainer.append("text")
+            .attr("x", dataBag.TitlePaddedWidth - dataBag.TitlePaddedWidth * (1 / 5) + 5) // 1/5 from the right
+            .attr("y", dataBag.TitlePaddedHeight * (7 / 8)) // 7/8 from the top
+            .attr("dominant-baseline", "middle")
+            .style("fill", doc.title.color)
+            .style('font-size', `${fontSize}px`)
+            .text(doc.title.version)
+    }
+
+    dataBag.TitleRendered = true;
 }

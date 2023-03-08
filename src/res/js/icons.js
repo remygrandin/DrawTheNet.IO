@@ -1,186 +1,158 @@
-var drawIcons = function (svg, diagram, icons, iconTextRatio) {
-    var deviceCellsAll = svg.selectAll("cells")
-        .data(Object.entries(icons))
-        .enter()
+import { ApplyTextLocation } from './common.js'
 
-    var cells = deviceCellsAll.append("g")
-        .attr("id", function (d) { return d[0] })
-        .attr("transform", function (d) { return "translate(" + diagram.xBand.Scale(d[1].x) + "," + diagram.yBand.Scale(d[1].y) + ")" })
-        .on("mouseenter", handleMouseOver)
-        .on("mouseleave", handleMouseOut)
-        .each(function (d) {
-            if (d[1].metadata) {
-                var text = d3.select(this)
-                text.style("cursor", "pointer")
-            }
-        })
+export function RenderIcons(container, doc, dataBag) {
+    let iconsContainer = container.append("g")
+        .attr("class", "icons");
 
-    var cellFill = cells
-        .append("rect")
-        .attr("rx", function (d) { return d[1].rx })
-        .attr("ry", function (d) { return d[1].ry })
-        .attr("width", function (d) { return d[1].width })
-        .attr("height", function (d) { return d[1].height })
-        .attr("fill", function (d) { return d[1].fill || "white" })
-        .style("stroke", function (d) { return d[1].stroke || "black" })
-        .style("stroke-dasharray", function (d) { return d[1].strokeDashArray || [0, 0] })
+    dataBag.icons = {};
 
+    let previous = {};
+    Object.keys(doc.icons).forEach(function (key, index) {
+        let computed = {};
 
-    var cellText = cells
-        .append("text")
-        .attr('class', 'iconLabel')
-        .text(function (d) { return d[1].text || d[0] })
-        .each(function (d) {
-            d[1].fontSize = Math.floor(Math.min(d[1].width * .9 / this.getComputedTextLength() * 12, d[1].height / 2 * iconTextRatio))
-            d[1].textPosition = textPositions(0, 0, d[1].width, d[1].height, d[1].fontSize + 2)[d[1].textLocation]
-            if (d[1].url) {
-                var text = d3.select(this)
-                text.on("click", function () { window.open(d[1].url); })
-                text.style("cursor", "pointer")
-                text.style("text-decoration", "underline")
-            }
-        })
-        .style("font-size", function (d) { return d[1].fontSize + "px"; })
-        .attr("id", function (d) { return d[0] + '-text' })
-        .attr("transform", function (d) { return "translate(" + d[1].textPosition.x + "," + d[1].textPosition.y + ")rotate(" + d[1].textPosition.rotate + ")" })
-        .attr('fill', function (d) { return d[1].color || "black" })
-        .attr("text-anchor", function (d) { return d[1].textPosition.textAnchor })
-        .attr("dominant-baseline", "central")
-
-    var icon = cells
-        .each(function (d) {
-            var cell = document.getElementById(d[0])
-            var cellText = document.getElementById(d[0] + "-text")
-            var fontSize = Math.ceil(parseFloat(cellText.style.fontSize))
-            // center
-            var x = (d[1].width * d[1].iconPaddingX)
-            var y = (d[1].height * d[1].iconPaddingY)
-            var width = d[1].width * (1 - 2 * d[1].iconPaddingX)
-            var height = (d[1].height) * (1 - 2 * d[1].iconPaddingY)
-            switch (true) {
-                case d[1].textLocation.startsWith('top'):
-                    y += fontSize
-                    height = (d[1].height - fontSize) * (1 - 2 * d[1].iconPaddingY)
-                    break;
-                case d[1].textLocation.startsWith('left'):
-                    x += fontSize
-                    width = (d[1].width - fontSize) * (1 - 2 * d[1].iconPaddingX)
-                    break;
-                case d[1].textLocation.startsWith('right'):
-                    width = (d[1].width - fontSize) * (1 - 2 * d[1].iconPaddingX)
-                    break;
-                case d[1].textLocation.startsWith('bottom'):
-                    height = (d[1].height - fontSize) * (1 - 2 * d[1].iconPaddingY)
-                    break;
-            }
-
-            let family = d[1].iconFamily.toLowerCase()
-            let icon = d[1].icon.toLowerCase()
-            var url = "res/icons/" + family + "/" + icon + ".svg"
-
-            if (family == "iconify") {
-                url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
-            }
-
-            d3.svg(url).then(function (xml) {
-                var svg = xml.getElementsByTagName("svg")[0]
-                svg.setAttribute("x", x)
-                svg.setAttribute("y", y)
-                svg.setAttribute("width", width)
-                svg.setAttribute("height", height)
-                var paths = xml.getElementsByTagName("path")
-                for (i = 0; i < paths.length; i++) {
-                    if ((d[1].preserveWhite) && (paths[i].getAttribute("fill") == '#fff')) {
-                        //paths[i].setAttribute("fill", d[1].replaceWhite)
-                    } else if ((d[1].iconFill) && (paths[i].getAttribute("fill") != 'none')) {
-                        paths[i].setAttribute("fill", d[1].iconFill)
-                    }
-                    if ((d[1].iconStroke) && (paths[i].getAttribute("stroke") != 'none')) {
-                        paths[i].setAttribute("stroke", d[1].iconStroke)
-                    }
-                    if ((d[1].iconStrokeWidth) && (paths[i].getAttribute("stroke-width"))) {
-                        paths[i].setAttribute("stroke-width", d[1].iconStrokeWidth)
-                    }
-                }
-                cell.insertBefore(xml.documentElement.cloneNode(true), cellText);
-            })
-        })
-
-    function handleMouseOver(d, i) {
-        if ((i[1].metadata) && (i[1].metadata.url)) {
-            var url = i[1].metadata.url
-            for (const match of url.matchAll(/{{\s*([-_\w\.]+)\s*}}/g)) {
-                let inner = match[1]
-                if (inner == 'key') {
-                    url = url.replace(match[0], i[0])
-                } else {
-                    url = url.replace(match[0], i[1][inner])
-                }
-
-            }
-            
-            fetch(url).then((response) => response.json())
-                .then(function (json) {
-                    var metadata = Object.assign({}, json, i[1].metadata);
-                    delete metadata.url
-                    delete metadata.errorText
-                    mouseOver(d, i, metadata)
-                })
-                .catch(function (error) {
-                    var metadata = Object.assign({}, i[1].metadata);
-                    delete metadata.url
-                    if (i[1].metadata.errorText) {
-                        metadata.note = i[1].metadata.errorText
-                        delete metadata.errorText
-                    } else {
-                        metadata.status = "HTTP:" + error.target.status
-                        metadata.statusText = error.target.statusText
-                    }
-                    mouseOver(d, i, metadata)
-
-                })
-        } else if (i[1].metadata) {
-            mouseOver(d, i, i[1].metadata)
+        if (!("x" in doc.icons[key])) {
+            doc.icons[key].x = parseFloat(previous.x);
+        } else if (doc.icons[key].x.toString().startsWith('+')) {
+            doc.icons[key].x = parseFloat(previous.x) + parseFloat(doc.icons[key].x.toString().split('+')[1]);
+        } else if (doc.icons[key].x.toString().startsWith('-')) {
+            doc.icons[key].x = parseFloat(previous.x) - parseFloat(doc.icons[key].x.toString().split('-')[1]);
         }
-    }
+        doc.icons[key].x = parseFloat(doc.icons[key].x)
+        computed.xScaled = dataBag.Scaler.X.ScaleWithOffset(doc.icons[key].x)
 
-    function mouseOver(d, i, json) {
-        var metadata = json
-        if (metadata) {
-            var length = Object.keys(metadata).length
-            var jc = "flex-start"
-            var meta = svg
-                .append("foreignObject")
-                .attr("id", "t" + i[1].x + "-" + i[1].y + "-" + i[0])
-                .attr("class", "mouseOver")
-                .attr("x", function () {
-                    if ((i[1].x2 + i[1].width * 2) < diagram.width) {
-                        return i[1].x2
-                    } else {
-                        jc = "flex-end"
-                        return i[1].x1 - (i[1].width * 3)
-                    }
-                    return i[1].x2;
-                })
-                .attr("y", function () { return i[1].centerY - (length * i[1].fontSize) })
-                .append("xhtml:div")
-                .attr("class", "metadata")
-                .style("width", function () { return i[1].width * 3 + "px" })
-                .style("height", function () { return length * i[1].fontSize })
-                .style("justify-content", jc)
-                .style("font-size", function () { return i[1].fontSize + "px"; })
-                .html(function () {
-                    var text = "<table>"
-                    for (key in metadata) {
-                        text += ("<tr><td>" + key + ":&nbsp</td><td>" + metadata[key] + "</td></tr>")
-                    }
-                    text += "</table>"
-                    return text;
-                })
+        if (!("y" in doc.icons[key])) {
+            doc.icons[key].y = parseFloat(previous.y);
+        } else if (doc.icons[key].y.toString().startsWith('+')) {
+            doc.icons[key].y = parseFloat(previous.y) + parseFloat(doc.icons[key].y.toString().split('+')[1]);
+        } else if (doc.icons[key].y.toString().startsWith('-')) {
+            doc.icons[key].y = parseFloat(previous.y) - parseFloat(doc.icons[key].y.toString().split('-')[1]);
         }
-    }
-    function handleMouseOut(d, i) {
-        svg.selectAll(".mouseOver")
-            .remove()
-    }
+        doc.icons[key].y = parseFloat(doc.icons[key].y)
+        computed.yScaled = dataBag.Scaler.Y.ScaleWithOffset(doc.icons[key].y);
+
+        computed.scaledMargin = {
+            top: doc.icons[key].margin.top * dataBag.Scaler.Y.UnitStepAbs,
+            right: doc.icons[key].margin.right * dataBag.Scaler.X.UnitStepAbs,
+            bottom: doc.icons[key].margin.bottom * dataBag.Scaler.Y.UnitStepAbs,
+            left: doc.icons[key].margin.left * dataBag.Scaler.X.UnitStepAbs
+        }
+
+        computed.scaledPadding = {
+            top: doc.icons[key].padding.top * dataBag.Scaler.Y.UnitStepAbs,
+            right: doc.icons[key].padding.right * dataBag.Scaler.X.UnitStepAbs,
+            bottom: doc.icons[key].padding.bottom * dataBag.Scaler.Y.UnitStepAbs,
+            left: doc.icons[key].padding.left * dataBag.Scaler.X.UnitStepAbs
+        }
+
+        computed.wScaled = doc.icons[key].w * dataBag.Scaler.X.UnitStepAbs;
+        computed.hScaled = doc.icons[key].h * dataBag.Scaler.Y.UnitStepAbs;
+
+        computed.x1 = computed.wScaled / 2 * -1;
+        computed.y1 = computed.hScaled / 2 * -1;
+
+        computed.x2 = computed.wScaled / 2;
+        computed.y2 = computed.hScaled / 2;
+
+        computed.x1Marged = computed.x1 + computed.scaledMargin.left;
+        computed.y1Marged = computed.y1 + computed.scaledMargin.top;
+
+        computed.x2Marged = computed.x2 - computed.scaledMargin.right;
+        computed.y2Marged = computed.y2 - computed.scaledMargin.bottom;
+
+        computed.x1Padded = computed.x1Marged + computed.scaledPadding.left;
+        computed.y1Padded = computed.y1Marged + computed.scaledPadding.top;
+
+        computed.x2Padded = computed.x2Marged - computed.scaledPadding.right;
+        computed.y2Padded = computed.y2Marged - computed.scaledPadding.bottom;
+
+        computed.wMarged = computed.wScaled - computed.scaledMargin.left - computed.scaledMargin.right;
+        computed.hMarged = computed.hScaled - computed.scaledMargin.top - computed.scaledMargin.bottom;
+
+        computed.wPadded = computed.wMarged - computed.scaledPadding.left - computed.scaledPadding.right;
+        computed.hPadded = computed.hMarged - computed.scaledPadding.top - computed.scaledPadding.bottom;
+
+        computed.cornerRad = Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs) * (1 / 16);
+
+        let iconContainer = iconsContainer.append("g")
+            .attr("id", "icon-" + key)
+            .attr("transform", `translate(${computed.xScaled}, ${computed.yScaled})`);
+
+        iconContainer.append("rect")
+            .attr("x", computed.x1Marged)
+            .attr("y", computed.y1Marged)
+            .attr("width", computed.wMarged)
+            .attr("height", computed.hMarged)
+            .attr("rx", computed.cornerRad)
+            .attr("ry", computed.cornerRad)
+            .attr("fill", doc.icons[key].fill)
+            .attr("stroke", doc.icons[key].stroke);
+
+        // Text
+
+        let fontSize = doc.icons[key].textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs)
+
+        let iconText = iconContainer.append("text")
+            .attr("class", "icon-label")
+            .attr("color", doc.icons[key].color)
+            .style("font-size", `${fontSize}px`);
+
+        let textContent = key;
+        if ("text" in doc.icons[key]) {
+            textContent = doc.icons[key].text;
+        }
+
+        iconText.text(textContent);
+
+        // Text location
+
+        ApplyTextLocation(iconText, doc.icons[key].textLocation, computed.x1Padded, computed.y1Padded, computed.x2Padded, computed.y2Padded)
+
+        computed.iconImageXOffset = 0;
+        computed.iconImageYOffset = 0;
+
+        if (doc.icons[key].textLocation.startsWith("top")) {
+            computed.iconImageYOffset = fontSize * 1.2;
+        }
+        else if (doc.icons[key].textLocation.startsWith("bottom")) {
+            computed.iconImageYOffset = fontSize * 1.2 * -1;
+        }
+        else if (doc.icons[key].textLocation.startsWith("left")) {
+            computed.iconImageXOffset = fontSize * 1.2;
+        }
+        else if (doc.icons[key].textLocation.startsWith("right")) {
+            computed.iconImageXOffset = fontSize * 1.2 * -1;
+        }
+
+        // Icon
+        let iconSize = Math.min(computed.wPadded - Math.abs(computed.iconImageXOffset), computed.hPadded - Math.abs(computed.iconImageYOffset));
+
+        let family = doc.icons[key].iconFamily.toLowerCase();
+        let icon = doc.icons[key].icon.toLowerCase();
+        let url = "./res/icons/" + family + "/" + icon + ".svg";
+
+        if (family == "iconify") {
+            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+        }
+
+        let iconImage = iconContainer.append("g")
+            .attr("transform", `translate(${iconSize / 2 * -1 + computed.iconImageXOffset / 2}, ${iconSize / 2 * -1 + computed.iconImageYOffset / 2})`);
+
+        fetch(url).then(function (raw) {
+            let svg = raw.text().then(text => {
+                let parser = new DOMParser();
+                let svg = parser.parseFromString(text, "image/svg+xml").documentElement;
+
+                svg.setAttribute("width", iconSize);
+                svg.setAttribute("height", iconSize);
+
+                svg.querySelector("script").remove();
+
+                iconImage._groups[0][0].innerHTML = svg.outerHTML;
+            });
+        });
+
+        dataBag.icons[key] = computed;
+        previous = doc.icons[key];
+    });
+
 }

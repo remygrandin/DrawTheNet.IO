@@ -1,41 +1,53 @@
-html {
-        overflow-y:scroll;
-        height: 100vh;
-}
+html,
 body {
-        padding-top:1vh;
-        height: 100vh;
-        font-size: 12px;
+    height: 100%;
 }
 
-.ace_editor {
-      border: 1px solid lightgray;
-      height: 95vh;
-      width: 100%;
-}
-.drawing {
-      height: 95vh;
-      width: 100%;
-}
-.jsoneditor .menu {
-      background-color: #D5DDF6;
-      border-bottom: 1px solid #97B0F8;
-    }
-
-
-.btn-black .badge {
-  color: #000000;
-  background-color: #FFFFFF;
+#editor {
+    width: 100%;
+    height: 100%;
 }
 
-.axisNone line{
-  stroke: #AAAAAA;
+.iconCardIcon {
+    height: 50px;
 }
 
-.axisNone path{
-  stroke: none;
+#iconOffcanvas {
+    height: 60vh;
 }
 
-.axisNone text{
-  fill: #AAAAAA;
+#titleText {
+    font-family: monospace;
+    font-size: 28px;
+}
+
+.hljs-ln-n {
+    padding-right: 0.5em;
+}
+
+
+.grid line {
+    stroke: #AAAAAA;
+    stroke-opacity: 0.7;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+.grid path {
+    stroke-width: 0;
+}
+
+#contAutoSave *,
+#contAutoUpdate * {
+    cursor: pointer;
+}
+
+.jq-toast-wrap {
+    width: 500px;
+}
+
+.icon-family,
+.icon-full,
+.icon-name {
+    cursor: pointer;
 }

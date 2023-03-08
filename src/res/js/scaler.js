@@ -1,4 +1,4 @@
-function Scaler(sourceRangeStart, sourceRangeEnd, targetRangeStart, targetRangeEnd, precision) {
+export function Scaler(sourceRangeStart, sourceRangeEnd, targetRangeStart, targetRangeEnd, precision) {
     this.sourceRangeStart = sourceRangeStart;
     this.sourceRangeEnd = sourceRangeEnd + 1;
     this.targetRangeStart = targetRangeStart;

@@ -102,13 +102,47 @@ const noteDefaults = {
         bottom: 0.10,
         left: 0.05
     },
-    textSizeRatio: 0.2,
+    textSizeRatio: 0.12,
     fill: "white",
     stroke: "black",
     color: "black",
     w: 1,
-    h: 1
+    h: 1,
+
+    xAlign: "left",
+    yAlign: "top",
+
+    flexDirection: "column",
+
 }
+
+const noteXAlignMap = {
+    left: {
+        textAlign: "left",
+        alignItems: "flex-start"
+    },
+    right: {
+        textAlign: "right",
+        alignItems: "flex-end"
+    },
+    center: {
+        textAlign: "center",
+        alignItems: "center"
+    }
+}
+
+const noteYAlignMap = {
+    top: {
+        justifyContent: "flex-start"
+    },
+    center: {
+        justifyContent: "center"
+    },
+    bottom: {
+        justifyContent: "flex-end"
+    }
+}
+
 
 export function ApplyDefaults(doc) {
     // Merge the default into the diagram section properties
@@ -147,9 +181,21 @@ export function ApplyDefaults(doc) {
     }
     Object.keys(doc.notes).forEach(function (key, index) {
         doc.notes[key] = Object.assign(clone(noteDefaults), doc.notes[key]);
+
+        if(!("alignItems" in doc.notes[key])) {
+            doc.notes[key].alignItems = noteXAlignMap[doc.notes[key].xAlign].alignItems;
+        }
+
+        if(!("justifyContent" in doc.notes[key])) {
+            doc.notes[key].justifyContent = noteYAlignMap[doc.notes[key].yAlign].justifyContent;
+        }
+
+        if(!("textAlign" in doc.notes[key])) {
+            doc.notes[key].textAlign = noteXAlignMap[doc.notes[key].xAlign].textAlign;
+        }        
     });
 }
 
-function clone(obj){
+function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
