@@ -32,15 +32,13 @@ export function Render(containerSelector, doc) {
         let heightByWidth = maxAvailableWidth / aspectRatio;
         let widthByHeight = maxAvailalbeHeight * aspectRatio;
 
-        if(heightByWidth > maxAvailalbeHeight)
-        {
+        if (heightByWidth > maxAvailalbeHeight) {
             dataBag.AvailableHeight = maxAvailalbeHeight;
             dataBag.AvailableWidth = widthByHeight;
             dataBag.HCenterOffset = (maxAvailableWidth - widthByHeight) / 2;
             dataBag.VCenterOffset = 0;
         }
-        else
-        {
+        else {
             dataBag.AvailableHeight = heightByWidth;
             dataBag.AvailableWidth = maxAvailableWidth;
             dataBag.HCenterOffset = 0;
@@ -95,21 +93,37 @@ export function Render(containerSelector, doc) {
     RenderGroups(diagramContainer, doc, dataBag);
     RenderConnections(diagramContainer, doc, dataBag);
 
+    if (doc.diagram.watermark) {
+        let watermarkContainer = margedContainer.append("g")
+            .attr("transform", `translate(${dataBag.AvailableWidth / 2}, ${dataBag.AvailableHeight})`);
+
+        watermarkContainer.append("text")
+            .attr("text-anchor", "middle")
+            .append("a")
+            .attr("xlink:href", "https://drawthenet.io")
+            .attr("class", "watermark")
+            .attr("target", "_blank")
+            .text("Created with DrawTheNet.IO");
+    }
+
+
     // Order : grid, groups, connections, notes, icons
-    bringForward(diagramContainer, '.grids');
-    bringForward(diagramContainer, '.groups');
-    bringForward(diagramContainer, '.connections');
-    bringForward(diagramContainer, '.notes');
-    bringForward(diagramContainer, '.icons');
+    BringForward(diagramContainer, '.grids');
+    BringForward(diagramContainer, '.groups');
+    BringForward(diagramContainer, '.connections');
+    BringForward(diagramContainer, '.notes');
+    BringForward(diagramContainer, '.icons');
 
+    // then all labels
+    BringForward(diagramContainer, '.icon-label');    
+    BringForward(diagramContainer, '.connection-label');
+    BringForward(diagramContainer, '.group-label');
 
-    bringForward(diagramContainer, '.icon-label');
-    bringForward(diagramContainer, '.group-label');
-    bringForward(diagramContainer, '.connection-label');
+    // then watermark
+    BringForward(margedContainer, '.watermark');
 }
 
-function bringForward(container, selector)
-{
+function BringForward(container, selector) {
     container.selectAll(selector).each(function (d) {
         d3.select(this).each(function () {
             this.parentNode.appendChild(this);

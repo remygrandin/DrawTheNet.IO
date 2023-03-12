@@ -78,3 +78,9 @@ body {
 .metadata-table td {
     text-align: left;
 }
+
+.watermark {
+    font-weight: bold;
+    text-anchor: middle;
+    fill: #0000EE;
+}
