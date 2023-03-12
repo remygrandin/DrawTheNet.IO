@@ -46,7 +46,6 @@ export function Render(containerSelector, doc) {
             dataBag.HCenterOffset = 0;
             dataBag.VCenterOffset = (maxAvailalbeHeight - heightByWidth) / 2;
         }
-
     }
 
 
@@ -57,7 +56,11 @@ export function Render(containerSelector, doc) {
         .attr("height", containerBox.height)
         .style("background-color", doc.diagram.fill)
         .call(d3.zoom().on("zoom", function (e) {
-            margedContainer.attr("transform", e.transform)
+            margedContainer.attr("transform", e.transform);
+            document.querySelectorAll(".render .metadata").forEach(function (element) {
+                let evt = new Event('mouseleave');
+                element.dispatchEvent(evt);
+            });
         }));
 
     let margedContainer = mainContainer.append("g")

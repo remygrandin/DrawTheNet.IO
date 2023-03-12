@@ -24,4 +24,4 @@ icons:
   router1: {<<: *cisco, x: 0, y: 2, text: "no link", }
   router2: {<<: *cisco, text: "telnet", url: "telnet://route-server.cerf.net"}
   router3: {<<: *cisco, text: "ssh", url: "ssh://rviews@route-server.ip.att.net"}
-  router4: {<<: *cisco, text: "http", url: "http://drawthe.net"}
+  router4: {<<: *cisco, text: "http", url: "http://drawthenet.io"}

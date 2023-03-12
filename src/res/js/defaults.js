@@ -16,7 +16,9 @@ const diagramDefaults = {
         bottom: 10,
         left: 10
     },
-    watermark: true
+    watermark: true,
+    renderRatio: 3,
+    fileTitlePrefix: "drawthenet.io"
 }
 
 const titleDefaults = {

@@ -55,3 +55,26 @@ body {
 .render *:not(code, pre, code *, pre *) {
     font-family: 'Roboto', sans-serif;
 }
+
+.render .link {
+    fill: #0000EE;
+    text-decoration: underline;
+}
+
+.render .metadata {
+    fill: #0000EE;
+    cursor: pointer;
+}
+
+.tooltip-inner{
+    max-width: 800px;
+}
+
+.metadata-table th {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.metadata-table td {
+    text-align: left;
+}

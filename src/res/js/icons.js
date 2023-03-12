@@ -1,4 +1,4 @@
-import { ApplyTextLocation } from './common.js'
+import { ApplyTextLocation, GetPropByStringPath, DeepClone } from './common.js'
 
 export function RenderIcons(container, doc, dataBag) {
     let iconsContainer = container.append("g")
@@ -101,7 +101,138 @@ export function RenderIcons(container, doc, dataBag) {
             textContent = doc.icons[key].text;
         }
 
-        iconText.text(textContent);
+        if (!("url" in doc.icons[key])) {
+            iconText.text(textContent);
+        }
+        else {
+            iconText.append("a")
+                .attr("xlink:href", doc.icons[key].url)
+                .attr("target", "_blank")
+                .attr("class", "link")
+                .text(textContent);
+        }
+
+        if ("metadata" in doc.icons[key]) {
+            iconContainer.attr("class", iconContainer.attr("class") + " metadata")
+
+            let tooltip = null;
+
+            iconContainer.on("mouseenter mousemove", async function (event) {
+                event.preventDefault();
+
+                if (tooltip != null) {
+                    return;
+                }
+
+                tooltip = "lock"
+
+                let metadataBag = DeepClone(doc.icons[key].metadata);
+
+                delete metadataBag.url;
+                delete metadataBag.errorText;
+
+                if ("url" in doc.icons[key].metadata) {
+                    let url = doc.icons[key].metadata.url;
+
+                    let matcher = /{{\s*(\S*)\s*}}/gm
+
+                    //let matches = url.matchAll(/{{\s*(.*)\s*}}/gm);
+
+                    let result;
+                    while (result = matcher.exec(url)) {
+                        let matchKey = result[1];
+
+                        if (matchKey == "key") {
+                            url = url.replace(result[0], key);
+                        }
+                        else {
+                            url = url.replace(result[0], GetPropByStringPath(doc.icons[key], matchKey));
+                        }
+                    }
+
+                    try {
+                        let fetchRes = await fetch(url);
+
+                        if (!fetchRes.ok) {
+                            if ("errorText" in doc.icons[key].metadata) {
+                                metadataBag.Error = doc.icons[key].metadata.errorText;
+                            }
+                            else {
+                                metadataBag.Error = `${fetchRes.status} ${fetchRes.statusText}`;
+                            }
+                        }
+                        else {
+                            let json = await fetchRes.json();
+
+                            for (let key in json) {
+                                metadataBag[key] = json[key];
+                            }
+                        }
+                    }
+                    catch (err) {
+                        if ("errorText" in doc.icons[key].metadata) {
+                            metadataBag.Error = doc.icons[key].metadata.errorText;
+                        }
+                        else {
+                            metadataBag.Error = "Error while querying metadata. Check URL/service availability."
+                        }
+                    }
+                }
+
+                if (tooltip === "destroy") {
+                    tooltip = null;
+                    return;
+                }
+
+                let metatable = document.createElement("table");
+                metatable.classList.add("table", "table-sm", "table-borderless", "table-dark", "mb-0", "metadata-table", "table-striped");
+                let tbody = document.createElement("tbody");
+                metatable.appendChild(tbody);
+
+                for (let metaKey in metadataBag) {
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("th");
+                    let td2 = document.createElement("td");
+
+                    td1.innerText = metaKey;
+                    td2.innerText = metadataBag[metaKey];
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+
+                    tbody.appendChild(tr);
+                }
+
+                let tooltipContent = metatable.outerHTML;
+
+                tooltip = new bootstrap.Tooltip(event.target, {
+                    html: true,
+                    sanitize: false,
+                    container: "body",
+                    trigger: "manual",
+                    title: tooltipContent
+                })
+
+
+                tooltip.show();
+            });
+
+            iconContainer.on("mouseleave", function (event) {
+                event.preventDefault();
+                if (tooltip === null) {
+                    return;
+                }
+
+                if (tooltip === "lock") {
+                    tooltip = "destroy";
+                    return;
+                }
+
+                tooltip.dispose();
+                tooltip = null;
+            });
+        }
+
 
         // Text location
 

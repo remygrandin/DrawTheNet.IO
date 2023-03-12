@@ -89,6 +89,11 @@
         integrity="sha512-qoCTmFwBtCPvFhA+WAqatSOrghwpDhFHxwAGh+cppWonXbHA09nG1z5zi4/NGnp8dUhXiVrzA6EnKgJA+fyrpw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Luxon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.3.0/luxon.min.js"
+        integrity="sha512-KKbQg5o92MwtJKR9sfm/HkREzfyzNMiKPIQ7i7SZOxwEdiNCm4Svayn2DBq7MKEdrqPJUOSIpy1v6PpFlCQ0YA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <!-- Local Styles -->
     <link rel="stylesheet" href="res/css/notes.css">
     <link rel="stylesheet" href="res/css/app.css">
@@ -319,7 +324,7 @@
 <script type="module">
     import { Canvg } from 'https://cdn.skypack.dev/canvg';
     import { Render as Renderer } from './res/js/render.js';
-    import { RenderPNG as RenderPNG } from './res/js/pngRenderer.js';
+    import { ExportPNG as ExportPNG, ExportSVG as ExportSVG } from './res/js/exporters.js';
 
     $(function () {
 
@@ -372,6 +377,8 @@
 
         // Render function
         let debounceRanderTimer;
+        let lastDocument = null;
+        let errorToast = null;
 
         function Render(maxDelay = 2000) {
             clearTimeout(debounceRanderTimer);
@@ -379,7 +386,7 @@
                 try {
                     let text = editor.session.getValue();
 
-                    if (text === "" || text === null) {
+                    if (text === null || text === "" || text.trim() === "") {
                         return;
                     }
 
@@ -391,9 +398,16 @@
 
                     let doc = jsyaml.load(text);
                     Renderer("#preview", doc)
+
+                    if (errorToast !== null) {
+                        errorToast.reset();
+                        errorToast = null;
+                    }
+
+                    lastDocument = doc;
                 } catch (e) {
                     console.log(e);
-                    $.toast({
+                    errorToast = $.toast({
                         text: `<pre>${e.message}</pre>`,
                         heading: 'Error in document',
                         icon: 'error',
@@ -404,7 +418,6 @@
                         position: 'top-right',
                         loader: true
                     });
-                    throw e;
                     return;
                 }
             }, maxDelay);
@@ -714,26 +727,25 @@
         $("#btnSaveYAML").on("click", function (event) {
             event.preventDefault();
 
+            if (lastDocument == null) return;
+
+            let title = `${lastDocument.diagram.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.yml`
+
             let text = editor.session.getValue();
             let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-            let title = `${(new Date()).toISOString()}-drawthenetio.yaml`
 
             saveAs(blob, title);
         });
 
-        $("#btnSaveSVG").on("click", function (event) {
+        $("#btnSaveSVG").on("click", async function (event) {
             event.preventDefault();
 
-            let svg = $("#preview").html();
+            if (lastDocument == null) return;
 
-            let width = $(".render").attr("width");
-            let height = $(".render").attr("height");
+            let title = `${lastDocument.diagram.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
 
-            svg = svg.replace(`<svg width="${width}" height="${height}"`, `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} ${height}"`);
-
+            let svg = (await ExportSVG($(".render")[0], lastDocument.diagram.renderRatio, !event.ctrlKey)).outerHTML;
             let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-
-            let title = `${(new Date()).toISOString()}-drawthenetio.svg`
 
             saveAs(blob, title);
         });
@@ -741,9 +753,10 @@
         $("#btnSavePNG").on("click", async function (event) {
             event.preventDefault();
 
-            let title = `${(new Date()).toISOString()}-drawthenetio.png`
+            if (lastDocument == null) return;
 
-            let blob = await RenderPNG($(".render")[0]);
+            let title = `${lastDocument.diagram.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.png`
+            let blob = await ExportPNG($(".render")[0], lastDocument.diagram.renderRatio);
 
             saveAs(blob, title);
 
