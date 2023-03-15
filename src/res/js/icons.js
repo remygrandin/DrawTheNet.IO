@@ -219,7 +219,7 @@ export function RenderIcons(container, doc, dataBag) {
 
             iconContainer.on("mouseleave", function (event) {
                 event.preventDefault();
-                if (tooltip === null) {
+                if (tooltip === null || tooltip === "destroy") {
                     return;
                 }
 
@@ -276,7 +276,13 @@ export function RenderIcons(container, doc, dataBag) {
                 svg.setAttribute("width", iconSize);
                 svg.setAttribute("height", iconSize);
 
-                svg.querySelector("script").remove();
+                let scripts = svg.querySelectorAll("script");
+                if(scripts != null && scripts.length > 0)
+                {
+                    scripts.forEach(script => {
+                        script.remove();
+                    });
+                }
 
                 iconImage._groups[0][0].innerHTML = svg.outerHTML;
             });

@@ -1,6 +1,6 @@
 export function RenderGridLines(container, doc, dataBag) {
     if (doc.diagram.gridLines) {
-        let gridMargin = 15;
+        let gridMargin = 20;
 
         let grids = container.append("g")
             .attr("class", "grids");
@@ -23,7 +23,7 @@ export function RenderGridLines(container, doc, dataBag) {
                 .attr("x", pos)
                 .attr("y", dataBag.DiagramHeight)
                 .attr("text-anchor", "middle")
-                .attr("dominant-baseline", "auto")
+                .attr("dominant-baseline", "ideographic")
                 .style('font-size', '15px')
                 .text(x);
         }

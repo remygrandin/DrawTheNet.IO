@@ -16,8 +16,10 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
     clone.setAttribute("viewBox", `0 0 ${width * scaleFactor} ${height * scaleFactor}`);
     clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    
+    clone.getElementsByClassName("zoom")[0].removeAttribute("transform");
 
-    clone.childNodes[0].setAttribute("transform", `${clone.childNodes[0].getAttribute("transform")} scale(${scaleFactor})`);
+    clone.getElementsByClassName("marged")[0].setAttribute("transform", `${clone.getElementsByClassName("marged")[0].getAttribute("transform")} scale(${scaleFactor})`);
 
     if (embedFontAndStyle) {
         let defs = document.createElement("defs");

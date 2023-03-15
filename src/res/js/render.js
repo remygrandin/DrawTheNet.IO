@@ -54,15 +54,19 @@ export function Render(containerSelector, doc) {
         .attr("height", containerBox.height)
         .style("background-color", doc.diagram.fill)
         .call(d3.zoom().on("zoom", function (e) {
-            margedContainer.attr("transform", e.transform);
+            zoomContainer.attr("transform", e.transform);
             document.querySelectorAll(".render .metadata").forEach(function (element) {
                 let evt = new Event('mouseleave');
                 element.dispatchEvent(evt);
             });
         }));
 
-    let margedContainer = mainContainer.append("g")
-        .attr("transform", `translate(${doc.diagram.margin.left + dataBag.HCenterOffset}, ${doc.diagram.margin.top + dataBag.VCenterOffset})`);
+    let zoomContainer = mainContainer.append("g")
+    .attr("class", "zoom");
+
+    let margedContainer = zoomContainer.append("g")
+        .attr("transform", `translate(${doc.diagram.margin.left + dataBag.HCenterOffset}, ${doc.diagram.margin.top + dataBag.VCenterOffset})`)
+        .attr("class", "marged");
 
     RenderTitle(margedContainer, doc, dataBag);
 
@@ -71,8 +75,8 @@ export function Render(containerSelector, doc) {
         dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.padding.left - doc.diagram.padding.right;
     }
     else {
-        dataBag.DiagramHeight = dataBag.AvailableHeight;
-        dataBag.DiagramWidth = dataBag.AvailableWidth;
+        dataBag.DiagramHeight = dataBag.AvailableHeight - doc.diagram.padding.top - doc.diagram.padding.bottom;
+        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.padding.left - doc.diagram.padding.right;
     }
 
     dataBag.Scaler = {}

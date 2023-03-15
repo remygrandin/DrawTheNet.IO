@@ -454,8 +454,16 @@
         fetch("./samples/samples.json")
             .then(response => response.json())
             .then(function (res) {
-                Object.keys(res).forEach(function (key) {
-                    $("#drpSamples .dropdown-menu").append(`<li file="${res[key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
+                Object.keys(res).forEach(function (category) {
+                    $("#drpSamples .dropdown-menu").append(`<li class="bg-warning"><h6 class="dropdown-header">
+                        <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
+                        ${category}
+                        <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
+                        </h6></li>`);
+
+                    Object.keys(res[category]).forEach(function (key) {
+                        $("#drpSamples .dropdown-menu").append(`<li file="${res[category][key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
+                    });
                 });
             });
 
@@ -463,6 +471,10 @@
             event.preventDefault();
 
             let fileName = $(this).attr("file");
+
+            if(fileName === null || fileName === undefined) {
+                return;
+            }
 
             fetch(`./samples/${fileName}`)
                 .then(response => response.text())
@@ -523,8 +535,10 @@
                         return;
                     }
 
-                    if (searchRes.length > 100) {
-                        searchRes.length = 100;
+                    let maxSearchResult = 500;
+
+                    if (searchRes.length > maxSearchResult) {
+                        searchRes.length = maxSearchResult;
                     }
 
                     $("#iconCards").empty();

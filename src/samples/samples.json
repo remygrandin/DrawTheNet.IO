@@ -1,15 +1,20 @@
 {
-    "Coffee colors": "coffee.yaml",
-    "Curves types": "curves.yaml",
-    "Group Connections": "group_connections.yaml",
-    "Groups": "groups.yaml",
-    "Labels": "labels.yaml",
-    "Mouseover": "mouseover.yaml",
-    "Notes": "notes.yaml",
-    "NTP": "ntp.yaml",
-    "Relative Positioning": "relative_positions.yaml",
-    "Sample": "sample.yaml",
-    "Super Spine": "superspine.yaml",
-    "Text Locations": "text_locations.yaml",
-    "URLs": "urls.yaml"
+    "Functions Demo": {
+        "Icons": "icons.yaml",
+        "Groups": "groups.yaml",
+        "Group Connections": "group_connections.yaml",
+        "Text Locations": "text_locations.yaml",
+        "Relative Positioning": "relative_positions.yaml",
+        "Labels": "labels.yaml",
+        "Curves types": "curves.yaml",
+        "Mouseover": "mouseover.yaml",
+        "Notes": "notes.yaml",
+        "URLs": "urls.yaml",
+        "Coffee colors": "coffee.yaml"
+    },
+    "Full Samples": {
+        "NTP": "ntp.yaml",
+        "Sample": "sample.yaml",
+        "Super Spine": "superspine.yaml"
+    }
 }

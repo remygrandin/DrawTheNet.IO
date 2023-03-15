@@ -1,10 +1,13 @@
 param(
-    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "AllLowercase", "EndCleanup")
+    #[PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "GenContactSheets", "AllLowercase", "EndCleanup")
+    [PSObject[]] $steps = @("GenContactSheets")
 )
 
 $tempPath = Join-Path $PSScriptRoot .. "tmp"
 $buildPath = Join-Path $PSScriptRoot .. "dist"
+$samplesPath = Join-Path $buildPath "samples"
 $iconsPath = Join-Path $buildPath "res" "icons"
+$samplesJSONPath = Join-Path $samplesPath "samples.json"
 $iconsJSONPath = Join-Path $iconsPath "icons.json"
 $srcPath = Join-Path $PSScriptRoot .. "src"
 
@@ -53,8 +56,7 @@ function DownloadAWSIcons {
             FileName = Split-Path $svgFile -leaf
         }
 
-        if($obj.FullName.Contains("Architecture-Service-Icons"))
-        {
+        if ($obj.FullName.Contains("Architecture-Service-Icons")) {
             $obj.FullName -match "[\\/]Arch_([\da-zA-Z-_]*)[\\/](?:Arch_)?\d\d[\\/](?:Arch_ ?(?:Amazon|AWS)?-?)([\da-zA-Z-&_]*) ?_(\d\d)_?.svg" | Out-Null
 
             $obj | Add-Member -MemberType NoteProperty -Name "Size" -Value ([int]($Matches[3]))
@@ -523,8 +525,7 @@ function DownloadGCPIcons {
 function DownloadCiscoIcons {
     Write-Output "------ Cisco ------"
 
-    if(-not $vssConvInstalled)
-    {
+    if (-not $vssConvInstalled) {
         Write-Output "vss2svg-conv not installed, skipping Cisco icons download & format"
         return
     }
@@ -545,8 +546,7 @@ function DownloadCiscoIcons {
 
     Write-Output "Convert..."
     $vssFiles = Get-ChildItem -Recurse -Path $extractPath | Where-Object { $_.Name.EndsWith(".vss") }
-    foreach($vss in $vssFiles)
-    {
+    foreach ($vss in $vssFiles) {
         Write-Output "    Converting $($vss.FullName) ..."
         vss2svg-conv -i $vss -o $extractPath
     }
@@ -565,7 +565,7 @@ function DownloadCiscoIcons {
         $iconSVG = $iconSVG -replace ' transform=" ?translate\([-\d\.]*, ?[-\d\.]*\) ?\"', ""
         
 
-        $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label="X"; expression={$_.Groups[1].Value}},@{label="Y"; expression={$_.Groups[2].Value}}
+        $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
 
         $minX = $points | Select-Object -ExpandProperty X | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
         $minY = $points | Select-Object -ExpandProperty Y | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
@@ -577,7 +577,7 @@ function DownloadCiscoIcons {
             $iconSVG = $iconSVG -replace "$($point.X),$($point.Y)", "$newX,$newY"
         }
 
-        $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label="X"; expression={$_.Groups[1].Value}},@{label="Y"; expression={$_.Groups[2].Value}}
+        $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
 
         $maxX = $points | Select-Object -ExpandProperty X | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
         $maxY = $points | Select-Object -ExpandProperty Y | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
@@ -640,8 +640,7 @@ function DownloadCiscoIcons {
 function DownloadFortinetIcons {
     Write-Output "------ Fortinet ------"
 
-    if(-not $vssConvInstalled)
-    {
+    if (-not $vssConvInstalled) {
         Write-Output "vss2svg-conv not installed, skipping Cisco icons download & format"
         return
     }
@@ -662,8 +661,7 @@ function DownloadFortinetIcons {
     Write-Output "Extract again..."
     $innerZips = Get-ChildItem -Recurse -Path $extractPath | Where-Object { $_.Name.EndsWith(".zip") }
 
-    foreach($zip in $innerZips)
-    {
+    foreach ($zip in $innerZips) {
         Write-Output "    Extracting $($zip.FullName) ..."
         Expand-Archive -Path $zip.FullName -DestinationPath $extractPath -Force
     }
@@ -671,8 +669,7 @@ function DownloadFortinetIcons {
 
     Write-Output "Convert..."
     $vssFiles = Get-ChildItem -Recurse -Path $extractPath | Where-Object { $_.Name.Contains("Icons") -and $_.Name.EndsWith(".vss") }
-    foreach($vss in $vssFiles)
-    {
+    foreach ($vss in $vssFiles) {
         Write-Output "    Converting $($vss.FullName) ..."
         New-Item -Type Directory -Path "$extractPath/ext-$($vss.Name)/" -Force | Out-Null
         vss2svg-conv -i $vss -o "$extractPath/ext-$($vss.Name)/"
@@ -718,7 +715,7 @@ function DownloadFortinetIcons {
 
         $obj.FileName -match "(.*).svg" | Out-Null
 
-        $baseName = $Matches[1] -replace "_-_","-"
+        $baseName = $Matches[1] -replace "_-_", "-"
 
         $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value $baseName
         $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")      
@@ -796,30 +793,84 @@ function AllLowercase {
     }
 }
 
+function GenContactSheets {
+    Write-Output "====== Generating contact sheets ======"
+    $icons = Get-Content $iconsJSONPath | ConvertFrom-Json
+    $samples = Get-Content -Path $samplesJSONPath | ConvertFrom-Json
+
+    $template = @"
+diagram:
+  columns: {{columns}}
+  rows: {{rows}}
+  gridLines: false
+title:
+  type: none
+icons:
+{{icons}}
+"@
+
+    $samples | Add-Member -Name 'Contact Sheets' -Type NoteProperty -Value @{} -ErrorAction SilentlyContinue
+
+    foreach ($iconSet in $icons | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name) {
+        Write-Output "    Generating contact sheet for $iconSet ..."
+
+        $ratio = 1 / 2
+
+        $height = [Math]::Ceiling([Math]::Sqrt($icons.$iconSet.length / $ratio))
+        $width = [Math]::Ceiling($height / $ratio)
+
+        $rows = $height;
+        $columns = [Math]::Ceiling($icons.$iconSet.length / $height)
+        
+        $iconsStrs = ""
+
+        $x = 0;
+        $y = 0;
+
+        foreach ($icon in $icons.$iconSet) {
+            if ($x -ge $columns) {
+                $x = 0;
+                $y++;
+            }
+
+            $iconsStrs += "  $($icon): { icon: ""$icon"", iconFamily: ""$iconSet"", x: $x, y: $y}`r`n"
+            $x++;
+        }
+
+        $templateFilled = $template -replace "{{columns}}", $columns -replace "{{rows}}", $rows -replace "{{icons}}", $iconsStrs
+
+        $templateFilled | Out-File (Join-Path $samplesPath "$iconSet.yml") -Force
+
+        $samples."Contact Sheets".$iconSet = "$iconSet.yml"
+    }
+
+    $samples | ConvertTo-Json | Out-File $samplesJSONPath -Force
+}
+
+
 Write-Output "Starting DrawTheNet build process..."
 
-if($steps -contains "InitCleanup")
-{
+if ($steps -contains "InitCleanup") {
     InitCleanup
 }
 
-if($steps -contains "DownloadIcons")
-{
+if ($steps -contains "DownloadIcons") {
     DownloadIcons
 }
 
-if($steps -contains "CopySrc")
-{
+if ($steps -contains "CopySrc") {
     CopySrc
 }
 
-if($steps -contains "AllLowercase")
-{
+if ($steps -contains "GenContactSheets") {
+    GenContactSheets
+}
+
+if ($steps -contains "AllLowercase") {
     AllLowercase
 }
 
-if($steps -contains "EndCleanup")
-{
+if ($steps -contains "EndCleanup") {
     EndCleanup
 }
 
