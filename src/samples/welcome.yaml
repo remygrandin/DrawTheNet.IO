@@ -1,0 +1,131 @@
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: false
+title:
+  type: none
+defs:
+  noBackground: &noBackground
+    fill: none
+    stroke: none
+
+icons:
+  docPC:
+    x: 0
+    y: 1
+    iconFamily: "Iconify"
+    icon: "bi:pc-display"
+    text: Client
+  docWAF:
+    x: "+1"
+    iconFamily: "Azure"
+    icon: "Web-Application-Firewall-Policies(WAF)"
+    text: WAF
+  docServer:
+    x: "+1"
+    iconFamily: "M365"
+    icon: "server_farm"
+    text: Servers
+
+  diff:
+    x: 1
+    y: "+1"
+    iconFamily: "M365"
+    icon: "SiteShared-blue"
+    w: 2
+    
+  vendGCP:
+    <<: *noBackground
+    x: 2
+    y: "+1"
+    iconFamily: "Iconify"
+    icon: "mdi:google-cloud"
+    w: 2
+    text: null
+  vendPP:
+    <<: *noBackground
+    x: "-0.25"
+    iconFamily: "PowerPlatform"
+    icon: "PowerApps"
+    w: 2
+    text: null
+  vendAndroid:
+    <<: *noBackground
+    x: "-0.25"
+    iconFamily: "iconify"
+    icon: "uim:android"
+    w: 2
+    text: null
+    iconFill: green
+  vendAWS:
+    <<: *noBackground
+    x: "-0.25"
+    iconFamily: "iconify"
+    icon: "logos:aws"
+    w: 2
+    text: null
+  venCheese:
+    <<: *noBackground
+    x: "-0.25"
+    iconFamily: "iconify"
+    icon: "noto:cheese-wedge"
+    w: 2
+    text: null
+
+
+    
+    
+   
+  
+    
+connections:
+  - {endpoints: [docPC,docWAF]}
+  - {endpoints: [docWAF,docServer]}
+groups:
+  doc:
+    members: [docPC, docWAF, docServer]
+    padding:
+      left: 0.05
+      right: 0.05
+      top: 0.15
+      bottom: 0.05
+    fill: lightGrey
+notes:
+  Title:
+    x: 2
+    y: 0
+    xAlign: center
+    yAlign: center
+    w: 5
+    fill: teal
+    text:  |
+      # Welcome to `DrawTheNet.IO`
+  docsText:
+    x: 3.5
+    y: 1
+    xAlign: left
+    yAlign: center
+    w: 2
+    h: 1
+    text:  |
+      #####This web app allow you to create network diagram from simple yaml files.
+      
+      #####You can define icons placement, groups, notes & connections.
+  diffText:
+    x: 3.5
+    y: 2
+    xAlign: left
+    yAlign: center
+    w: 2
+    h: 1
+    text:  |
+      #####The files are easily diffable and can be integrated int many content managment system. Alternativly, for ease of use, documents are embeded in the URL and can be stored as links in documentations.
+  vendorText:
+    x: 3.5
+    y: 3
+    xAlign: left
+    yAlign: center
+    w: 2
+    h: 1
+    text:  |
+      You can use icons from many vendors linke AWS, Azure, GCP, Cisco ...

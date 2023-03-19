@@ -393,7 +393,14 @@
                     if ($("#inpAutoSave").is(":checked")) {
                         let compressed = LZString.compressToEncodedURIComponent(text);
                         localStorage.setItem('lastDoc', compressed);
-                        history.pushState(null, null, '#' + compressed);
+                        
+                        if (window.location.hash == '#' + compressed) {
+                            history.replaceState(null, null, '#');
+                            history.replaceState(null, null, '#' + compressed);
+                        }
+                        else {
+                            history.pushState(null, null, '#' + compressed);
+                        }
                     }
 
                     let doc = jsyaml.load(text);
@@ -472,7 +479,7 @@
 
             let fileName = $(this).attr("file");
 
-            if(fileName === null || fileName === undefined) {
+            if (fileName === null || fileName === undefined) {
                 return;
             }
 
@@ -715,14 +722,16 @@
 
         $("#btnSave").on("click", function (event) {
             let text = editor.session.getValue();
-            localStorage.setItem('lastDoc', text);
-            let encodedText = btoa(text)
-            if (window.location.hash == '#' + encodedText) {
+
+            let compressed = LZString.compressToEncodedURIComponent(text);
+            localStorage.setItem('lastDoc', compressed);
+            history.pushState(null, null, '#' + compressed);
+            if (window.location.hash == '#' + compressed) {
                 history.replaceState(null, null, '#');
-                history.replaceState(null, null, '#' + encodedText);
+                history.replaceState(null, null, '#' + compressed);
             }
             else {
-                history.pushState(null, null, '#' + encodedText);
+                history.pushState(null, null, '#' + compressed);
             }
         });
 

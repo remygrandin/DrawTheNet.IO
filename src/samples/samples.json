@@ -12,9 +12,10 @@
         "URLs": "urls.yaml",
         "Coffee colors": "coffee.yaml"
     },
-    "Full Samples": {
+    "Full Samples": {        
+        "Welcome": "welcome.yaml",
         "NTP": "ntp.yaml",
-        "Sample": "sample.yaml",
+        "Simple": "simple.yaml",
         "Super Spine": "superspine.yaml"
     }
 }

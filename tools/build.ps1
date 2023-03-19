@@ -1,15 +1,18 @@
 param(
-    #[PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "GenContactSheets", "AllLowercase", "EndCleanup")
-    [PSObject[]] $steps = @("GenContactSheets")
+    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "GenContactSheets", "AllLowercase", "CopyDist", "EndCleanup")
 )
 
-$tempPath = Join-Path $PSScriptRoot .. "tmp"
-$buildPath = Join-Path $PSScriptRoot .. "dist"
+$distPath = Join-Path $PSScriptRoot .. "dist"
+$srcPath = Join-Path $PSScriptRoot .. "src"
+
+$rootTempPath = Join-Path ([system.io.path]::GetTempPath()) "drawthenet.io-build"
+$tempPath = Join-Path $rootTempPath "tmp"
+$buildPath = Join-Path $rootTempPath "dist"
 $samplesPath = Join-Path $buildPath "samples"
 $iconsPath = Join-Path $buildPath "res" "icons"
 $samplesJSONPath = Join-Path $samplesPath "samples.json"
 $iconsJSONPath = Join-Path $iconsPath "icons.json"
-$srcPath = Join-Path $PSScriptRoot .. "src"
+
 
 $vssConvInstalled = $null -ne (Get-Command "vss2svg-conv" -ErrorAction SilentlyContinue)
 
@@ -474,6 +477,25 @@ function DownloadGCPIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
 
+    Write-Output "Edit Icons..."
+    $icons = Get-ChildItem -Recurse -Path $extractPath | `
+        Where-Object { $_.Name.EndsWith(".svg") } 
+    
+    foreach ($icon in $icons) {
+        Write-Output "    Editing  $($icon.FullName) ..."
+
+        $iconSVG = Get-Content -Path $icon.FullName -Raw
+
+        $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
+
+        $iconSVG = $iconSVG -replace 'cls-', "cls-$title-"
+        $iconSVG = $iconSVG -replace 'clip-', "clip-$title-"
+
+        $iconSVG | Set-Content -Path $icon.FullName -Force
+    }
+
+    Write-Output "Done"
+
     Write-Output "Copy :"
     New-Item -Type Directory -Path $destPath -Force | Out-Null
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
@@ -552,7 +574,7 @@ function DownloadCiscoIcons {
     }
     Write-Output "Done"
 
-    Write-Output "Edit Icons :"
+    Write-Output "Edit Icons..."
     $icons = Get-ChildItem -Recurse -Path $extractPath | `
         Where-Object { $_.Name.EndsWith(".svg") } 
         
@@ -561,9 +583,15 @@ function DownloadCiscoIcons {
 
         $iconSVG = Get-Content -Path $icon.FullName -Raw
 
-        $iconSVG = $iconSVG -replace 'transform=" scale([\d\.]*) "', ""
+        $iconSVG = $iconSVG -replace 'transform=" ?scale([\d\.]*) ?"', ""
         $iconSVG = $iconSVG -replace ' transform=" ?translate\([-\d\.]*, ?[-\d\.]*\) ?\"', ""
+        #$iconSVG = $iconSVG -replace 'stroke-width="[\d\.]*"', ""
         
+        $widths = ([regex]"stroke-width=""([\d\.]*)""").Matches($iconSVG)
+
+        foreach ($width in $widths) {
+            $iconSVG = $iconSVG -replace "stroke-width=""$($width.Groups[1].value)""", "stroke-width=""$([double]($width.Groups[1].value) * (1.0 / 2.0))"""
+        }
 
         $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
 
@@ -754,14 +782,20 @@ function CopySrc {
     Copy-Item -Path "$srcPath/*" -Destination $buildPath -Recurse -Force
 }
 
+function CopyDist {
+    Write-Output "====== Copying dist content ======"
+    Copy-Item -Path "$buildPath" -Destination $distPath -Recurse -Force
+}
+
 function InitCleanup {
-    Write-Output "====== Cleaning dist ======"
-    Remove-Item -Path $buildPath -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Output "====== Cleaning temp & dist ======"
+    Remove-Item -Path $rootTempPath -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path $distPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 function EndCleanup {
     Write-Output "====== Cleaning tmp ======"
-    Remove-Item -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path $rootTempPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 function AllLowercase {
@@ -839,9 +873,9 @@ icons:
 
         $templateFilled = $template -replace "{{columns}}", $columns -replace "{{rows}}", $rows -replace "{{icons}}", $iconsStrs
 
-        $templateFilled | Out-File (Join-Path $samplesPath "$iconSet.yml") -Force
+        $templateFilled | Out-File (Join-Path $samplesPath "$iconSet.yaml") -Force
 
-        $samples."Contact Sheets".$iconSet = "$iconSet.yml"
+        $samples."Contact Sheets".$iconSet = "$iconSet.yaml"
     }
 
     $samples | ConvertTo-Json | Out-File $samplesJSONPath -Force
@@ -869,6 +903,11 @@ if ($steps -contains "GenContactSheets") {
 if ($steps -contains "AllLowercase") {
     AllLowercase
 }
+
+if ($steps -contains "CopyDist") {
+    CopyDist
+}
+
 
 if ($steps -contains "EndCleanup") {
     EndCleanup
