@@ -8,7 +8,12 @@ defs:
   noBackground: &noBackground
     fill: none
     stroke: none
-
+  vendorIcons: &vendorIcons
+    <<: *noBackground
+    text: null
+    x: "-0.25"
+    w: 2
+    
 icons:
   docPC:
     x: 0
@@ -28,68 +33,73 @@ icons:
     text: Servers
 
   diff:
-    x: 1
+    x: 0.25
     y: "+1"
     iconFamily: "M365"
     icon: "SiteShared-blue"
-    w: 2
+    w: 1.5
     
-  vendGCP:
-    <<: *noBackground
+  cms:
+    x: 1.75
+    iconFamily: "iconify"
+    icon: "vscode-icons:file-type-confluence"
+    w: 1.5
+    
+  vendPP:
+    <<: *vendorIcons
     x: 2
     y: "+1"
-    iconFamily: "Iconify"
-    icon: "mdi:google-cloud"
-    w: 2
-    text: null
-  vendPP:
-    <<: *noBackground
-    x: "-0.25"
     iconFamily: "PowerPlatform"
     icon: "PowerApps"
-    w: 2
-    text: null
+  vendVS:
+    <<: *vendorIcons
+    iconFamily: "iconify"
+    icon: "logos:visual-studio"
   vendAndroid:
-    <<: *noBackground
-    x: "-0.25"
+    <<: *vendorIcons
     iconFamily: "iconify"
     icon: "uim:android"
-    w: 2
-    text: null
-    iconFill: green
-  vendAWS:
-    <<: *noBackground
-    x: "-0.25"
+    iconFill: "#3DDC84"
+  vendDocker:
+    <<: *vendorIcons
     iconFamily: "iconify"
-    icon: "logos:aws"
-    w: 2
-    text: null
-  venCheese:
-    <<: *noBackground
-    x: "-0.25"
+    icon: "logos:docker-icon"
+  vendCheese:
+    <<: *vendorIcons
     iconFamily: "iconify"
     icon: "noto:cheese-wedge"
-    w: 2
-    text: null
-
-
-    
-    
-   
-  
+  vendCisco:
+    <<: *vendorIcons
+    iconFamily: "Cisco"
+    icon: "Router"
+  vendGCP:
+    <<: *vendorIcons
+    iconFamily: "Iconify"
+    icon: "mdi:google-cloud"
+  vendAzure:
+    <<: *vendorIcons
+    iconFamily: "Iconify"
+    icon: "vscode-icons:file-type-azure"
+  vendAWS:
+    <<: *vendorIcons
+    iconFamily: "iconify"
+    icon: "logos:aws"
     
 connections:
-  - {endpoints: [docPC,docWAF]}
-  - {endpoints: [docWAF,docServer]}
+  - {endpoints: [docPC, docWAF]}
+  - {endpoints: [docWAF, docServer]}
+  - {endpoints: [diff, cms]}
+  - {endpoints: [cms, docServer], curve: StepReversed}
 groups:
   doc:
     members: [docPC, docWAF, docServer]
     padding:
       left: 0.05
       right: 0.05
-      top: 0.15
+      top: 0.05
       bottom: 0.05
     fill: lightGrey
+    text: null
 notes:
   Title:
     x: 2
@@ -102,30 +112,32 @@ notes:
       # Welcome to `DrawTheNet.IO`
   docsText:
     x: 3.5
-    y: 1
+    y: "+1"
     xAlign: left
     yAlign: center
     w: 2
-    h: 1
     text:  |
       #####This web app allow you to create network diagram from simple yaml files.
       
       #####You can define icons placement, groups, notes & connections.
   diffText:
-    x: 3.5
-    y: 2
+    y: "+1"
     xAlign: left
     yAlign: center
     w: 2
-    h: 1
     text:  |
-      #####The files are easily diffable and can be integrated int many content managment system. Alternativly, for ease of use, documents are embeded in the URL and can be stored as links in documentations.
+      #####The files are easily diffable and can be integrated into many content managment systems. Alternativly, for ease of use, documents are embeded in the URL and can be stored as links in documentations.
   vendorText:
-    x: 3.5
-    y: 3
+    y: "+1"
     xAlign: left
     yAlign: center
     w: 2
-    h: 1
     text:  |
-      You can use icons from many vendors linke AWS, Azure, GCP, Cisco ...
+      #####You can use icons from many vendors linke AWS, Azure, GCP, Cisco ...
+  more:
+    w: 5
+    y: "+1"
+    x: 2
+    yAlign: center
+    text: |
+      You can find more exemples in the **Samples** menu above and a full documentation with the **?** button in the top right corner. Don't hesitate to hit us on [Github](https://github.com/remygrandin/drawthenet.io) :-)
