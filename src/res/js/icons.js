@@ -284,6 +284,28 @@ export function RenderIcons(container, doc, dataBag) {
                     });
                 }
 
+                if("iconFill" in doc.icons[key])
+                {
+                    let fills = svg.querySelectorAll("[fill]");
+                    if(fills != null && fills.length > 0)
+                    {
+                        fills.forEach(fill => {
+                            fill.setAttribute("fill", doc.icons[key].iconFill);
+                        });
+                    }
+                }
+
+                if("iconStroke" in doc.icons[key])
+                {
+                    let strokes = svg.querySelectorAll("[stroke]");
+                    if(strokes != null && strokes.length > 0)
+                    {
+                        strokes.forEach(stroke => {
+                            stroke.setAttribute("stroke", doc.icons[key].iconStroke);
+                        });
+                    }
+                }
+                
                 iconImage._groups[0][0].innerHTML = svg.outerHTML;
             });
         });
