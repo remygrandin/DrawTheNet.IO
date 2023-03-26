@@ -2,7 +2,7 @@ param(
     [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "GenContactSheets", "AllLowercase", "CopyDist", "EndCleanup")
 )
 
-$distPath = Join-Path $PSScriptRoot .. "dist"
+$distPath = Join-Path $PSScriptRoot ..
 $srcPath = Join-Path $PSScriptRoot .. "src"
 
 $rootTempPath = Join-Path ([system.io.path]::GetTempPath()) "drawthenet.io-build"
@@ -784,7 +784,7 @@ function CopySrc {
 
 function CopyDist {
     Write-Output "====== Copying dist content ======"
-    Copy-Item -Path "$buildPath" -Destination $distPath -Recurse -Force
+    Copy-Item -Path "$buildPath/" -Destination $distPath -Recurse -Force
 }
 
 function InitCleanup {
