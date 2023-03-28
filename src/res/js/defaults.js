@@ -88,7 +88,11 @@ const connectionDefaults = {
     strokeDashArray: "0,0",
     strokeWidth: 1,
     curve: "Linear",
-    labelOffsetRatio: 0.6
+    labelOffsetRatio: 0.6,
+    margin: {
+        endp1: 0.05,
+        endp2: 0.05
+    }
 }
 
 const noteDefaults = {

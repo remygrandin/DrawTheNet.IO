@@ -322,11 +322,61 @@
 </body>
 
 <script type="module">
-    import { Canvg } from 'https://cdn.skypack.dev/canvg';
     import { Render as Renderer } from './res/js/render.js';
-    import { ExportPNG as ExportPNG, ExportSVG as ExportSVG } from './res/js/exporters.js';
+    import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
 
-    $(function () {
+    $(async function () {
+        // =============================================
+        // =============== Param Loading ===============
+        // =============================================
+        async function LoadParams() {
+            let urlParams = new URLSearchParams(window.location.hash.substring(1));
+
+            let returnObj = {
+                "fullscreen": urlParams.get("fullscreen") === "true",
+                "autosave": urlParams.get("autosave") !== "false",
+                "autoupdate": urlParams.get("autoupdate") !== "false",
+                "doc": LZString.decompressFromEncodedURIComponent(urlParams.get("doc"))
+            };
+
+            if (returnObj.doc == null || returnObj.doc == "") {
+                let lastDoc = localStorage.getItem('lastDoc');
+                if (lastDoc != null) {
+                    returnObj.doc = LZString.decompressFromEncodedURIComponent(lastDoc);
+                }
+                if (returnObj.doc == null || returnObj.doc == "") {
+                    returnObj.doc = await fetch("./samples/welcome.yaml").then(r => r.text());
+                }
+            }
+
+            return returnObj;
+        }
+
+        function SetParams(params) {
+            let urlParams = new URLSearchParams(window.location.hash.substring(1));
+
+            let compressed = LZString.compressToEncodedURIComponent(params.doc);
+            localStorage.setItem('lastDoc', compressed);
+
+            urlParams.set("fullscreen", params.fullscreen);
+            urlParams.set("autosave", params.autosave);
+            urlParams.set("autoupdate", params.autoupdate);
+            urlParams.set("doc", compressed);
+
+            window.location.hash = urlParams.toString();
+
+            if (window.location.hash == '#' + urlParams.toString()) {
+                history.replaceState(null, null, '#');
+                history.replaceState(null, null, '#' + urlParams.toString());
+            }
+            else {
+                history.pushState(null, null, '#' + urlParams.toString());
+            }
+        }
+
+        // =============================================
+        // ============== Editor & Hl.js ===============
+        // =============================================
 
         // Highlight.js Init
         hljs.highlightAll();
@@ -343,46 +393,48 @@
         // Data storage Init
         var Data = {};
 
-        // Seting & session loading
+        // =============================================
+        // ======= Settings & session loading ==========
+        // =============================================
 
-        if (localStorage.getItem("autosave") !== null) {
-            $('#inpAutoSave').prop('checked', localStorage.getItem("autosave") === "true");
-        }
-        if (localStorage.getItem("autoupdate") !== null) {
-            $('#inpAutoUpdate').prop('checked', localStorage.getItem("autoupdate") === "true");
-        }
+        let initParam = await LoadParams();
+
+        $('#inpAutoSave').prop('checked', initParam.autosave === true);
+        $('#inpAutoUpdate').prop('checked', initParam.autoupdate === true);
+
+        editor.setValue(initParam.doc, -1);
 
         $('#contAutoSave').on("click", function () {
             $('#inpAutoSave').prop("checked", !$('#inpAutoSave').is(":checked"));
         });
-        $('#inpAutoSave').change(function () {
-            localStorage.setItem("autosave", $(this).is(":checked"));
+        $('#inpAutoSave').change(async function () {
+            let param = await LoadParams();
+
+            param.autosave = $(this).is(":checked");
+
+            SetParams(param);
         });
         $('#contAutoUpdate').on("click", function () {
             $('#inpAutoUpdate').prop("checked", !$('#inpAutoUpdate').is(":checked"));
         });
-        $('#inpAutoUpdate').change(function () {
-            localStorage.setItem("autoupdate", $(this).is(":checked"));
+        $('#inpAutoUpdate').change(async function () {
+            let param = await LoadParams();
+
+            param.autoupdate = $(this).is(":checked");
+
+            SetParams(param);
         });
 
-        if (window.location.hash) {
-            let design = LZString.decompressFromEncodedURIComponent(window.location.hash.substring(1));
-            editor.setValue(design, -1);
-        }
-        else {
-            if (localStorage.getItem("lastDoc") !== null) {
-                editor.setValue(LZString.decompressFromEncodedURIComponent(localStorage.getItem("lastDoc")), -1);
-            }
-        }
-
-        // Render function
-        let debounceRanderTimer;
+        // =============================================
+        // ======= Settings & session loading ==========
+        // =============================================
+        let debounceRenderTimer;
         let lastDocument = null;
         let errorToast = null;
 
         function Render(maxDelay = 2000) {
-            clearTimeout(debounceRanderTimer);
-            debounceRanderTimer = setTimeout(() => {
+            clearTimeout(debounceRenderTimer);
+            debounceRenderTimer = setTimeout(async () => {
                 try {
                     let text = editor.session.getValue();
 
@@ -391,16 +443,9 @@
                     }
 
                     if ($("#inpAutoSave").is(":checked")) {
-                        let compressed = LZString.compressToEncodedURIComponent(text);
-                        localStorage.setItem('lastDoc', compressed);
-                        
-                        if (window.location.hash == '#' + compressed) {
-                            history.replaceState(null, null, '#');
-                            history.replaceState(null, null, '#' + compressed);
-                        }
-                        else {
-                            history.pushState(null, null, '#' + compressed);
-                        }
+                        let params = await LoadParams();
+                        params.doc = text;
+                        SetParams(params);
                     }
 
                     let doc = jsyaml.load(text);
@@ -567,59 +612,10 @@
                 });
         }
 
-
-
         let debounceSearchIconTimer;
         $("#txtSearchIcon").on("input", function (event) {
             clearTimeout(debounceSearchIconTimer);
             debounceSearchIconTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
-        });
-
-        $("#drpIconsSets").on("click", "li", function (event) {
-            event.preventDefault();
-
-            let familyName = $(this).text();
-
-            var win = window.open('about:blank', '_blank');
-
-
-            var size = Data.Icons[familyName].length
-            var bestFit = Math.ceil(Math.sqrt(size))
-
-            fetch('./res/icons/contactSheet.yaml')
-                .then(response => response.text())
-                .then(function (res) {
-                    var doc = jsyaml.load(res);
-
-                    let ratio = 1 / 2;
-
-                    let height = Math.ceil(Math.sqrt(Data.Icons[familyName].length * ratio));
-                    let width = Math.ceil(height / ratio);
-
-                    doc.diagram.rows = height;
-                    doc.diagram.columns = Math.ceil(Data.Icons[familyName].length / height);
-
-                    let screenRatio = window.innerWidth / window.innerHeight;
-
-                    doc.diagram.aspectRatio = `${window.innerWidth}:${window.innerHeight}`;
-
-                    doc.icon.iconFamily = familyName;
-
-                    var x = 0
-                    var y = doc.diagram.rows - 1
-                    doc.icons = {}
-                    for (var icon in Data.Icons[familyName]) {
-                        doc.icons[Data.Icons[familyName][icon]] = Object.assign({ x: x, y: y, icon: Data.Icons[familyName][icon] }, doc.icon)
-                        x += 1
-                        if (x == doc.diagram.columns) {
-                            x = 0
-                            y -= 1
-                        }
-                    }
-
-                    win.location.href = `fullscreen.html#${btoa(JSON.stringify(jsyaml.dump(doc)))}`;
-                });
-
         });
 
         $("#iconCards").on("click", ".icon-family", function (event) {
@@ -720,24 +716,22 @@
         // =============== Local Save ==================
         // =============================================
 
-        $("#btnSave").on("click", function (event) {
+
+
+        $("#btnSave").on("click", async function (event) {
             let text = editor.session.getValue();
 
-            let compressed = LZString.compressToEncodedURIComponent(text);
-            localStorage.setItem('lastDoc', compressed);
-            history.pushState(null, null, '#' + compressed);
-            if (window.location.hash == '#' + compressed) {
-                history.replaceState(null, null, '#');
-                history.replaceState(null, null, '#' + compressed);
-            }
-            else {
-                history.pushState(null, null, '#' + compressed);
-            }
+            let params = await LoadParams();
+            params.doc = text;
+            SetParams(params);
         });
 
         // =============================================
         // ================= Exports ===================
         // =============================================
+
+        // Preloading fonts for PNG export
+        LoadFonts();
 
         function saveAs(blob, title) {
             let link = document.createElement("a");
@@ -759,6 +753,8 @@
 
             saveAs(blob, title);
         });
+
+
 
         $("#btnSaveSVG").on("click", async function (event) {
             event.preventDefault();
