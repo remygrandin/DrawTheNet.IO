@@ -90,8 +90,8 @@ const connectionDefaults = {
     curve: "Linear",
     labelOffsetRatio: 0.6,
     margin: {
-        endp1: 0.05,
-        endp2: 0.05
+        endp1: 0.08,
+        endp2: 0.08
     }
 }
 

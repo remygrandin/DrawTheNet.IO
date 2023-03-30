@@ -1,32 +1,61 @@
 diagram:
-  aspectRatio: "14:8.5"
-  columns: 7
+  columns: 6
   fill: "lightgrey"
-  rows: 5
+  rows: 10
 title:
-  color: black
-  fill: "none"
-  logoFill: none
-  stroke: "black"
-  text: "Curves"
-  type: "bar"
-azure: &azure
-  color: "black"
-  fill: "darkgrey"
-  iconFamily: "M365"
-  iconFill: "white"
-  iconStroke: "none"
-  stroke: "none"
+  type: "none"
+defs:
+  azure: &azure
+    color: "black"
+    fill: "darkgrey"
+    iconFamily: "M365"
+    iconFill: "white"
+    iconStroke: "none"
+    stroke: "none"
+  rack1: &rack1
+    <<: *azure
+    icon: "mainframe"
+    x: 0
+    y: "+1"
+    text: Server 1
+  rack2: &rack2
+    <<: *azure
+    icon: "mainframe-blue"
+    x: 5
+    y: "+1"
+    text: Server 2
+  grp: &grp
+    padding:
+      top: 0.05
+      right: 0.1
+      bottom: 0.05
+      left: 0.1
+    textSizeRatio: 0.5
+    textLocation: bottomCenter
 icons:
-  serverrack1: {<<: *azure, x: 0, y: 4, icon: "mainframe"}
-  serverrack2: {<<: *azure, x: 3, y: 2, icon: "mainframe-blue"}
-  serverrack3: {<<: *azure, x: 6, y: 0, icon: "mainframe"}
+  linear1: {<<: *rack1, y: 0}
+  linear2: {<<: *rack2}
+  step1: {<<: *rack1}
+  step2: {<<: *rack2}
+  stepReversed1: {<<: *rack1}
+  stepReversed2: {<<: *rack2}
+  stepBefore1: {<<: *rack1}
+  stepBefore2: {<<: *rack2}
+  stepAfter1: {<<: *rack1}
+  stepAfter2: {<<: *rack2}
 connection: &connection
   color: "black"
   stroke: "black"
   strokeDashArray: "0,0"
 connections:
-  - { <<: *connection, curve: curveLinear, endpoints: ["serverrack1:curveLinear", "serverrack2:curveLinear"] }
-  - { <<: *connection, curve: curveStepBefore, endpoints: ["serverrack1:curveStepBefore", "serverrack2:curveStepBefore"] }
-  - { <<: *connection, curve: curveStepAfter, endpoints: ["serverrack1:curveStepAfter", "serverrack2:curveStepAfter"] }
-  - { <<: *connection, curve: curveStep, endpoints: ["serverrack2:curveStep", "serverrack3:curveStep"] }
+ - { <<: *connection, curve: Linear, endpoints: ["linear1", "linear2"] }
+ - { <<: *connection, curve: Step, endpoints: ["step1", "step2"] }
+ - { <<: *connection, curve: StepReversed, endpoints: ["stepReversed1", "stepReversed2"] }
+ - { <<: *connection, curve: StepBefore, endpoints: ["stepBefore1", "stepBefore2"] }
+ - { <<: *connection, curve: StepAfter, endpoints: ["stepAfter1", "stepAfter2"] }
+groups:
+ - {<<: *grp, members: ["linear1", "linear2"], text: "curve: Linear"}
+ - {<<: *grp, members: ["step1", "step2"], text: "curve: Step"}
+ - {<<: *grp, members: ["stepReversed1", "stepReversed2"], text: "curve: StepReversed"}
+ - {<<: *grp, members: ["stepBefore1", "stepBefore2"], text: "curve: StepBefore"}
+ - {<<: *grp, members: ["stepAfter1", "stepAfter2"], text: "curve: StepAfter"}

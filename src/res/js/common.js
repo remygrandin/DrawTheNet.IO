@@ -22,19 +22,19 @@ export function ApplyTextLocation(textObj, textLocation, x1, y1, x2, y2) {
             textObj.attr("x", x1);
             textObj.attr("text-anchor", "start");
             textObj.attr("y", y2);
-            textObj.attr("dominant-baseline", "auto");
+            textObj.attr("dominant-baseline", "ideographic");
             break;
         case "bottomCenter":
             textObj.attr("x", x1 + (x2 - x1) / 2);
             textObj.attr("text-anchor", "middle");
             textObj.attr("y", y2);
-            textObj.attr("dominant-baseline", "auto");
+            textObj.attr("dominant-baseline", "ideographic");
             break;
         case "bottomRight":
             textObj.attr("x", x2);
             textObj.attr("text-anchor", "end");
             textObj.attr("y", y2);
-            textObj.attr("dominant-baseline", "auto");
+            textObj.attr("dominant-baseline", "ideographic");
             break;
         case "center":
             textObj.attr("x", x1 + (x2 - x1) / 2);

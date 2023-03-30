@@ -138,16 +138,6 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
-    else if (curveType == "StepBefore") {
-        pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
-        pathD += `L ${enp1.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
-        pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
-    }
-    else if (curveType == "StepAfter") {
-        pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
-        pathD += `L ${enp2.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
-        pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
-    }
     else if (curveType == "Step") {
         let midpointX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
 
@@ -164,6 +154,17 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         pathD += `L ${enp2.nodeComputed.xScaled}, ${midpointY} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
+    else if (curveType == "StepBefore") {
+        pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        pathD += `L ${enp1.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+        pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+    }
+    else if (curveType == "StepAfter") {
+        pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        pathD += `L ${enp2.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+    }
+
 
     path.attr("d", pathD)
 
@@ -171,99 +172,135 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let label1XOffset = 0;
     let label2XOffset = 0;
 
+    let totalDist1 = 0;
+    let totalDist2 = 0;
+
+    let endp1Angle = 0;
+    let endp2Angle = 0;
+
+    enp1.nodeComputed.marginDist = {
+        left: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp1.node.margin.left,
+        right: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp1.node.margin.right,
+        top: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp1.node.margin.top,
+        bottom: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp1.node.margin.bottom
+    };
+
+    enp1.nodeComputed.corners = {
+        topLeft: { x: enp1.nodeComputed.xScaled - enp1.nodeComputed.marginDist.left, y: enp1.nodeComputed.yScaled - enp1.nodeComputed.marginDist.top },
+        topRight: { x: enp1.nodeComputed.xScaled + enp1.nodeComputed.marginDist.right, y: enp1.nodeComputed.yScaled - enp1.nodeComputed.marginDist.top },
+        bottomLeft: { x: enp1.nodeComputed.xScaled - enp1.nodeComputed.marginDist.left, y: enp1.nodeComputed.yScaled + enp1.nodeComputed.marginDist.bottom },
+        bottomRight: { x: enp1.nodeComputed.xScaled + enp1.nodeComputed.marginDist.right, y: enp1.nodeComputed.yScaled + enp1.nodeComputed.marginDist.bottom }
+    };
+
+    enp1.nodeComputed.cornerAngles = {
+        topLeft: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.topLeft.x, enp1.nodeComputed.corners.topLeft.y)),
+        topRight: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.topRight.x, enp1.nodeComputed.corners.topRight.y)),
+        bottomLeft: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.bottomLeft.x, enp1.nodeComputed.corners.bottomLeft.y)),
+        bottomRight: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.bottomRight.x, enp1.nodeComputed.corners.bottomRight.y))
+    };
+
+    enp2.nodeComputed.marginDist = {
+        left: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp2.node.margin.left,
+        right: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp2.node.margin.right,
+        top: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp2.node.margin.top,
+        bottom: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp2.node.margin.bottom
+    };
+
+    enp2.nodeComputed.corners = {
+        topLeft: { x: enp2.nodeComputed.xScaled - enp2.nodeComputed.marginDist.left, y: enp2.nodeComputed.yScaled - enp2.nodeComputed.marginDist.top },
+        topRight: { x: enp2.nodeComputed.xScaled + enp2.nodeComputed.marginDist.right, y: enp2.nodeComputed.yScaled - enp2.nodeComputed.marginDist.top },
+        bottomLeft: { x: enp2.nodeComputed.xScaled - enp2.nodeComputed.marginDist.left, y: enp2.nodeComputed.yScaled + enp2.nodeComputed.marginDist.bottom },
+        bottomRight: { x: enp2.nodeComputed.xScaled + enp2.nodeComputed.marginDist.right, y: enp2.nodeComputed.yScaled + enp2.nodeComputed.marginDist.bottom }
+    };
+
+    enp2.nodeComputed.cornerAngles = {
+        topLeft: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.topLeft.x, enp2.nodeComputed.corners.topLeft.y)),
+        topRight: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.topRight.x, enp2.nodeComputed.corners.topRight.y)),
+        bottomLeft: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.bottomLeft.x, enp2.nodeComputed.corners.bottomLeft.y)),
+        bottomRight: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.bottomRight.x, enp2.nodeComputed.corners.bottomRight.y))
+    };
+
+
     if (curveType == "Linear") {
-        let totalDist = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
+        totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
+        totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
 
-        enp1.nodeComputed.marginDist = {
-            left: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp1.node.margin.left,
-            right: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp1.node.margin.right,
-            top: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp1.node.margin.top,
-            bottom: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp1.node.margin.bottom
-        };
-
-        enp1.nodeComputed.corners = {
-            topLeft: { x: enp1.nodeComputed.xScaled - enp1.nodeComputed.marginDist.left, y: enp1.nodeComputed.yScaled - enp1.nodeComputed.marginDist.top },
-            topRight: { x: enp1.nodeComputed.xScaled + enp1.nodeComputed.marginDist.right, y: enp1.nodeComputed.yScaled - enp1.nodeComputed.marginDist.top },
-            bottomLeft: { x: enp1.nodeComputed.xScaled - enp1.nodeComputed.marginDist.left, y: enp1.nodeComputed.yScaled + enp1.nodeComputed.marginDist.bottom },
-            bottomRight: { x: enp1.nodeComputed.xScaled + enp1.nodeComputed.marginDist.right, y: enp1.nodeComputed.yScaled + enp1.nodeComputed.marginDist.bottom }
-        };
-
-        enp1.nodeComputed.cornerAngles = {
-            topLeft: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.topLeft.x, enp1.nodeComputed.corners.topLeft.y)),
-            topRight: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.topRight.x, enp1.nodeComputed.corners.topRight.y)),
-            bottomLeft: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.bottomLeft.x, enp1.nodeComputed.corners.bottomLeft.y)),
-            bottomRight: radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.corners.bottomRight.x, enp1.nodeComputed.corners.bottomRight.y))
-        };
-
-        let endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
-
-        if (enp1.nodeComputed.cornerAngles.topRight <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.bottomRight) {
-            label1XOffset = enp1.nodeComputed.marginDist.right
-                / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
-                * totalDist;
-        }
-        else if (enp1.nodeComputed.cornerAngles.topLeft <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.topRight) {
-            label1XOffset = enp1.nodeComputed.marginDist.top
-                / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
-                * totalDist;
-        }
-        else if (enp1.nodeComputed.cornerAngles.bottomRight <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.bottomLeft) {
-            label1XOffset = enp1.nodeComputed.marginDist.bottom
-                / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
-                * totalDist;
-        }
-        else {
-            label1XOffset = enp1.nodeComputed.marginDist.left
-                / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
-                * totalDist;
-        }
-
-
-
-        enp2.nodeComputed.marginDist = {
-            left: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp2.node.margin.left,
-            right: dataBag.Scaler.X.UnitStepAbs / 2 - dataBag.Scaler.X.UnitStepAbs * enp2.node.margin.right,
-            top: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp2.node.margin.top,
-            bottom: dataBag.Scaler.Y.UnitStepAbs / 2 - dataBag.Scaler.Y.UnitStepAbs * enp2.node.margin.bottom
-        };
-
-        enp2.nodeComputed.corners = {
-            topLeft: { x: enp2.nodeComputed.xScaled - enp2.nodeComputed.marginDist.left, y: enp2.nodeComputed.yScaled - enp2.nodeComputed.marginDist.top },
-            topRight: { x: enp2.nodeComputed.xScaled + enp2.nodeComputed.marginDist.right, y: enp2.nodeComputed.yScaled - enp2.nodeComputed.marginDist.top },
-            bottomLeft: { x: enp2.nodeComputed.xScaled - enp2.nodeComputed.marginDist.left, y: enp2.nodeComputed.yScaled + enp2.nodeComputed.marginDist.bottom },
-            bottomRight: { x: enp2.nodeComputed.xScaled + enp2.nodeComputed.marginDist.right, y: enp2.nodeComputed.yScaled + enp2.nodeComputed.marginDist.bottom }
-        };
-
-        enp2.nodeComputed.cornerAngles = {
-            topLeft: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.topLeft.x, enp2.nodeComputed.corners.topLeft.y)),
-            topRight: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.topRight.x, enp2.nodeComputed.corners.topRight.y)),
-            bottomLeft: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.bottomLeft.x, enp2.nodeComputed.corners.bottomLeft.y)),
-            bottomRight: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.bottomRight.x, enp2.nodeComputed.corners.bottomRight.y))
-        };
-
-        let endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
-
-        if (enp2.nodeComputed.cornerAngles.topRight <= endp2Angle && endp2Angle <= enp2.nodeComputed.cornerAngles.bottomRight) {
-            label2XOffset = enp2.nodeComputed.marginDist.right
-                / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
-                * totalDist;
-        }
-        else if (enp2.nodeComputed.cornerAngles.topLeft <= endp2Angle && endp2Angle <= enp2.nodeComputed.cornerAngles.topRight) {
-            label2XOffset = enp2.nodeComputed.marginDist.top
-                / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
-                * totalDist;
-        }
-        else if (enp2.nodeComputed.cornerAngles.bottomRight <= endp2Angle && endp2Angle <= enp2.nodeComputed.cornerAngles.bottomLeft) {
-            label2XOffset = enp2.nodeComputed.marginDist.bottom
-                / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
-                * totalDist;
-        }
-        else {
-            label2XOffset = enp2.nodeComputed.marginDist.left
-                / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
-                * totalDist;
-        }
+        endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
+        endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
     }
+    else if (curveType == "Step") {
+        totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
+        totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
+
+        endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
+        endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
+    }
+    else if (curveType == "StepReversed") {
+        totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
+        totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
+
+        endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
+        endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
+    }
+    else if (curveType == "StepBefore") {
+        totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
+        totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
+
+        endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
+        endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
+    }
+    else if (curveType == "StepAfter") {
+        totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
+        totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
+
+        endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
+        endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
+    }
+
+
+
+    if (enp1.nodeComputed.cornerAngles.topRight <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.bottomRight) {
+        label1XOffset = enp1.nodeComputed.marginDist.right
+            / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
+            * totalDist1;
+    }
+    else if (enp1.nodeComputed.cornerAngles.topLeft <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.topRight) {
+        label1XOffset = enp1.nodeComputed.marginDist.top
+            / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
+            * totalDist1;
+    }
+    else if (enp1.nodeComputed.cornerAngles.bottomRight <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.bottomLeft) {
+        label1XOffset = enp1.nodeComputed.marginDist.bottom
+            / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
+            * totalDist1;
+    }
+    else {
+        label1XOffset = enp1.nodeComputed.marginDist.left
+            / getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
+            * totalDist1;
+    }
+
+    if (enp2.nodeComputed.cornerAngles.topRight <= endp2Angle && endp2Angle <= enp2.nodeComputed.cornerAngles.bottomRight) {
+        label2XOffset = enp2.nodeComputed.marginDist.right
+            / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
+            * totalDist2;
+    }
+    else if (enp2.nodeComputed.cornerAngles.topLeft <= endp2Angle && endp2Angle <= enp2.nodeComputed.cornerAngles.topRight) {
+        label2XOffset = enp2.nodeComputed.marginDist.top
+            / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
+            * totalDist2;
+    }
+    else if (enp2.nodeComputed.cornerAngles.bottomRight <= endp2Angle && endp2Angle <= enp2.nodeComputed.cornerAngles.bottomLeft) {
+        label2XOffset = enp2.nodeComputed.marginDist.bottom
+            / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled)
+            * totalDist2;
+    }
+    else {
+        label2XOffset = enp2.nodeComputed.marginDist.left
+            / getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled)
+            * totalDist2;
+    }
+
 
     label1XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
     label2XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
@@ -277,7 +314,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     enp1Label.append("textPath")
         .style("text-anchor", "start")
         .attr("xlink:href", `#path-${pathId}`)
-        .text(enp1.portLabel.toUpperCase());
+        .text(enp1.portLabel);
 
 
     let enp2Label = connectionContainer.append("text")
@@ -290,7 +327,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         .style("text-anchor", "end")
         .attr("startOffset", "100%")
         .attr("xlink:href", `#path-${pathId}`)
-        .text(enp2.portLabel.toUpperCase());
+        .text(enp2.portLabel);
 }
 
 function getDistance2Points(x1, y1, x2, y2) {
