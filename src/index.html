@@ -148,7 +148,7 @@
 
 <body class="">
     <div class="container-fluid min-vh-100 d-flex flex-column">
-        <div class="row">
+        <div class="row" id="topBar">
             <div class="col">
                 <nav class="navbar navbar-expand-lg bg-secondary">
                     <div class="container-fluid mb-1">
@@ -206,6 +206,11 @@
                             </ul>
                         </div>
                         <div class="d-flex mt-1">
+                            <button class="btn btn-info me-2" type="button" id="btnFullscreen">
+                                <iconify-icon inline icon="bi:arrows-fullscreen"></iconify-icon>
+                                Fullscreen
+                            </button>
+
                             <button class="btn btn-success me-2" type="button" id="btnUpdate">
                                 <iconify-icon inline icon="zondicons:reload"></iconify-icon>
                                 Update
@@ -246,7 +251,7 @@
             </div>
         </div>
         <div class="row flex-grow-1 gx-0">
-            <div class="col border border-dark">
+            <div class="col border border-dark" id="editorCol">
                 <div id="editor"></div>
             </div>
             <div class="col bg-dark bg-gradient border border-dark p-3">
@@ -329,8 +334,19 @@
         // =============================================
         // =============== Param Loading ===============
         // =============================================
-        async function LoadParams() {
-            let urlParams = new URLSearchParams(window.location.hash.substring(1));
+        function genParamString(obj) {
+            let urlParams = new URLSearchParams();
+
+            urlParams.set("fullscreen", obj.fullscreen);
+            urlParams.set("autosave", obj.autosave);
+            urlParams.set("autoupdate", obj.autoupdate);
+            urlParams.set("doc", LZString.compressToEncodedURIComponent(obj.doc));
+
+            return urlParams.toString();
+        }
+
+        function parseParamString(paramString){
+            let urlParams = new URLSearchParams(paramString);
 
             let returnObj = {
                 "fullscreen": urlParams.get("fullscreen") === "true",
@@ -338,6 +354,11 @@
                 "autoupdate": urlParams.get("autoupdate") !== "false",
                 "doc": LZString.decompressFromEncodedURIComponent(urlParams.get("doc"))
             };
+            return returnObj;
+        }
+
+        async function LoadParams() {
+            let returnObj = parseParamString(window.location.hash.substring(1));
 
             if (returnObj.doc == null || returnObj.doc == "") {
                 let lastDoc = localStorage.getItem('lastDoc');
@@ -353,18 +374,10 @@
         }
 
         function SetParams(params) {
-            let urlParams = new URLSearchParams(window.location.hash.substring(1));
+            window.location.hash = "#" + genParamString(params)
 
-            let compressed = LZString.compressToEncodedURIComponent(params.doc);
-            localStorage.setItem('lastDoc', compressed);
-
-            urlParams.set("fullscreen", params.fullscreen);
-            urlParams.set("autosave", params.autosave);
-            urlParams.set("autoupdate", params.autoupdate);
-            urlParams.set("doc", compressed);
-
-            window.location.hash = urlParams.toString();
-
+            history.pushState(null, null, '#' + genParamString(params));
+/*
             if (window.location.hash == '#' + urlParams.toString()) {
                 history.replaceState(null, null, '#');
                 history.replaceState(null, null, '#' + urlParams.toString());
@@ -372,6 +385,8 @@
             else {
                 history.pushState(null, null, '#' + urlParams.toString());
             }
+
+            */
         }
 
         // =============================================
@@ -397,32 +412,32 @@
         // ======= Settings & session loading ==========
         // =============================================
 
-        let initParam = await LoadParams();
+        let params = await LoadParams();
 
-        $('#inpAutoSave').prop('checked', initParam.autosave === true);
-        $('#inpAutoUpdate').prop('checked', initParam.autoupdate === true);
+        $('#inpAutoSave').prop('checked', params.autosave === true);
+        $('#inpAutoUpdate').prop('checked', params.autoupdate === true);
 
-        editor.setValue(initParam.doc, -1);
+        editor.setValue(params.doc, -1);
 
         $('#contAutoSave').on("click", function () {
             $('#inpAutoSave').prop("checked", !$('#inpAutoSave').is(":checked"));
         });
         $('#inpAutoSave').change(async function () {
-            let param = await LoadParams();
+            params = await LoadParams();
 
-            param.autosave = $(this).is(":checked");
+            params.autosave = $(this).is(":checked");
 
-            SetParams(param);
+            SetParams(params);
         });
         $('#contAutoUpdate').on("click", function () {
             $('#inpAutoUpdate').prop("checked", !$('#inpAutoUpdate').is(":checked"));
         });
         $('#inpAutoUpdate').change(async function () {
-            let param = await LoadParams();
+            params = await LoadParams();
 
-            param.autoupdate = $(this).is(":checked");
+            params.autoupdate = $(this).is(":checked");
 
-            SetParams(param);
+            SetParams(params);
         });
 
         // =============================================
@@ -710,6 +725,27 @@
                     });
                 }
             );
+        });
+
+        // =============================================
+        // =============== FullScreen ==================
+        // =============================================
+
+        $("#btnFullscreen").on("click", function (event) {
+            
+            params.fullscreen = !params.fullscreen;
+
+            if (params.fullscreen) {
+                $("#topBar").hide();
+                $("#editorCol").hide();
+            }
+            else {
+                $("#topBar").show();
+                $("#editorCol").show();
+            }
+
+            Render(0);
+
         });
 
         // =============================================
