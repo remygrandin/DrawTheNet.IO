@@ -13,45 +13,12 @@ export function RenderConnections(container, doc, dataBag) {
         let endp1Components = doc.connections[key].endpoints[0].split(":");
         let endp2Components = doc.connections[key].endpoints[1].split(":");
 
-        computed.endp1 = {
-            nodeName: endp1Components[0],
-            portLabel: endp1Components[1],
-            isGroup: false
-        }
+        computed.endp1 = resolveNode(endp1Components[0], doc, dataBag);
+        computed.endp1.portLabel = endp1Components[1];
 
-        computed.endp2 = {
-            nodeName: endp2Components[0],
-            portLabel: endp2Components[1],
-            isGroup: false
-        }
+        computed.endp2 = resolveNode(endp2Components[0], doc, dataBag);
+        computed.endp2.portLabel = endp2Components[1];
 
-        if (computed.endp1.nodeName in doc.groups) {
-            computed.endp1.node = doc.groups[computed.endp1.nodeName];
-            computed.endp1.nodeComputed = dataBag.groups[computed.endp1.nodeName];
-            computed.endp1.isGroup = true;
-        }
-        else if (computed.endp1.nodeName in doc.icons) {
-            computed.endp1.node = doc.icons[computed.endp1.nodeName];
-            computed.endp1.nodeComputed = dataBag.icons[computed.endp1.nodeName];
-        }
-        else if (computed.endp1.nodeName in doc.notes) {
-            computed.endp1.node = doc.notes[computed.endp1.nodeName];
-            computed.endp1.nodeComputed = dataBag.notes[computed.endp1.nodeName];
-        }
-
-        if (computed.endp2.nodeName in doc.groups) {
-            computed.endp2.node = doc.groups[computed.endp2.nodeName];
-            computed.endp2.nodeComputed = dataBag.groups[computed.endp2.nodeName];
-            computed.endp2.isGroup = true;
-        }
-        else if (computed.endp2.nodeName in doc.icons) {
-            computed.endp2.node = doc.icons[computed.endp2.nodeName];
-            computed.endp2.nodeComputed = dataBag.icons[computed.endp2.nodeName];
-        }
-        else if (computed.endp2.nodeName in doc.notes) {
-            computed.endp2.node = doc.notes[computed.endp2.nodeName];
-            computed.endp2.nodeComputed = dataBag.notes[computed.endp2.nodeName];
-        }
 
         // Simple connection
         if (!computed.endp1.isGroup && !computed.endp2.isGroup) {
@@ -59,41 +26,28 @@ export function RenderConnections(container, doc, dataBag) {
         }
         else if (computed.endp1.isGroup && !computed.endp2.isGroup) {
             computed.endp1.nodeComputed.groupFlat.members.forEach(function (member, idx) {
-                let virtEndp1 = {
-                    node: member,
-                    nodeComputed: dataBag.icons[member],
-                    portLabel: computed.endp1.portLabel
-                }
+                let virtEndp1 = resolveNode(member, doc, dataBag);
+                virtEndp1.portLabel = computed.endp1.portLabel;
 
                 drawConnection(connectionsContainer, doc.connections[key], virtEndp1, computed.endp2, pathCounter++, dataBag);
             });
         }
         else if (!computed.endp1.isGroup && computed.endp2.isGroup) {
             computed.endp2.nodeComputed.groupFlat.members.forEach(function (member, idx) {
-                let virtEndp2 = {
-                    node: member,
-                    nodeComputed: dataBag.icons[member],
-                    portLabel: computed.endp2.portLabel
-                }
+                let virtEndp2 = resolveNode(member, doc, dataBag);
+                virtEndp2.portLabel = computed.endp2.portLabel;
 
                 drawConnection(connectionsContainer, doc.connections[key], computed.endp1, virtEndp2, pathCounter++, dataBag);
             });
         }
         else {
             computed.endp1.nodeComputed.groupFlat.members.forEach(function (endp1Member, endp1Idx) {
-                let virtEndp1 = {
-                    node: endp1Member,
-                    nodeComputed: dataBag.icons[endp1Member],
-                    portLabel: computed.endp1.portLabel
-                }
+                let virtEndp1 = resolveNode(endp1Member, doc, dataBag);
+                virtEndp1.portLabel = computed.endp1.portLabel;
 
                 computed.endp2.nodeComputed.groupFlat.members.forEach(function (endp2Member, endp2Idx) {
-
-                    let virtEndp2 = {
-                        node: endp2Member,
-                        nodeComputed: dataBag.icons[endp2Member],
-                        portLabel: computed.endp2.portLabel
-                    }
+                    let virtEndp2 = resolveNode(endp2Member, doc, dataBag);
+                    virtEndp2.portLabel = computed.endp2.portLabel;
 
                     drawConnection(connectionsContainer, doc.connections[key], virtEndp1, virtEndp2, pathCounter++, dataBag);
 
@@ -301,6 +255,11 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
             * totalDist2;
     }
 
+    if(isNaN(label1XOffset))
+        label1XOffset = Math.max(enp1.nodeComputed.marginDist.left, enp1.nodeComputed.marginDist.right, enp1.nodeComputed.marginDist.top, enp1.nodeComputed.marginDist.bottom);
+
+    if(isNaN(label2XOffset))
+        label2XOffset = Math.max(enp2.nodeComputed.marginDist.left, enp2.nodeComputed.marginDist.right, enp2.nodeComputed.marginDist.top, enp2.nodeComputed.marginDist.bottom);
 
     label1XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
     label2XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
@@ -346,5 +305,27 @@ function degToRad(deg) {
     return deg * Math.PI / 180;
 }
 
+function resolveNode(nodeName, doc, dataBag)
+{
+    let endp = {
+        nodeName: nodeName,
+        portLabel: "",
+        isGroup: false
+    }
 
+    if (endp.nodeName in doc.groups) {
+        endp.node = doc.groups[nodeName];
+        endp.nodeComputed = dataBag.groups[nodeName];
+        endp.isGroup = true;
+    }
+    else if (endp.nodeName in doc.icons) {
+        endp.node = doc.icons[nodeName];
+        endp.nodeComputed = dataBag.icons[nodeName];
+    }
+    else if (endp.nodeName in doc.notes) {
+        endp.node = doc.notes[nodeName];
+        endp.nodeComputed = dataBag.notes[nodeName];
+    }
 
+    return endp;
+}
