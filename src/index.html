@@ -732,7 +732,10 @@
         // =============================================
 
         $("#btnFullscreen").on("click", function (event) {
-            
+            toggleFullscreen();
+        });
+
+        function toggleFullscreen(){
             params.fullscreen = !params.fullscreen;
 
             if (params.fullscreen) {
@@ -745,8 +748,11 @@
             }
 
             Render(0);
+        }
 
-        });
+        if(params.fullscreen){
+            toggleFullscreen();
+        }
 
         // =============================================
         // =============== Local Save ==================
