@@ -54,47 +54,83 @@
         <nav>
             <div class="nav nav-tabs" id="nav-help" role="tablist">
                 <button class="nav-link active" id="nav-help-about-tab" data-bs-toggle="tab"
-                    data-bs-target="#nav-help-about" type="button" role="tab">About</button>
+                    data-bs-target="#nav-help-about" type="button" role="tab">
+                    About
+                </button>
                 <button class="nav-link" id="nav-help-interval-tab" data-bs-toggle="tab"
-                    data-bs-target="#nav-help-interface" type="button" role="tab">Interface</button>
+                    data-bs-target="#nav-help-interface" type="button" role="tab">
+                    Interface
+                </button>
                 <button class="nav-link" id="nav-help-general-tab" data-bs-toggle="tab"
-                    data-bs-target="#nav-help-general" type="button" role="tab">General</button>
+                    data-bs-target="#nav-help-general" type="button" role="tab">
+                    General
+                </button>
                 <button class="nav-link" id="nav-help-diagram-tab" data-bs-toggle="tab"
-                    data-bs-target="#nav-help-diagram" type="button" role="tab">Diagram</button>
+                    data-bs-target="#nav-help-diagram" type="button" role="tab">
+                    Diagram
+                </button>
                 <button class="nav-link" id="nav-help-title-tab" data-bs-toggle="tab" data-bs-target="#nav-help-title"
-                    type="button" role="tab">Title</button>
+                    type="button" role="tab">
+                    Title
+                </button>
                 <button class="nav-link" id="nav-help-icons-tab" data-bs-toggle="tab" data-bs-target="#nav-help-icons"
-                    type="button" role="tab">Icons</button>
+                    type="button" role="tab">
+                    Icons
+                </button>
                 <button class="nav-link" id="nav-help-groups-tab" data-bs-toggle="tab" data-bs-target="#nav-help-groups"
-                    type="button" role="tab">Groups</button>
+                    type="button" role="tab">
+                    Groups
+                </button>
                 <button class="nav-link" id="nav-help-notes-tab" data-bs-toggle="tab" data-bs-target="#nav-help-notes"
-                    type="button" role="tab">Notes</button>
+                    type="button" role="tab">
+                    Notes
+                </button>
                 <button class="nav-link" id="nav-help-connections-tab" data-bs-toggle="tab"
-                    data-bs-target="#nav-help-connections" type="button" role="tab">Connections</button>
-
+                    data-bs-target="#nav-help-connections" type="button" role="tab">
+                    Connections
+                </button>
                 <button class="nav-link" id="nav-help-ref-tab" data-bs-toggle="tab" data-bs-target="#nav-help-ref"
-                    type="button" role="tab">Reference</button>
+                    type="button" role="tab">
+                    Reference
+                </button>
             </div>
         </nav>
         <div class="tab-content" id="nav-help-tabContent">
-            <div class="tab-pane fade" id="nav-help-about" role="tabpanel" tabindex="0">
+            <div class="tab-pane fade show active" id="nav-help-about" role="tabpanel" tabindex="0">
                 <h2 class="mt-2">About</h2>
                 <p>
                     DrawTheNet.IO is a web application to draw network diagrams with simple yaml code.<br>
                 </p>
+                <h4>Documentation structure</h4>
+                You can navigate in the documentation using the tabs in the top.<br>
+
+                <ul>
+                    <li><strong>About</strong> : This section</li>
+                    <li><strong>Interface</strong> : How to use the interface</li>
+                    <li><strong>General</strong> : General information about the diagram document structure</li>
+                    <li><strong>Diagram</strong> : How to configure the global diagram settings</li>
+                    <li><strong>Title</strong> : How to configure the title infos & logo</li>
+                    <li><strong>Icons</strong> : How to configure an icon/node</li>
+                    <li><strong>Groups</strong> : How to group icons</li>
+                    <li><strong>Notes</strong> : How to add notes to the diagram</li>
+                    <li><strong>Connections</strong> : How to add connections between icons/notes</li>
+                    <li><strong>Reference</strong> : Reference of all available options and parameters</li>
+                </ul>
+
                 <h4>Why this app ?</h4>
 
                 <p>
                     I needed a simple way to draw network diagrams for my documentation.
                     I found some existing tools on the web but I didn't like the way to store the diagrams.<br>
                     I wanted something more simple and more "code" like. You can easily store your diagram source in a
-                    git
-                    repository, or any documentation system. You can even use the generated URL to jump on the editor
-                    quickly.
+                    git repository, or any documentation system. You can even use the generated URL to jump on the
+                    editor quickly.
 
                     More info on <a href="https://github.com/remygrandin/drawthenet.io">
                         <span class="badge bg-success"><iconify-icon inline icon="mdi:github"></iconify-icon>
-                            GitHub</span></a>
+                            GitHub
+                        </span>
+                    </a>
 
                 </p>
             </div>
@@ -538,7 +574,7 @@ icons:
                     can hide it by setting it to <code>null</code>.<br>
                 </p>
             </div>
-            <div class="tab-pane fade show active" id="nav-help-icons" role="tabpanel" tabindex="5">
+            <div class="tab-pane fade" id="nav-help-icons" role="tabpanel" tabindex="5">
                 <h2 class="mt-2">Icons</h2>
                 <p>
                     Icons are at the core of DrawTheNet.IO. They are the main way to represent nodes your network.<br>
@@ -633,7 +669,6 @@ icons:
 
 
             </div>
-
             <div class="tab-pane fade" id="nav-help-notes" role="tabpanel" tabindex="7">
                 <h2 class="mt-2">Notes</h2>
 

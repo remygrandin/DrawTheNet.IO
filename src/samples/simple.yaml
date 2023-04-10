@@ -4,6 +4,7 @@ diagram:
   columns: 5
   rows: 5
   gridLines: false
+  invertY: true
 title:
   color: lightgrey
   heightPercentage: 6
@@ -41,7 +42,7 @@ icons:
   lx12301: {<<: *servers, x: 3, y: 0}
   lx12302: {<<: *servers, x: 4, y: 0}
 notes:
-  firewallComment: { x: 0, y: 2, h: 2, xAlign: center, yAlign: center, stroke: "blue", fill: "#000066",
+  firewallComment: { x: 0, y: 2, h: 2, xAlign: center, yAlign: center, stroke: "blue", fill: "lightblue",
     text: "#NOTE:\n\nThis is a redundant HA pair. More text could go here to completely fill up this box." }
 connection: &connection
   color: "white"
@@ -49,7 +50,7 @@ connection: &connection
   strokeDashArray: "10,2"
 connections:
   - { <<: *connection, endpoints: ["chddc1crt001:eth0", "firewall:eth1"] }
-  - { <<: *connection, curve: curveStepBefore, endpoints: ["chddc1crt001:eth5", "chddc1crt004:eth6"] }
+  - { <<: *connection, curve: stepBefore, endpoints: ["chddc1crt001:eth5", "chddc1crt004:eth6"] }
   - { <<: *connection, endpoints: ["chddc1crt004", "chddc1sfw005"] }
   - { <<: *connection, endpoints: ["chddc1sfw005:XXXXXX", "chddc1srt001:YYYYY"] }
   - { <<: *connection, endpoints: ["chddc1srt001", "chddc1slb005:443"] }
@@ -60,6 +61,6 @@ connections:
 group: &group
   - { color: "white", stroke: "lightgrey", fill: "rgba(0, 0, 0, 0.3)" }
 groups:
-  - { <<: *group, name: "Chandler", members: ["chddc1crt004", "chddc1sfw005"] }
-  - { <<: *group, name: "Other group", textLocation: "leftMiddle", members: ["chddc1crt001", "firewall"] }
-  - { <<: *group, name: "Servers", textLocation: "bottomMiddle", members: ["lx12300", "lx12301", "lx12302"] }
+  - { <<: *group, text: "Chandler", members: ["chddc1crt004", "chddc1sfw005"] }
+  - { <<: *group, text: "Other group", textLocation: "leftMiddle", members: ["chddc1crt001", "firewall"] }
+  - { <<: *group, text: "Servers", textLocation: "bottomMiddle", members: ["lx12300", "lx12301", "lx12302"] }
