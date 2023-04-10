@@ -257,8 +257,12 @@
             <div class="col bg-dark bg-gradient border border-dark p-3">
                 <div class="card h-100">
                     <div class="card-body">
+                        <button type="button" class="btn btn-primary ms-2 mt-2 pt-2 position-absolute opacity-50" style="display: none; right: 25px;" id="btnReduce" title="Edit Diagram">
+                            <iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon>
+                        </button>
                         <div class="h-100" id="preview">
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -731,33 +735,51 @@
         // =============== FullScreen ==================
         // =============================================
 
-        $("#btnFullscreen").on("click", function (event) {
-            toggleFullscreen();
+        $("#btnFullscreen, #btnReduce").on("click", function (event) {
+            event.preventDefault();
+            params.fullscreen = !params.fullscreen;
+            SetParams(params);
+            applyFullscreen();
         });
 
-        function toggleFullscreen(){
-            params.fullscreen = !params.fullscreen;
-
+        function applyFullscreen(){
             if (params.fullscreen) {
                 $("#topBar").hide();
                 $("#editorCol").hide();
+                $("#btnReduce").show();
             }
             else {
                 $("#topBar").show();
                 $("#editorCol").show();
+                $("#btnReduce").hide();
             }
 
             Render(0);
         }
 
         if(params.fullscreen){
-            toggleFullscreen();
+            applyFullscreen();
         }
+
+        // =============================================
+        // =========== Keyboard Shortcut ===============
+        // =============================================
+
+        $(document).on("keydown", function (event) {
+            if (event.ctrlKey && event.key == "s") {
+                event.preventDefault();
+                $("#btnSave").click();
+            }
+            else if (event.ctrlKey && event.key == "Enter")
+            {
+                event.preventDefault();
+                $("#btnFullscreen").click();
+            }
+        });
 
         // =============================================
         // =============== Local Save ==================
         // =============================================
-
 
 
         $("#btnSave").on("click", async function (event) {
