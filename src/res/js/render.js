@@ -52,7 +52,7 @@ export function Render(containerSelector, doc) {
         .attr("class", "render")
         .attr("width", containerBox.width)
         .attr("height", containerBox.height)
-        .style("background-color", doc.diagram.fill)
+        .style("background-color", doc.document.fill)
         .call(d3.zoom().on("zoom", function (e) {
             zoomContainer.attr("transform", e.transform);
             document.querySelectorAll(".render .metadata").forEach(function (element) {
@@ -64,19 +64,19 @@ export function Render(containerSelector, doc) {
     let zoomContainer = mainContainer.append("g")
     .attr("class", "zoom");
 
-    let margedContainer = zoomContainer.append("g")
-        .attr("transform", `translate(${doc.diagram.margin.left + dataBag.HCenterOffset}, ${doc.diagram.margin.top + dataBag.VCenterOffset})`)
-        .attr("class", "marged");
+    let documentContainer = zoomContainer.append("g")
+        .attr("transform", `translate(${doc.document.margin.left + dataBag.HCenterOffset}, ${doc.document.margin.top + dataBag.VCenterOffset})`)
+        .attr("class", "document");
 
-    RenderTitle(margedContainer, doc, dataBag);
+    RenderTitle(documentContainer, doc, dataBag);
 
     if (dataBag.TitleRendered) {
-        dataBag.DiagramHeight = dataBag.AvailableHeight - dataBag.TitleHeight - doc.diagram.padding.top - doc.diagram.padding.bottom;
-        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.padding.left - doc.diagram.padding.right;
+        dataBag.DiagramHeight = dataBag.AvailableHeight - dataBag.TitleHeight - doc.diagram.margin.top - doc.diagram.margin.bottom;
+        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.margin.left - doc.diagram.margin.right;
     }
     else {
-        dataBag.DiagramHeight = dataBag.AvailableHeight - doc.diagram.padding.top - doc.diagram.padding.bottom;
-        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.padding.left - doc.diagram.padding.right;
+        dataBag.DiagramHeight = dataBag.AvailableHeight - doc.diagram.margin.top - doc.diagram.margin.bottom;
+        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.margin.left - doc.diagram.margin.right;
     }
 
     dataBag.Scaler = {}
@@ -88,8 +88,8 @@ export function Render(containerSelector, doc) {
         dataBag.Scaler.Y = new Scaler(0, doc.diagram.rows - 1, 0, dataBag.DiagramHeight, 1);
     }
 
-    let diagramContainer = margedContainer.append("g")
-        .attr("transform", `translate(${doc.diagram.padding.left}, ${doc.diagram.padding.top})`);
+    let diagramContainer = documentContainer.append("g")
+        .attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top})`);
 
     RenderGridLines(diagramContainer, doc, dataBag);
     RenderIcons(diagramContainer, doc, dataBag);
@@ -98,7 +98,7 @@ export function Render(containerSelector, doc) {
     RenderConnections(diagramContainer, doc, dataBag);
 
     if (doc.diagram.watermark) {
-        let watermarkContainer = margedContainer.append("g")
+        let watermarkContainer = documentContainer.append("g")
             .attr("transform", `translate(${dataBag.AvailableWidth / 2}, ${dataBag.AvailableHeight})`);
 
         watermarkContainer.append("text")
@@ -124,7 +124,7 @@ export function Render(containerSelector, doc) {
     BringForward(diagramContainer, '.group-label');
 
     // then watermark
-    BringForward(margedContainer, '.watermark');
+    BringForward(documentContainer, '.watermark');
 }
 
 function BringForward(container, selector) {
