@@ -83,7 +83,7 @@ icons:
   vendAWS:
     <<: *vendorIcons
     iconFamily: "iconify"
-    icon: "logos:aws"
+    icon: "skill-icons:aws-light"
     
 connections:
   - {endpoints: [docPC, docWAF]}
@@ -132,7 +132,7 @@ notes:
     yAlign: center
     w: 2
     text:  |
-      #####The files are easily diffable and can be integrated into many content managment systems. Alternativly, for ease of use, documents are embeded in the URL and can be stored as links in documentations.
+      #####The files are easily diffable and can be integrated into many content managment systems. Alternativly, for ease of use, documents are embeded in the URL and can be stored as simple links in documentations.
   vendorText:
     y: "+1"
     xAlign: left
