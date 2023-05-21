@@ -811,7 +811,7 @@
 
             if (lastDocument == null) return;
 
-            let title = `${lastDocument.diagram.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.yml`
+            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.yml`
 
             let text = editor.session.getValue();
             let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
@@ -826,9 +826,9 @@
 
             if (lastDocument == null) return;
 
-            let title = `${lastDocument.diagram.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
+            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
 
-            let svg = (await ExportSVG($(".render")[0], lastDocument.diagram.renderRatio, !event.ctrlKey)).outerHTML;
+            let svg = (await ExportSVG($(".render")[0], lastDocument.document.renderRatio, !event.ctrlKey)).outerHTML;
             let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
 
             saveAs(blob, title);
@@ -839,8 +839,8 @@
 
             if (lastDocument == null) return;
 
-            let title = `${lastDocument.diagram.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.png`
-            let blob = await ExportPNG($(".render")[0], lastDocument.diagram.renderRatio);
+            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.png`
+            let blob = await ExportPNG($(".render")[0], lastDocument.document.renderRatio);
 
             saveAs(blob, title);
 

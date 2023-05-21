@@ -1,29 +1,34 @@
-const diagramDefaults = {
+const documentDefaults = {
     aspectRatio: null,
-    columns: 10,
-    rows: 10,
-    invertY: false,
-    gridLines: true,
     margin: {
         top: 5,
         right: 5,
         bottom: 5,
         left: 5
     },
-    padding: {
+    fill: "white",
+    watermark: true,
+    renderRatio: 3,
+    fileTitlePrefix: "drawthenet.io",
+    schemasVersion: 1
+}
+
+const diagramDefaults = {    
+    columns: 10,
+    rows: 10,
+    invertY: false,
+    gridLines: true,    
+    margin: {
         top: 10,
         right: 10,
         bottom: 10,
         left: 10
-    },
-    fill: "white",
-    watermark: true,
-    renderRatio: 3,
-    fileTitlePrefix: "drawthenet.io"
+    }    
 }
 
 const titleDefaults = {
     type: "bar",
+
     text: "Diagram title",
     subText: null,
 
@@ -152,16 +157,17 @@ const noteYAlignMap = {
 
 
 export function ApplyDefaults(doc) {
+    // Merge the default into the document section properties
+    doc.document = Object.assign(clone(documentDefaults), doc.document || {});    
     // Merge the default into the diagram section properties
     doc.diagram = Object.assign(clone(diagramDefaults), doc.diagram || {});
     // Merge the default into the title section properties
     doc.title = Object.assign(clone(titleDefaults), doc.title || {});
+    
 
-    doc.connections = doc.connections || [];
-    doc.groups = doc.groups || [];
-    doc.notes = doc.notes || [];
+
+    // Merge the default into the icons section properties for each icon
     doc.icons = doc.icons || [];
-
     if (Array.isArray(doc.icons)) {
         doc.icons = Object.assign({}, doc.icons);
     }
@@ -169,6 +175,8 @@ export function ApplyDefaults(doc) {
         doc.icons[key] = Object.assign(clone(iconDefaults), doc.icons[key]);
     });
 
+    // Merge the default into the groups section properties for each group
+    doc.groups = doc.groups || [];
     if (Array.isArray(doc.groups)) {
         doc.groups = Object.assign({}, doc.groups);
     }
@@ -176,6 +184,8 @@ export function ApplyDefaults(doc) {
         doc.groups[key] = Object.assign(clone(groupDefaults), doc.groups[key]);
     });
 
+    // Merge the default into the connections section properties for each connection
+    doc.connections = doc.connections || [];
     if (Array.isArray(doc.connections)) {
         doc.connections = Object.assign({}, doc.connections);
     }
@@ -183,6 +193,8 @@ export function ApplyDefaults(doc) {
         doc.connections[key] = Object.assign(clone(connectionDefaults), doc.connections[key]);
     });
 
+    // Merge the default into the notes section properties for each note
+    doc.notes = doc.notes || [];
     if (Array.isArray(doc.notes)) {
         doc.notes = Object.assign({}, doc.notes);
     }

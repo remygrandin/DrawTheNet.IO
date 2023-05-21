@@ -16,7 +16,7 @@ export function Render(containerSelector, doc) {
 
     let dataBag = {};
 
-    if (doc.diagram.aspectRatio == null) {
+    if (doc.document.aspectRatio == null) {
         dataBag.AvailableHeight = containerBox.height - doc.diagram.margin.top - doc.diagram.margin.bottom;
         dataBag.AvailableWidth = containerBox.width - doc.diagram.margin.left - doc.diagram.margin.right;
         dataBag.HCenterOffset = 0;
@@ -97,7 +97,7 @@ export function Render(containerSelector, doc) {
     RenderGroups(diagramContainer, doc, dataBag);
     RenderConnections(diagramContainer, doc, dataBag);
 
-    if (doc.diagram.watermark) {
+    if (doc.document.watermark) {
         let watermarkContainer = documentContainer.append("g")
             .attr("transform", `translate(${dataBag.AvailableWidth / 2}, ${dataBag.AvailableHeight})`);
 
