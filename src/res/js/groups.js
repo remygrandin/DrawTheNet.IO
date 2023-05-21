@@ -72,7 +72,7 @@ export function RenderGroups(container, doc, dataBag) {
 
         let groupText = groupContainer.append("text")
             .attr("class", "group-label")
-            .attr("color", doc.groups[key].color)
+            .attr("fill", doc.groups[key].color)
             .style("font-size", `${fontSize}px`);
 
         let textContent = key;

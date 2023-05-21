@@ -93,7 +93,7 @@ export function RenderIcons(container, doc, dataBag) {
 
         let iconText = iconContainer.append("text")
             .attr("class", "icon-label")
-            .attr("color", doc.icons[key].color)
+            .attr("fill", doc.icons[key].color)
             .style("font-size", `${fontSize}px`);
 
         let textContent = key;
@@ -135,8 +135,6 @@ export function RenderIcons(container, doc, dataBag) {
                     let url = doc.icons[key].metadata.url;
 
                     let matcher = /{{\s*(\S*)\s*}}/gm
-
-                    //let matches = url.matchAll(/{{\s*(.*)\s*}}/gm);
 
                     let result;
                     while (result = matcher.exec(url)) {
