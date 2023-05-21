@@ -28,6 +28,22 @@ export function RenderGridLines(container, doc, dataBag) {
                 .text(x);
         }
 
+        // X interleaved gridlines
+        let xInterleavedLines = grids.append("g")
+            .attr("class", "sub-grid");
+
+        for (var x = 0; x < doc.diagram.columns - 1; x++) {
+            let pos = dataBag.Scaler.X.ScaleWithOffset(x + 0.5);
+
+            xInterleavedLines.append("line")
+                .attr("stroke", "lightGray")
+                .attr("stroke-dasharray", "5,5")
+                .attr("x1", pos)
+                .attr("y1", 0 + gridMargin)
+                .attr("x2", pos)
+                .attr("y2", dataBag.DiagramHeight - gridMargin);
+        }
+
         // Y gridlines
         let yLines = grids.append("g")
             .attr("class", "grid");
@@ -50,6 +66,22 @@ export function RenderGridLines(container, doc, dataBag) {
                 .style('font-size', '15px')
                 .text(y);
         }
+
+        // Y interleaved gridlines
+        let yInterleavedLines = grids.append("g")
+
+        for (var y = 0; y < doc.diagram.rows - 1; y++) {
+            let pos = dataBag.Scaler.Y.ScaleWithOffset(y + 0.5);
+
+            yInterleavedLines.append("line")
+                .attr("stroke", "lightGray")
+                .attr("stroke-dasharray", "5,5")
+                .attr("x1", 0 + gridMargin)
+                .attr("y1", pos)
+                .attr("x2", dataBag.DiagramWidth - gridMargin)
+                .attr("y2", pos);
+        }
+        
 
     }
 }
