@@ -42,7 +42,7 @@ icons:
   lx12301: {<<: *servers, x: 3, y: 0}
   lx12302: {<<: *servers, x: 4, y: 0}
 notes:
-  firewallComment: { x: 0, y: 2, h: 2, xAlign: center, yAlign: center, stroke: "blue", fill: "lightblue",
+  firewallComment: { x: 0, y: 2, h: 2, xAlign: center, yAlign: center, stroke: "darkblue", fill: "darkblue", color: "white",
     text: "#NOTE:\n\nThis is a redundant HA pair. More text could go here to completely fill up this box." }
 connection: &connection
   color: "white"
@@ -63,4 +63,4 @@ group: &group
 groups:
   - { <<: *group, text: "Chandler", members: ["chddc1crt004", "chddc1sfw005"] }
   - { <<: *group, text: "Other group", textLocation: "leftMiddle", members: ["chddc1crt001", "firewall"] }
-  - { <<: *group, text: "Servers", textLocation: "bottomMiddle", members: ["lx12300", "lx12301", "lx12302"] }
+  - { <<: *group, text: "Servers", textLocation: "bottomCenter", members: ["lx12300", "lx12301", "lx12302"] }
