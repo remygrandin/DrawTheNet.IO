@@ -28,6 +28,7 @@ const diagramDefaults = {
 
 const titleDefaults = {
     type: "bar",
+    position: "bottom",
 
     text: "Diagram title",
     subText: null,

@@ -17,16 +17,16 @@ export function Render(containerSelector, doc) {
     let dataBag = {};
 
     if (doc.document.aspectRatio == null) {
-        dataBag.AvailableHeight = containerBox.height - doc.diagram.margin.top - doc.diagram.margin.bottom;
-        dataBag.AvailableWidth = containerBox.width - doc.diagram.margin.left - doc.diagram.margin.right;
+        dataBag.AvailableHeight = containerBox.height - doc.document.margin.top - doc.document.margin.bottom;
+        dataBag.AvailableWidth = containerBox.width - doc.document.margin.left - doc.document.margin.right;
         dataBag.HCenterOffset = 0;
         dataBag.VCenterOffset = 0;
     }
     else {
-        let maxAvailalbeHeight = containerBox.height - doc.diagram.margin.top - doc.diagram.margin.bottom;
-        let maxAvailableWidth = containerBox.width - doc.diagram.margin.left - doc.diagram.margin.right;
+        let maxAvailalbeHeight = containerBox.height - doc.document.margin.top - doc.document.margin.bottom;
+        let maxAvailableWidth = containerBox.width - doc.document.margin.left - doc.document.margin.right;
 
-        let aspectRatio = doc.diagram.aspectRatio.split(':');
+        let aspectRatio = doc.document.aspectRatio.split(':');
         aspectRatio = aspectRatio[0] / aspectRatio[1];
 
         let heightByWidth = maxAvailableWidth / aspectRatio;
@@ -62,7 +62,7 @@ export function Render(containerSelector, doc) {
         }));
 
     let zoomContainer = mainContainer.append("g")
-    .attr("class", "zoom");
+        .attr("class", "zoom");
 
     let documentContainer = zoomContainer.append("g")
         .attr("transform", `translate(${doc.document.margin.left + dataBag.HCenterOffset}, ${doc.document.margin.top + dataBag.VCenterOffset})`)
@@ -88,8 +88,14 @@ export function Render(containerSelector, doc) {
         dataBag.Scaler.Y = new Scaler(0, doc.diagram.rows - 1, 0, dataBag.DiagramHeight, 1);
     }
 
-    let diagramContainer = documentContainer.append("g")
-        .attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top})`);
+    let diagramContainer = documentContainer.append("g");
+    if (doc.title.position == "top") {
+        diagramContainer.attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top + dataBag.TitleHeight})`);
+    }
+    else {
+        diagramContainer.attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top})`);
+    }
+
 
     RenderGridLines(diagramContainer, doc, dataBag);
     RenderIcons(diagramContainer, doc, dataBag);
@@ -119,7 +125,7 @@ export function Render(containerSelector, doc) {
     BringForward(diagramContainer, '.icons');
 
     // then all labels
-    BringForward(diagramContainer, '.icon-label');    
+    BringForward(diagramContainer, '.icon-label');
     BringForward(diagramContainer, '.connection-label');
     BringForward(diagramContainer, '.group-label');
 

@@ -6,8 +6,17 @@ export function RenderTitle(container, doc, dataBag) {
 
     dataBag.TitleHeight = dataBag.AvailableHeight * doc.title.heightPercentage / 100;
 
-    let titleContainer = container.append("g")
-        .attr("transform", `translate(0, ${dataBag.AvailableHeight - dataBag.TitleHeight})`);
+    let titleContainer = container.append("g");
+
+    if (doc.title.position == "top") {
+        titleContainer.attr("transform", `translate(0, 0)`);
+    }
+    else if (doc.title.position == "bottom") {        
+        titleContainer.attr("transform", `translate(0, ${dataBag.AvailableHeight - dataBag.TitleHeight})`);
+    }
+    else {
+        throw `Invalid title position: ${doc.title.position}`
+    }
 
     let fill = doc.title.fill;
     if ([null, "none", "transparent", ""].includes(doc.title.fill)) {
