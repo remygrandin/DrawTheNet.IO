@@ -1,8 +1,8 @@
 const diagramDefaults = {
-    fill: "white",
     aspectRatio: null,
-    rows: 10,
     columns: 10,
+    rows: 10,
+    invertY: false,
     gridLines: true,
     margin: {
         top: 5,
@@ -16,12 +16,14 @@ const diagramDefaults = {
         bottom: 10,
         left: 10
     },
+    fill: "white",
     watermark: true,
     renderRatio: 3,
     fileTitlePrefix: "drawthenet.io"
 }
 
 const titleDefaults = {
+    type: "bar",
     text: "Diagram title",
     subText: null,
 
@@ -41,8 +43,7 @@ const titleDefaults = {
         left: 10
     },
     logoUrl: "./res/logo.svg",
-    logoFill: null,
-    type: "bar"
+    logoFill: null,    
 }
 
 const iconDefaults = {
@@ -188,17 +189,17 @@ export function ApplyDefaults(doc) {
     Object.keys(doc.notes).forEach(function (key, index) {
         doc.notes[key] = Object.assign(clone(noteDefaults), doc.notes[key]);
 
-        if(!("alignItems" in doc.notes[key])) {
+        if (!("alignItems" in doc.notes[key])) {
             doc.notes[key].alignItems = noteXAlignMap[doc.notes[key].xAlign].alignItems;
         }
 
-        if(!("justifyContent" in doc.notes[key])) {
+        if (!("justifyContent" in doc.notes[key])) {
             doc.notes[key].justifyContent = noteYAlignMap[doc.notes[key].yAlign].justifyContent;
         }
 
-        if(!("textAlign" in doc.notes[key])) {
+        if (!("textAlign" in doc.notes[key])) {
             doc.notes[key].textAlign = noteXAlignMap[doc.notes[key].xAlign].textAlign;
-        }        
+        }
     });
 }
 

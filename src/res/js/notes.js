@@ -128,13 +128,13 @@ export function RenderNotes(container, doc, dataBag) {
             .attr("xmlns", "http://www.w3.org/1999/xhtml")
             .style("width", `${computed.wPadded}px`)
             .style("height", `${computed.hPadded}px`)
-            .style('font-size', `${fontSize}px`)
+            .style("font-size", `${fontSize}px`)
             .style("color", doc.notes[key].color)
-            .style('display', 'flex')
-            .style('flex-direction', doc.notes[key].flexDirection)
-            .style('align-items', doc.notes[key].alignItems)
-            .style('justify-content', doc.notes[key].justifyContent)
-            .style('text-align', doc.notes[key].textAlign)
+            .style("display", "flex")
+            .style("flex-direction", doc.notes[key].flexDirection)
+            .style("align-items", doc.notes[key].alignItems)
+            .style("justify-content", doc.notes[key].justifyContent)
+            .style("text-align", doc.notes[key].textAlign)
             .html(converter.makeHtml(doc.notes[key].text));
 
         hljs.initLineNumbersOnLoad({

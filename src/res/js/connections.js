@@ -81,8 +81,6 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
 
     let fontSize = rootConnection.textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
 
-    let xOffset = rootConnection.labelOffsetRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
-
     let curveType = rootConnection.curve;
 
     let pathD = "";
@@ -266,7 +264,8 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
 
     let enp1Label = connectionContainer.append("text")
         .attr("class", "connection-label")
-        .attr("font-size", `${fontSize}px`)
+        .attr("font-size", `${fontSize}px`)        
+        .attr("fill", rootConnection.color)
         .attr("dx", `${label1XOffset}`)
         .attr("dy", `${fontSize / 3 * -1}`);
 
@@ -279,6 +278,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let enp2Label = connectionContainer.append("text")
         .attr("class", "connection-label")
         .attr("font-size", `${fontSize}px`)
+        .attr("fill", rootConnection.color)
         .attr("dx", `${label2XOffset * -1}`)
         .attr("dy", `${fontSize}`);
 
