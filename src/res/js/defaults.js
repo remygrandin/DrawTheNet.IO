@@ -27,7 +27,7 @@ const diagramDefaults = {
 }
 
 const titleDefaults = {
-    type: "bar",
+    border: "bar",
     position: "bottom",
 
     text: "Diagram title",
@@ -41,6 +41,7 @@ const titleDefaults = {
     color: "black",
     stroke: "black",
     fill: null,
+
     heightPercentage: 6,
     padding: {
         top: 10,
@@ -48,6 +49,7 @@ const titleDefaults = {
         bottom: 10,
         left: 10
     },
+    
     logoUrl: "./res/logo.svg",
     logoFill: null,    
 }

@@ -11,7 +11,7 @@ export function RenderTitle(container, doc, dataBag) {
     if (doc.title.position == "top") {
         titleContainer.attr("transform", `translate(0, 0)`);
     }
-    else if (doc.title.position == "bottom") {        
+    else if (doc.title.position == "bottom") {
         titleContainer.attr("transform", `translate(0, ${dataBag.AvailableHeight - dataBag.TitleHeight})`);
     }
     else {
@@ -20,16 +20,28 @@ export function RenderTitle(container, doc, dataBag) {
 
     let fill = doc.title.fill;
     if ([null, "none", "transparent", ""].includes(doc.title.fill)) {
-        fill = doc.diagram.fill
+        fill = doc.document.fill
     }
 
-    if (doc.title.type == "bar") {
-        titleContainer.append("line")
+    if (doc.title.border == "bar") {
+        let line = titleContainer.append("line")
             .attr("fill", fill)
             .attr("stroke", doc.title.stroke)
-            .attr("x2", dataBag.AvailableWidth)
+
+        if (doc.title.position == "top") {
+            line.attr("x1", 0)
+                .attr("y1", dataBag.TitleHeight)
+                .attr("x2", dataBag.AvailableWidth)
+                .attr("y2", dataBag.TitleHeight)
+        }
+        else if (doc.title.position == "bottom") {
+            line.attr("x1", 0)
+                .attr("y1", 0)
+                .attr("x2", dataBag.AvailableWidth)
+                .attr("y2", 0)
+        }
     }
-    else if (doc.title.type == "box") {
+    else if (doc.title.border == "box") {
         titleContainer.append("rect")
             .attr("fill", fill)
             .attr("stroke", doc.title.stroke)
@@ -37,7 +49,7 @@ export function RenderTitle(container, doc, dataBag) {
             .attr('height', dataBag.TitleHeight);
     }
     else {
-        throw `Invalid title type: ${doc.title.type}`
+        throw `Invalid title border: ${doc.title.border}`
     }
 
     dataBag.TitlePaddedWidth = Math.max(dataBag.AvailableWidth - doc.title.padding.left - doc.title.padding.right, 0);
