@@ -21,7 +21,7 @@ export function RenderGroups(container, doc, dataBag) {
         computed.x2 = Number.MIN_SAFE_INTEGER;
         computed.y2 = Number.MIN_SAFE_INTEGER;
 
-        computed.groupFlat.members.forEach(function (member, index) {
+        doc.groups[key].members.forEach(function (member, index) {
             if (member in dataBag.icons) {
                 let icon = dataBag.icons[member];
                 computed.x1 = Math.min(computed.x1, icon.xScaled + icon.x1Marged);
@@ -36,6 +36,13 @@ export function RenderGroups(container, doc, dataBag) {
                 computed.x2 = Math.max(computed.x2, note.xScaled + note.x2Marged);
                 computed.y2 = Math.max(computed.y2, note.yScaled + note.y2Marged);
             }
+            else if (member in dataBag.groups) {
+                let group = dataBag.groups[member];
+                computed.x1 = Math.min(computed.x1, group.x1);
+                computed.y1 = Math.min(computed.y1, group.y1);
+                computed.x2 = Math.max(computed.x2, group.x2);
+                computed.y2 = Math.max(computed.y2, group.y2);
+            }
         });
 
         computed.scaledPadding = {
@@ -45,10 +52,10 @@ export function RenderGroups(container, doc, dataBag) {
             left: doc.groups[key].padding.left * dataBag.Scaler.X.UnitStepAbs
         }
 
-        computed.x1 -= computed.scaledPadding.left * computed.groupFlat.maxDepth;
-        computed.y1 -= computed.scaledPadding.top * computed.groupFlat.maxDepth;
-        computed.x2 += computed.scaledPadding.right * computed.groupFlat.maxDepth;
-        computed.y2 += computed.scaledPadding.bottom * computed.groupFlat.maxDepth;
+        computed.x1 -= computed.scaledPadding.left;
+        computed.y1 -= computed.scaledPadding.top;
+        computed.x2 += computed.scaledPadding.right;
+        computed.y2 += computed.scaledPadding.bottom;
 
         computed.wScaled = computed.x2 - computed.x1;
         computed.hScaled = computed.y2 - computed.y1;
@@ -96,7 +103,7 @@ export function RenderGroups(container, doc, dataBag) {
 
 function getGroupMembersRecursive(doc, groupName, parentArray) {
     if (parentArray.includes(groupName)) {
-        throw new Error("Recursive group definition detected: " + parentArray.join(" -> ") + " -> " + groupName);
+        throw new Error("Looping group definition detected: " + parentArray.join(" -> ") + " -> " + groupName);
     }
 
     let retObj = {

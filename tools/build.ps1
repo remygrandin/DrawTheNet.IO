@@ -918,7 +918,6 @@ if ($steps -contains "CopyDist") {
     CopyDist
 }
 
-
 if ($steps -contains "EndCleanup") {
     EndCleanup
 }
