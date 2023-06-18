@@ -67,13 +67,14 @@ const iconDefaults = {
         bottom: 0.10,
         left: 0.05
     },
+    w: 1,
+    h: 1,
     textLocation: "bottomCenter",
     textSizeRatio: 0.1,
     fill: "white",
     stroke: "black",
     color: "black",
-    w: 1,
-    h: 1
+    strokeDashArray: "0,0"
 }
 
 const groupDefaults = {

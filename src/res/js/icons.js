@@ -282,13 +282,24 @@ export function RenderIcons(container, doc, dataBag) {
                     });
                 }
 
+                let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
+
                 if("iconFill" in doc.icons[key])
                 {
                     let fills = svg.querySelectorAll("[fill]");
                     if(fills != null && fills.length > 0)
                     {
                         fills.forEach(fill => {
-                            fill.setAttribute("fill", doc.icons[key].iconFill);
+                            let fillAttr = fill.getAttribute("fill");
+                            if(!preserveWhite)
+                            {
+                                fill.setAttribute("fill", doc.icons[key].iconFill);
+                            }
+                            else
+                            {   
+                                if(!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white"))
+                                    fill.setAttribute("fill", doc.icons[key].iconFill);
+                            }
                         });
                     }
                 }
@@ -299,7 +310,16 @@ export function RenderIcons(container, doc, dataBag) {
                     if(strokes != null && strokes.length > 0)
                     {
                         strokes.forEach(stroke => {
-                            stroke.setAttribute("stroke", doc.icons[key].iconStroke);
+                            let strokeAttr = fill.getAttribute("stroke");
+                            if(!preserveWhite)
+                            {
+                                fill.setAttribute("stroke", doc.icons[key].iconStroke);
+                            }
+                            else
+                            {   
+                                if(!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
+                                    fill.setAttribute("stroke", doc.icons[key].iconStroke);
+                            }
                         });
                     }
                 }
