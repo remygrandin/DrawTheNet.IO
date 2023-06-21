@@ -73,7 +73,7 @@ export function RenderTitle(container, doc, dataBag) {
 
     let logoFill = doc.title.logoFill;
     if ([null, "none", "transparent", ""].includes(doc.title.logoFill)) {
-        logoFill = doc.diagram.fill;
+        logoFill = doc.document.fill;
     }
     logoContainer.append("rect")
         .attr('width', dataBag.TitlePaddedHeight)
