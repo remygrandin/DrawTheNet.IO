@@ -799,7 +799,7 @@ function DownloadMerakiIcons {
     New-Item -Type Directory -Path $destPath -Force | Out-Null
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith(".svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
+        Where-Object { $_.EndsWith("-large.svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
 
     # filtering the lowest resolution icons
     $svgFilesParsed = @()
@@ -822,7 +822,7 @@ function DownloadMerakiIcons {
     $svgFilesParsed | ForEach-Object {
         Write-Output "    Copy $($_.FullName) as $($_.Name)  ..."
         Copy-Item -Path $_.FullName -Destination (Join-Path $destPath $_.Name) -Force
-        $copiedFiles += $_.Name
+        $copiedFiles += $_.BaseName
     }
 
     Write-Output "Adding data to icons.json..."
