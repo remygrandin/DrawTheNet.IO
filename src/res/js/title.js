@@ -1,5 +1,5 @@
 export function RenderTitle(container, doc, dataBag) {
-    if (doc.title.heightPercentage <= 0 || doc.title.type == null || doc.title.type == "none") {
+    if (doc.title.heightPercentage <= 0 || doc.title.position == null || doc.title.position == "none") {
         dataBag.TitleRendered = false;
         return;
     }
