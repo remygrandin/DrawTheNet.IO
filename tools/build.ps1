@@ -20,7 +20,7 @@ $vssConvInstalled = $null -ne (Get-Command "vss2svg-conv" -ErrorAction SilentlyC
 function DownloadIcons {
     Write-Output "====== Downloading & processing icons ======"
     New-Item -Type Directory -Path $tempPath -Force | Out-Null
-    
+    <#
     DownloadAWSIcons
     DownloadAzureIcons
     DownloadM365Icons
@@ -28,7 +28,8 @@ function DownloadIcons {
     DownloadPowerPlatformIcons
     DownloadGCPIcons
     DownloadCiscoIcons
-    DownloadFortinetIcons
+    DownloadFortinetIcons#>
+    DownloadMerakiIcons    
 }
 
 function DownloadAWSIcons {
@@ -776,6 +777,73 @@ function DownloadFortinetIcons {
     $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
 
     Write-Output "Done"
+}
+
+function DownloadMerakiIcons {
+    Write-Output "------ Meraki ------"
+    $zipPath = join-path $tempPath "Meraki.zip"
+    $extractPath = join-path $tempPath "Meraki"
+    $destPath = join-path $iconsPath "Meraki"
+
+    Write-Output "Download..."
+    Invoke-WebRequest -Uri "https://meraki.cisco.com/product-collateral/cisco-meraki-topology-icons/?file" -OutFile $zipPath
+    Write-Output "Done"
+
+    Write-Output "Extract..."
+    New-Item -Type Directory -Path $extractPath -Force | Out-Null
+    Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+    Write-Output "Done"
+
+
+    Write-Output "Copy :"
+    New-Item -Type Directory -Path $destPath -Force | Out-Null
+    $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith(".svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
+
+    # filtering the lowest resolution icons
+    $svgFilesParsed = @()
+    foreach ($svgFile in $svgFilesRaw) {       
+        $obj = [PSCustomObject]@{
+            FullName = $svgFile
+            FileName = Split-Path $svgFile -leaf
+        }
+
+        $obj.FileName -match "topology-icon-(.*)-large.svg" | Out-Null
+
+        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])"
+        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
+
+        $svgFilesParsed += $obj
+    }
+
+    $copiedFiles = @()
+
+    $svgFilesParsed | ForEach-Object {
+        Write-Output "    Copy $($_.FullName) as $($_.Name)  ..."
+        Copy-Item -Path $_.FullName -Destination (Join-Path $destPath $_.Name) -Force
+        $copiedFiles += $_.Name
+    }
+
+    Write-Output "Adding data to icons.json..."
+    $iconsJson = $null
+    
+    if (test-path $iconsJSONPath) {
+        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
+    }
+    else {
+        $iconsJson = [PSCustomObject]@{
+        }
+    }
+
+    $copiedFiles = $copiedFiles | Sort-Object
+    
+    $iconsJson | Add-Member -MemberType NoteProperty -Name "Meraki" -Value $copiedFiles -Force | Out-Null
+    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
+
+    Write-Output "Done"
+
+
 }
 
 function CopySrc {
