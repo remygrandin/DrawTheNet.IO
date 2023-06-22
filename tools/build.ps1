@@ -949,7 +949,7 @@ icons:
 
         $templateFilled | Out-File (Join-Path $samplesPath "$iconSet.yaml") -Force
 
-        $samples."Contact Sheets".$iconSet = "$iconSet.yaml"
+        $samples."Contact Sheets".$iconSet = "$($iconSet.toLowerCase()).yaml"
     }
 
     $samples | ConvertTo-Json | Out-File $samplesJSONPath -Force
