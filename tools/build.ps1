@@ -794,6 +794,23 @@ function DownloadMerakiIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
 
+    Write-Output "Edit..."
+    $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith("-large.svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
+
+    foreach ($icon in $svgFilesRaw) {
+        Write-Output "    Editing  $($icon) ..."
+
+        $iconSVG = Get-Content -Path $icon -Raw
+
+        $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
+
+        $iconSVG = $iconSVG -replace 'cls-', "cls-$title-"
+        
+        $iconSVG | Set-Content -Path $icon -Force
+    }
+    Write-Output "Done"
 
     Write-Output "Copy :"
     New-Item -Type Directory -Path $destPath -Force | Out-Null
