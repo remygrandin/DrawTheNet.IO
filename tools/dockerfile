@@ -1,5 +1,5 @@
 # ==== BUILDER ====
-FROM mcr.microsoft.com/powershell:lts-7.2-ubuntu-22.04 AS builder
+FROM mcr.microsoft.com/powershell:7.3-ubuntu-22.04 AS builder
 WORKDIR /tmp/drawthenet.io
 
 RUN apt update && apt -y install git wget build-essential cmake libemf2svg-dev librevenge-dev libwmf-dev libvisio-dev
