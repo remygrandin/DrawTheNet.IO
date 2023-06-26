@@ -47,6 +47,16 @@ function DownloadAWSIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
 
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
     Write-Output "Copy :"
     New-Item -Type Directory -Path $destPath -Force | Out-Null
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
@@ -141,6 +151,16 @@ function DownloadAzureIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
 
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
     Write-Output "Copy :"
     New-Item -Type Directory -Path $destPath -Force | Out-Null
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
@@ -211,6 +231,16 @@ function DownloadM365Icons {
     Write-Output "Extract..."
     New-Item -Type Directory -Path $extractPath -Force | Out-Null
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+    Write-Output "Done"
+
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
     Write-Output "Done"
 
     Write-Output "Edit..."
@@ -297,6 +327,16 @@ function DownloadD365Icons {
     Write-Output "Extract..."
     New-Item -Type Directory -Path $extractPath -Force | Out-Null
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+    Write-Output "Done"
+
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
     Write-Output "Done"
 
     Write-Output "Edit..."
@@ -389,6 +429,16 @@ function DownloadPowerPlatformIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
     
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
     Write-Output "Edit..."
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
@@ -479,6 +529,16 @@ function DownloadGCPIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
 
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
     Write-Output "Edit Icons..."
     $icons = Get-ChildItem -Recurse -Path $extractPath | `
         Where-Object { $_.Name.EndsWith(".svg") } 
@@ -566,6 +626,16 @@ function DownloadCiscoIcons {
     Write-Output "Extract..."
     New-Item -Type Directory -Path $extractPath -Force | Out-Null
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+    Write-Output "Done"
+
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
     Write-Output "Done"
 
     Write-Output "Convert..."
@@ -694,6 +764,16 @@ function DownloadFortinetIcons {
     foreach ($zip in $innerZips) {
         Write-Output "    Extracting $($zip.FullName) ..."
         Expand-Archive -Path $zip.FullName -DestinationPath $extractPath -Force
+    }
+    Write-Output "Done"
+
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
     }
     Write-Output "Done"
 
