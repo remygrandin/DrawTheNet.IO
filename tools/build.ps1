@@ -794,6 +794,16 @@ function DownloadMerakiIcons {
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     Write-Output "Done"
 
+    Write-Output "Fix permission..."
+    if($IsLinux)
+    {
+        foreach($file in Get-ChildItem $extractPath -Recurse -File)
+        {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
     Write-Output "Edit..."
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
