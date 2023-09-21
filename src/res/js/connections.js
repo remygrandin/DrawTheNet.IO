@@ -326,6 +326,8 @@ function resolveNode(nodeName, doc, dataBag)
         endp.node = doc.notes[nodeName];
         endp.nodeComputed = dataBag.notes[nodeName];
     }
+    else
+        throw new Error(`Node ${nodeName} not found while processing connection endpoints.`);
 
     return endp;
 }
