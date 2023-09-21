@@ -19,7 +19,7 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
     
     clone.getElementsByClassName("zoom")[0].removeAttribute("transform");
 
-    clone.getElementsByClassName("marged")[0].setAttribute("transform", `${clone.getElementsByClassName("marged")[0].getAttribute("transform")} scale(${scaleFactor})`);
+    clone.getElementsByClassName("document")[0].setAttribute("transform", `${clone.getElementsByClassName("document")[0].getAttribute("transform")} scale(${scaleFactor})`);
 
     if (embedFontAndStyle) {
         let defs = document.createElement("defs");
@@ -42,6 +42,12 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
 
     for (let i = 0; i < images.length; i++) {
         let href = images[i].getAttribute("href");
+
+        if(href == null)
+        {
+            href = images[i].getAttribute("xlink:href");
+        }
+
         if (!href.startsWith("data:")) {
             await fetch(href).then(async resp => {
 
