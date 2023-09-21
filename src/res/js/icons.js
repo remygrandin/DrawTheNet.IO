@@ -255,78 +255,72 @@ export function RenderIcons(container, doc, dataBag) {
         // Icon
         let iconSize = Math.min(computed.wPadded - Math.abs(computed.iconImageXOffset), computed.hPadded - Math.abs(computed.iconImageYOffset));
 
-        let family = doc.icons[key].iconFamily.toLowerCase();
-        let icon = doc.icons[key].icon.toLowerCase();
-        let url = "./res/icons/" + family + "/" + icon + ".svg";
 
-        if (family == "iconify") {
-            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
-        }
+        if (doc.icons[key].iconFamily != null && doc.icons[key].iconFamily != "none" && doc.icons[key].icon != null && doc.icons[key].icon != "none") {
+            let family = doc.icons[key].iconFamily.toLowerCase();
+            let icon = doc.icons[key].icon.toLowerCase();
+            let url = "./res/icons/" + family + "/" + icon + ".svg";
 
-        let iconImage = iconContainer.append("g")
-            .attr("transform", `translate(${iconSize / 2 * -1 + computed.iconImageXOffset / 2}, ${iconSize / 2 * -1 + computed.iconImageYOffset / 2})`);
+            if (family == "iconify") {
+                url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+            }
 
-        fetch(url).then(function (raw) {
-            let svg = raw.text().then(text => {
-                let parser = new DOMParser();
-                let svg = parser.parseFromString(text, "image/svg+xml").documentElement;
+            let iconImage = iconContainer.append("g")
+                .attr("transform", `translate(${iconSize / 2 * -1 + computed.iconImageXOffset / 2}, ${iconSize / 2 * -1 + computed.iconImageYOffset / 2})`);
 
-                svg.setAttribute("width", iconSize);
-                svg.setAttribute("height", iconSize);
+            fetch(url).then(function (raw) {
+                let svg = raw.text().then(text => {
+                    let parser = new DOMParser();
+                    let svg = parser.parseFromString(text, "image/svg+xml").documentElement;
 
-                let scripts = svg.querySelectorAll("script");
-                if(scripts != null && scripts.length > 0)
-                {
-                    scripts.forEach(script => {
-                        script.remove();
-                    });
-                }
+                    svg.setAttribute("width", iconSize);
+                    svg.setAttribute("height", iconSize);
 
-                let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
+                    let scripts = svg.querySelectorAll("script");
+                    if (scripts != null && scripts.length > 0) {
+                        scripts.forEach(script => {
+                            script.remove();
+                        });
+                    }
 
-                if("iconFill" in doc.icons[key])
-                {
-                    let fills = svg.querySelectorAll("[fill]");
-                    if(fills != null && fills.length > 0)
-                    {
-                        fills.forEach(fill => {
-                            let fillAttr = fill.getAttribute("fill");
-                            if(!preserveWhite)
-                            {
-                                fill.setAttribute("fill", doc.icons[key].iconFill);
-                            }
-                            else
-                            {   
-                                if(!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white"))
+                    let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
+
+                    if ("iconFill" in doc.icons[key]) {
+                        let fills = svg.querySelectorAll("[fill]");
+                        if (fills != null && fills.length > 0) {
+                            fills.forEach(fill => {
+                                let fillAttr = fill.getAttribute("fill");
+                                if (!preserveWhite) {
                                     fill.setAttribute("fill", doc.icons[key].iconFill);
-                            }
-                        });
+                                }
+                                else {
+                                    if (!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white"))
+                                        fill.setAttribute("fill", doc.icons[key].iconFill);
+                                }
+                            });
+                        }
                     }
-                }
 
-                if("iconStroke" in doc.icons[key])
-                {
-                    let strokes = svg.querySelectorAll("[stroke]");
-                    if(strokes != null && strokes.length > 0)
-                    {
-                        strokes.forEach(stroke => {
-                            let strokeAttr = fill.getAttribute("stroke");
-                            if(!preserveWhite)
-                            {
-                                fill.setAttribute("stroke", doc.icons[key].iconStroke);
-                            }
-                            else
-                            {   
-                                if(!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
+                    if ("iconStroke" in doc.icons[key]) {
+                        let strokes = svg.querySelectorAll("[stroke]");
+                        if (strokes != null && strokes.length > 0) {
+                            strokes.forEach(stroke => {
+                                let strokeAttr = fill.getAttribute("stroke");
+                                if (!preserveWhite) {
                                     fill.setAttribute("stroke", doc.icons[key].iconStroke);
-                            }
-                        });
+                                }
+                                else {
+                                    if (!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
+                                        fill.setAttribute("stroke", doc.icons[key].iconStroke);
+                                }
+                            });
+                        }
                     }
-                }
-                
-                iconImage._groups[0][0].innerHTML = svg.outerHTML;
+
+                    iconImage._groups[0][0].innerHTML = svg.outerHTML;
+                });
             });
-        });
+        }
 
         dataBag.icons[key] = computed;
         previous = doc.icons[key];

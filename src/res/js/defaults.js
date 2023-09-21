@@ -71,6 +71,8 @@ const iconDefaults = {
     h: 1,
     textLocation: "bottomCenter",
     textSizeRatio: 0.1,
+    iconFamily: "Iconify", 
+    icon: "grommet-icons:document-missing",
     fill: "white",
     stroke: "black",
     color: "black",
