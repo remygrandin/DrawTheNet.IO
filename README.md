@@ -12,11 +12,10 @@ Given a yaml file describing the hierarchy of the network and it's connections, 
 
 # Motivation
 
-Complex network diagrams typically involve specific place of icons, connections and labels using a tool like Visio or OmniGraffle using a mouse and constantly zooming in and out for single pixel placement. 
+Complex network diagrams typically involve specific placement of icons, connections and labels using a tool like Visio or OmniGraffle, using a mouse, and constantly zooming in and out for single pixel placement. 
 
 The goal behind drawthenet.io is to be able to describe the digram in a text file and have it rendered in SVG in the browser.
 
-I simply wanted to be able to draw network diagrams as fast as it could be done on a dry-erase board without using a mouse.
 Also, being able to store a diagram as text makes it easy to version control and share.
 
 # Quick start
@@ -35,6 +34,7 @@ The follwing vendors are available by default:
  - Microsoft Dynamics 365 (as D365), from https://learn.microsoft.com/fr-fr/dynamics365/get-started/icons
  - Microsoft Power Platform (as PowerPlatform), from https://learn.microsoft.com/fr-fr/power-platform/guidance/icons
  - Google Cloud Platform (as GCP), from https://cloud.google.com/icons?hl=fr
+ - Cisco Meraki (as Meraki), from https://meraki.cisco.com/product-collateral/cisco-meraki-topology-icons/
  - Cisco (as Cisco), from https://www.cisco.com/c/en/us/about/brand-center/network-topology-icons.html
  - Fortinet (as Fortinet), from https://www.fortinet.com/resources/icon-library
  
@@ -57,8 +57,8 @@ docker build -t local/drawthenet.io .
 It will build the docker image from scratch, including downloading the icons from all vendor specified above. It will run the app with nginx, listening on port 80.
 
 ## Local Build
-You need [libvisio2svg](https://github.com/kakwa/libvisio2svg) installed and available in you path for the full build to work.
-If not, some icons set (Cisco, Fortinet) will not be generated and avaialable.
+You need [libvisio2svg](https://github.com/kakwa/libvisio2svg) and powershell installed and available in you path for the full build to work.
+If not, some icons set (Cisco, Fortinet) will not be generated and available.
 You can find the build script in the [tools folder](./tools/build.ps1)
 
 ```
