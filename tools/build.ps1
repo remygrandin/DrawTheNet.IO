@@ -803,7 +803,7 @@ function DownloadFortinetIcons {
         $Y = $Matches[2];
         
         $iconSVG = $iconSVG -replace 'version="1.1" width="[\d\.]*" height="[\d\.]*"', "version=""1.1"" viewBox=""0 0 $X $Y"" width=""$X"" height=""$Y"""
-        $iconSVG = $iconSVG -replace 'x="[\d\.]*" y="[\d\.]*"', ""
+        $iconSVG = $iconSVG -replace 'x="[-\d\.]*" y="[-\d\.]*"', ""
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
