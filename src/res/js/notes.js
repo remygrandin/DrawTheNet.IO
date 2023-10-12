@@ -1,3 +1,5 @@
+import { ComputeNodeValue } from './common.js'
+
 export function RenderNotes(container, doc, dataBag) {
 
     showdown.extension('highlight', function () {
@@ -41,24 +43,10 @@ export function RenderNotes(container, doc, dataBag) {
     Object.keys(doc.notes).forEach(function (key, index) {
         let computed = {};
 
-        if (!("x" in doc.notes[key])) {
-            doc.notes[key].x = parseFloat(previous.x);
-        } else if (doc.notes[key].x.toString().startsWith('+')) {
-            doc.notes[key].x = parseFloat(previous.x) + parseFloat(doc.notes[key].x.toString().split('+')[1]);
-        } else if (doc.notes[key].x.toString().startsWith('-')) {
-            doc.notes[key].x = parseFloat(previous.x) - parseFloat(doc.notes[key].x.toString().split('-')[1]);
-        }
-        doc.notes[key].x = parseFloat(doc.notes[key].x)
-        computed.xScaled = dataBag.Scaler.X.ScaleWithOffset(doc.notes[key].x)
+        doc.notes[key].x = ComputeNodeValue(doc.notes[key], key, "x", previous, doc, key);
+        doc.notes[key].y = ComputeNodeValue(doc.notes[key], key, "y", previous, doc, key);
 
-        if (!("y" in doc.notes[key])) {
-            doc.notes[key].y = parseFloat(previous.y);
-        } else if (doc.notes[key].y.toString().startsWith('+')) {
-            doc.notes[key].y = parseFloat(previous.y) + parseFloat(doc.notes[key].y.toString().split('+')[1]);
-        } else if (doc.notes[key].y.toString().startsWith('-')) {
-            doc.notes[key].y = parseFloat(previous.y) - parseFloat(doc.notes[key].y.toString().split('-')[1]);
-        }
-        doc.notes[key].y = parseFloat(doc.notes[key].y)
+        computed.xScaled = dataBag.Scaler.X.ScaleWithOffset(doc.notes[key].x)
         computed.yScaled = dataBag.Scaler.Y.ScaleWithOffset(doc.notes[key].y);
 
         computed.scaledMargin = {
@@ -123,7 +111,7 @@ export function RenderNotes(container, doc, dataBag) {
             .attr("width", computed.wPadded)
             .attr("height", computed.hPadded)
             .attr("transform", `translate(${computed.x1Padded}, ${computed.y1Padded})`)
-            
+
         noteFO.append("xhtml:div")
             .attr("xmlns", "http://www.w3.org/1999/xhtml")
             .style("width", `${computed.wPadded}px`)

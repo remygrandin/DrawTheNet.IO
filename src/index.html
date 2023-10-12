@@ -478,6 +478,7 @@
 
                     lastDocument = doc;
                 } catch (e) {
+                    console.error(e);
                     errorToast = $.toast({
                         text: `<pre>${e.message}</pre>`,
                         heading: 'Error in document',

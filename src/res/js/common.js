@@ -106,3 +106,49 @@ export function GetPropByStringPath(o, s) {
 export function DeepClone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+
+export function ComputeNodeValue(node, nodeKey, prop, previous, doc, rootName) {
+    // case 1 : value not specified, repeating previous value
+    if (!(prop in node)) {
+        if (previous == null) {
+            throw new Error(`No previous value for ${prop}`)
+        }
+        return parseFloat(previous[prop]);
+    }
+    // case 2 : value is a positive offset from previous value
+    else if (node[prop].toString().startsWith('+') || node[prop].toString().startsWith('-')) {
+        return parseFloat(previous[prop]) + parseFloat(node[prop].toString());
+    }
+    // case 3 : value is a reference to another node
+    else if (node[prop].toString().startsWith('@')) {
+        let vals = node[prop].toString().substring(1).split(':');
+
+        let ref = vals[0];
+
+        if (ref == rootName) {
+            throw new Error(`Invalid looping reference in ${rootName}`);
+        }
+
+        let val = 0;
+
+        if (vals.length > 1) {
+            val = vals[1];
+        }
+
+        val = parseFloat(val);
+
+        if (ref in doc.icons) {
+            return ComputeNodeValue(doc.icons[ref], ref, prop, null, doc, rootName) + val;
+        }
+        else if (ref in doc.notes) {
+            return ComputeNodeValue(doc.notes[ref], ref, prop, null, doc, rootName) + val;
+        }
+        else {
+            throw new Error(`Invalid reference ${ref} in ${rootName}`);
+        }
+    }
+    // case 4 : value is a number
+    else {
+        return parseFloat(node[prop])
+    }
+}

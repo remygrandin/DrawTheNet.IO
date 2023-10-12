@@ -1,4 +1,4 @@
-import { ApplyTextLocation, GetPropByStringPath, DeepClone } from './common.js'
+import { ApplyTextLocation, GetPropByStringPath, DeepClone, ComputeNodeValue } from './common.js'
 
 export function RenderIcons(container, doc, dataBag) {
     let iconsContainer = container.append("g")
@@ -8,26 +8,13 @@ export function RenderIcons(container, doc, dataBag) {
 
     let previous = {};
     Object.keys(doc.icons).forEach(function (key, index) {
+
         let computed = {};
 
-        if (!("x" in doc.icons[key])) {
-            doc.icons[key].x = parseFloat(previous.x);
-        } else if (doc.icons[key].x.toString().startsWith('+')) {
-            doc.icons[key].x = parseFloat(previous.x) + parseFloat(doc.icons[key].x.toString().split('+')[1]);
-        } else if (doc.icons[key].x.toString().startsWith('-')) {
-            doc.icons[key].x = parseFloat(previous.x) - parseFloat(doc.icons[key].x.toString().split('-')[1]);
-        }
-        doc.icons[key].x = parseFloat(doc.icons[key].x)
-        computed.xScaled = dataBag.Scaler.X.ScaleWithOffset(doc.icons[key].x)
+        doc.icons[key].x = ComputeNodeValue(doc.icons[key], key, "x", previous, doc, key);
+        doc.icons[key].y = ComputeNodeValue(doc.icons[key], key, "y", previous, doc, key);
 
-        if (!("y" in doc.icons[key])) {
-            doc.icons[key].y = parseFloat(previous.y);
-        } else if (doc.icons[key].y.toString().startsWith('+')) {
-            doc.icons[key].y = parseFloat(previous.y) + parseFloat(doc.icons[key].y.toString().split('+')[1]);
-        } else if (doc.icons[key].y.toString().startsWith('-')) {
-            doc.icons[key].y = parseFloat(previous.y) - parseFloat(doc.icons[key].y.toString().split('-')[1]);
-        }
-        doc.icons[key].y = parseFloat(doc.icons[key].y)
+        computed.xScaled = dataBag.Scaler.X.ScaleWithOffset(doc.icons[key].x)
         computed.yScaled = dataBag.Scaler.Y.ScaleWithOffset(doc.icons[key].y);
 
         computed.scaledMargin = {
