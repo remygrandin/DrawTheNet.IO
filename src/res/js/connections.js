@@ -260,7 +260,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         label2XOffset = Math.max(enp2.nodeComputed.marginDist.left, enp2.nodeComputed.marginDist.right, enp2.nodeComputed.marginDist.top, enp2.nodeComputed.marginDist.bottom);
 
     label1XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
-    label2XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
+    label2XOffset += rootConnection.margin.endp2 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
 
     let enp1Label = connectionContainer.append("text")
         .attr("class", "connection-label")
