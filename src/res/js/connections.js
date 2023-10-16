@@ -81,16 +81,32 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
 
     let fontSize = rootConnection.textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
 
-    let curveType = rootConnection.curve;
+    let curveType = rootConnection.curve.toLowerCase();
 
     let pathD = "";
 
 
-    if (curveType == "Linear") {
+    if (curveType == "linear") {
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
-    else if (curveType == "Step") {
+    else if (curveType == "curve") {
+        pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+
+        let halfX = getDistance2Points(enp1.nodeComputed.xScaled, 0, enp2.nodeComputed.xScaled, 0) / 2;
+        let halfY = getDistance2Points(0, enp1.nodeComputed.yScaled, 0, enp2.nodeComputed.yScaled) / 2;
+        
+        let midX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
+        let midY = (enp1.nodeComputed.yScaled + enp2.nodeComputed.yScaled) / 2;
+
+        let factor = -0.5
+
+        let controlX = midX + halfY * factor;
+        let controlY = midY - halfX * factor;
+
+        pathD += `Q ${controlX}, ${controlY} ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+    }
+    else if (curveType == "step") {
         let midpointX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
 
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
@@ -98,7 +114,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         pathD += `L ${midpointX}, ${enp2.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
-    else if (curveType == "StepReversed") {
+    else if (curveType == "stepreversed") {
         let midpointY = (enp1.nodeComputed.yScaled + enp2.nodeComputed.yScaled) / 2;
 
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
@@ -106,15 +122,18 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         pathD += `L ${enp2.nodeComputed.xScaled}, ${midpointY} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
-    else if (curveType == "StepBefore") {
+    else if (curveType == "stepbefore") {
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp1.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
-    else if (curveType == "StepAfter") {
+    else if (curveType == "stepafter") {
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+    }
+    else{
+        throw new Error(`Curve type ${curveType} not supported.`);
     }
 
 
@@ -173,35 +192,35 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     };
 
 
-    if (curveType == "Linear") {
+    if (curveType == "linear") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
 
         endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
         endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
     }
-    else if (curveType == "Step") {
+    else if (curveType == "step") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
 
         endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
         endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
     }
-    else if (curveType == "StepReversed") {
+    else if (curveType == "stepreversed") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
 
         endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
         endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
     }
-    else if (curveType == "StepBefore") {
+    else if (curveType == "stepbefore") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
 
         endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
         endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp2.nodeComputed.yScaled));
     }
-    else if (curveType == "StepAfter") {
+    else if (curveType == "stepafter") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
 
@@ -262,9 +281,12 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     label1XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
     label2XOffset += rootConnection.margin.endp2 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
 
+    label1XOffset *= rootConnection.labelOffsetRatio;
+    label2XOffset *= rootConnection.labelOffsetRatio;
+
     let enp1Label = connectionContainer.append("text")
         .attr("class", "connection-label")
-        .attr("font-size", `${fontSize}px`)        
+        .attr("font-size", `${fontSize}px`)
         .attr("fill", rootConnection.color)
         .attr("dx", `${label1XOffset}`)
         .attr("dy", `${fontSize / 3 * -1}`);
@@ -273,7 +295,6 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         .style("text-anchor", "start")
         .attr("xlink:href", `#path-${pathId}`)
         .text(enp1.portLabel);
-
 
     let enp2Label = connectionContainer.append("text")
         .attr("class", "connection-label")
@@ -287,6 +308,18 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         .attr("startOffset", "100%")
         .attr("xlink:href", `#path-${pathId}`)
         .text(enp2.portLabel);
+
+    let conLabel = connectionContainer.append("text")
+        .attr("class", "connection-label")
+        .attr("font-size", `${fontSize}px`)
+        .attr("fill", rootConnection.color)
+        .attr("dy", `${fontSize}`);
+
+    conLabel.append("textPath")
+        .style("text-anchor", "middle")
+        .attr("startOffset", "50%")
+        .attr("xlink:href", `#path-${pathId}`)
+        .text(rootConnection.text);
 }
 
 function getDistance2Points(x1, y1, x2, y2) {

@@ -100,7 +100,7 @@ const connectionDefaults = {
     strokeDashArray: "0,0",
     strokeWidth: 1,
     curve: "Linear",
-    labelOffsetRatio: 0.6,
+    labelOffsetRatio: 1,
     margin: {
         endp1: 0.08,
         endp2: 0.08
