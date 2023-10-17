@@ -1,7 +1,7 @@
 diagram:
-  columns: 5
+  columns: 6
   fill: "lightgrey"
-  rows: 10
+  rows: 6
   gridLines: false
 title:
   type: "none"
@@ -16,29 +16,31 @@ defs:
   rack1: &rack1
     <<: *azure
     icon: "mainframe"
-    x: 0
+    x: "-2"
     y: "+1"
     text: Server 1
   rack2: &rack2
     <<: *azure
     icon: "mainframe-blue"
-    x: 4
+    x: "+2"
     y: "+1"
     text: Server 2
   grp: &grp
     padding:
       top: 0.05
-      right: 0.1
+      right: 0.025
       bottom: 0.05
-      left: 0.1
-    textSizeRatio: 0.5
+      left: 0.025
+    textSizeRatio: 0.4
     textLocation: topRight
 icons:
-  linear1: {<<: *rack1, y: 0}
+  linear1: {<<: *rack1, y: 0, x: 0}
   linear2: {<<: *rack2}
+  curve1: {<<: *rack1}
+  curve2: {<<: *rack2}
   step1: {<<: *rack1}
   step2: {<<: *rack2}
-  stepReversed1: {<<: *rack1}
+  stepReversed1: {<<: *rack1, x: 3, y: 0}
   stepReversed2: {<<: *rack2}
   stepBefore1: {<<: *rack1}
   stepBefore2: {<<: *rack2}
@@ -47,15 +49,16 @@ icons:
 connection: &connection
   color: "black"
   stroke: "black"
-  strokeDashArray: "0,0"
 connections:
  - { <<: *connection, curve: Linear, endpoints: ["linear1", "linear2"] }
+ - { <<: *connection, curve: Curved, endpoints: ["curve1", "curve2"] }
  - { <<: *connection, curve: Step, endpoints: ["step1", "step2"] }
  - { <<: *connection, curve: StepReversed, endpoints: ["stepReversed1", "stepReversed2"] }
  - { <<: *connection, curve: StepBefore, endpoints: ["stepBefore1", "stepBefore2"] }
  - { <<: *connection, curve: StepAfter, endpoints: ["stepAfter1", "stepAfter2"] }
 groups:
  - {<<: *grp, members: ["linear1", "linear2"], text: "curve: Linear"}
+ - {<<: *grp, members: ["curve1", "curve2"], text: "curve: Curved"}
  - {<<: *grp, members: ["step1", "step2"], text: "curve: Step"}
  - {<<: *grp, members: ["stepReversed1", "stepReversed2"], text: "curve: StepReversed"}
  - {<<: *grp, members: ["stepBefore1", "stepBefore2"], text: "curve: StepBefore"}

@@ -90,24 +90,32 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
-    else if (curveType == "curve") {
+    else if (curveType == "curved") {
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
 
-        let halfX = getDistance2Points(enp1.nodeComputed.xScaled, 0, enp2.nodeComputed.xScaled, 0) / 2;
-        let halfY = getDistance2Points(0, enp1.nodeComputed.yScaled, 0, enp2.nodeComputed.yScaled) / 2;
+        let vectX = (enp2.nodeComputed.xScaled - enp1.nodeComputed.xScaled) / 2;
+        let vectY = (enp2.nodeComputed.yScaled - enp1.nodeComputed.yScaled) / 2;
         
         let midX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
         let midY = (enp1.nodeComputed.yScaled + enp2.nodeComputed.yScaled) / 2;
 
-        let factor = -0.5
+        let baseFactor = 0.5;
 
-        let controlX = midX + halfY * factor;
-        let controlY = midY - halfX * factor;
+        vectX *= baseFactor;
+        vectY *= baseFactor;
+
+        vectX += vectX * rootConnection.curveOffset;
+        vectY += vectY * rootConnection.curveOffset;
+
+        let controlX = midX + vectY;
+        let controlY = midY - vectX;
 
         pathD += `Q ${controlX}, ${controlY} ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
     }
     else if (curveType == "step") {
         let midpointX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
+
+        midpointX += dataBag.Scaler.X.UnitStepAbs * rootConnection.curveOffset;
 
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${midpointX}, ${enp1.nodeComputed.yScaled} `;
@@ -116,6 +124,8 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     }
     else if (curveType == "stepreversed") {
         let midpointY = (enp1.nodeComputed.yScaled + enp2.nodeComputed.yScaled) / 2;
+
+        midpointY += dataBag.Scaler.Y.UnitStepAbs * rootConnection.curveOffset;
 
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
         pathD += `L ${enp1.nodeComputed.xScaled}, ${midpointY} `;
@@ -192,7 +202,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     };
 
 
-    if (curveType == "linear") {
+    if (curveType == "linear" || curveType == "curved") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
 
@@ -281,8 +291,8 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     label1XOffset += rootConnection.margin.endp1 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
     label2XOffset += rootConnection.margin.endp2 * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
 
-    label1XOffset *= rootConnection.labelOffsetRatio;
-    label2XOffset *= rootConnection.labelOffsetRatio;
+    label1XOffset *= rootConnection.endpLabelOffsetRatio;
+    label2XOffset *= rootConnection.endpLabelOffsetRatio;
 
     let enp1Label = connectionContainer.append("text")
         .attr("class", "connection-label")
