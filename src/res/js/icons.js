@@ -292,13 +292,13 @@ export function RenderIcons(container, doc, dataBag) {
                         let strokes = svg.querySelectorAll("[stroke]");
                         if (strokes != null && strokes.length > 0) {
                             strokes.forEach(stroke => {
-                                let strokeAttr = fill.getAttribute("stroke");
+                                let strokeAttr = stroke.getAttribute("stroke");
                                 if (!preserveWhite) {
-                                    fill.setAttribute("stroke", doc.icons[key].iconStroke);
+                                    stroke.setAttribute("stroke", doc.icons[key].iconStroke);
                                 }
                                 else {
                                     if (!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
-                                        fill.setAttribute("stroke", doc.icons[key].iconStroke);
+                                        stroke.setAttribute("stroke", doc.icons[key].iconStroke);
                                 }
                             });
                         }
