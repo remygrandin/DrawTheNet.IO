@@ -33,17 +33,20 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Ace Editor -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/ace.min.js"
-        integrity="sha512-e1Y1L6lY7YKDe+zseybZUG8MYUMLA1jxMQAPJqRYiA4L8NPaXfW+h52QQTLurHW4w3b21LxH/u1sZYMBtoB70w=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/ace.min.js"
+        integrity="sha512-lwC0l9krGlq0b9AQ2sQ5nftG8CYsJnp35DZrNmMH5i09vPo6ZeBLV0OEyCRhSByTk1l6sV6wMa7inlMjSsQAGA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/worker-yaml.min.js"
-        integrity="sha512-3uAdHtL2/tsdK3FjUOV/zAWO4cfGB6ixvUiXl1yU1t+eBP6EEr1KqABsOHcEPnMbEH32Zafz5vcDNuC5FCQ+Jg=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/worker-yaml.min.js"
+        integrity="sha512-aPWbb5NOpduMdiLegfMiFpIBsuOpfR53PQTqcSkaEpuBrwarcGPmdFBqBM9xk17uv+THGPPu3ZiGzGoCScaDEw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/mode-yaml.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/mode-yaml.min.js"
         integrity="sha512-WcvQVyf7ECu3mkQRpaJJ2l05xJAIlFM1bscCbwduQBztxzoGUWqkAawsMdLr6tkD9ke4V6soIh6aufeAuW1ruw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/theme-sqlserver.min.js"
-        integrity="sha512-EfWHp7T1DMifLCzbLRFvR28FjD2Hlk0f/bwJQOUZFmK2YeW8Qo/0eKLAdpbv59tgfMyuifav7MVIxcCBb+VPMw=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/theme-sqlserver.min.js"
+        integrity="sha512-hoqwTsZLk0vYlY96Jgf76OqVR92L6S5ayr01RGvbz0uSJzU6hh3jYq5MM7cKNvncS7ddLly2EkfcvuFiwm948g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/ext-language_tools.min.js"
+        integrity="sha512-a648FNqnBRP0M40yGgwCoyBLYQVxpXxzqPhVPCwThDIKXFPyyJW0Um1QD1zmE+6euMlWdRS/rkcQrffXRt8+GQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Iconify -->
@@ -257,12 +260,13 @@
             <div class="col bg-dark bg-gradient border border-dark p-3">
                 <div class="card h-100">
                     <div class="card-body">
-                        <button type="button" class="btn btn-primary ms-2 mt-2 pt-2 position-absolute opacity-50" style="display: none; right: 25px;" id="btnReduce" title="Edit Diagram">
+                        <button type="button" class="btn btn-primary ms-2 mt-2 pt-2 position-absolute opacity-50"
+                            style="display: none; right: 25px;" id="btnReduce" title="Edit Diagram">
                             <iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon>
                         </button>
                         <div class="h-100" id="preview">
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -349,7 +353,7 @@
             return urlParams.toString();
         }
 
-        function parseParamString(paramString){
+        function parseParamString(paramString) {
             let urlParams = new URLSearchParams(paramString);
 
             let returnObj = {
@@ -381,16 +385,16 @@
             window.location.hash = "#" + genParamString(params)
 
             history.pushState(null, null, '#' + genParamString(params));
-/*
-            if (window.location.hash == '#' + urlParams.toString()) {
-                history.replaceState(null, null, '#');
-                history.replaceState(null, null, '#' + urlParams.toString());
-            }
-            else {
-                history.pushState(null, null, '#' + urlParams.toString());
-            }
-
-            */
+            /*
+                        if (window.location.hash == '#' + urlParams.toString()) {
+                            history.replaceState(null, null, '#');
+                            history.replaceState(null, null, '#' + urlParams.toString());
+                        }
+                        else {
+                            history.pushState(null, null, '#' + urlParams.toString());
+                        }
+            
+                        */
         }
 
         // =============================================
@@ -403,12 +407,69 @@
         // Ace Editor Init & settings
         ace.config.set("basePath", "https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/");
 
+        let langTools = ace.require("ace/ext/language_tools");
+
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/sqlserver");
         editor.session.setMode("ace/mode/yaml");
         editor.setOption("tabSize", 2);
         editor.setOption("wrap", true);
+        editor.setOption("enableBasicAutocompletion", true);
         editor.setShowPrintMargin(false);
+
+        let completerKeywords = {
+            document: [
+                "aspectRatio",
+                "margin",
+                "fill",
+                "watermark",
+                "renderRatio",
+                "fileTitlePrefix",
+                "schemasVersion"
+            ],
+            diagram: [
+                "columns",
+                "rows",
+                "invertY",
+                "gridLines",
+                "margin"
+            ]
+
+        }
+
+        let completer = {
+            getCompletions: function (editor, session, pos, prefix, callback) {
+
+                let lineStart = editor.session.getLine(pos.row).substr(0, pos.column);
+
+                let wsCount = lineStart.search(/\S|$/);
+
+                // case root of document
+                if(pos.column == 0)
+                {
+                    let rootKeywords = Object.keys(completerKeywords);
+
+                    let completions = rootKeywords.map(keyword => {
+                        return {
+                            caption: keyword,
+                            value: keyword,
+                            meta: "root",
+                            score: 1000
+                        }
+                    });
+
+
+                }
+
+
+
+
+
+            }
+        }
+
+        langTools.setCompleters([completer]);
+
 
         // Data storage Init
         var Data = {};
@@ -743,7 +804,7 @@
             applyFullscreen();
         });
 
-        function applyFullscreen(){
+        function applyFullscreen() {
             if (params.fullscreen) {
                 $("#topBar").hide();
                 $("#editorCol").hide();
@@ -758,7 +819,7 @@
             Render(0);
         }
 
-        if(params.fullscreen){
+        if (params.fullscreen) {
             applyFullscreen();
         }
 
@@ -771,8 +832,7 @@
                 event.preventDefault();
                 $("#btnSave").click();
             }
-            else if (event.ctrlKey && event.key == "Enter")
-            {
+            else if (event.ctrlKey && event.key == "Enter") {
                 event.preventDefault();
                 $("#btnFullscreen").click();
             }
