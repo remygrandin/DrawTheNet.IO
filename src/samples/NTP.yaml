@@ -3,8 +3,7 @@ diagram:
   columns: 21
   rows: 21
   gridLines: false
-  gridPaddingInner: .25
-  groupPadding: .75
+  invertY: true
 title:
   color: black
   heightPercentage: 6
@@ -70,9 +69,9 @@ drlb001: &drlb001 {<<: *cisco, x: "-1", y: "-1", icon: "ace"}
 drlb002: &drlb002 {<<: *cisco, x: "+1", icon: "ace"}
 
 icons:
-  Stratum 1 NTP: {<<: *stratum1, x: "18", y: "19", h: 2, w: 2, textLocation: leftMiddle, icon: "file_server"}
-  Stratum 2 NTP: {<<: *stratum2, y: "-2", h: 2, w: 2, textLocation: leftMiddle, icon: "file_server"}
-  NTP Client: {<<: *ntpClient, y: "-2", h: 2, w: 2, textLocation: leftMiddle, icon: "file_server"}
+  Stratum 1 NTP: {<<: *stratum1, x: "18", y: "19", h: 2, w: 2, textLocation: leftMiddle, icon: "file_server", textSizeRatio: 0.2}
+  Stratum 2 NTP: {<<: *stratum2, y: "-2", h: 2, w: 2, textLocation: leftMiddle, icon: "file_server", textSizeRatio: 0.2}
+  NTP Client: {<<: *ntpClient, y: "-2", h: 2, w: 2, textLocation: leftMiddle, icon: "file_server", textSizeRatio: 0.2}
 
   gpsSat001: {<<: *cisco, x: 9, y: 20, textLocation: topMiddle, icon: "space_router" }
   gpsSat002: {<<: *cisco, x: "+1", textLocation: topMiddle, icon: "space_router"  }
