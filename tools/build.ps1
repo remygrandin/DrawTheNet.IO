@@ -23,6 +23,7 @@ function DownloadIcons {
     
     DownloadAWSIcons
     DownloadAzureIcons
+    DownloadAzurePatternsIcons
     DownloadM365Icons
     DownloadD365Icons
     DownloadPowerPlatformIcons
@@ -48,10 +49,8 @@ function DownloadAWSIcons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -137,6 +136,8 @@ function DownloadAWSIcons {
 }
 
 function DownloadAzureIcons {
+
+
     Write-Output "------ Azure ------"
     $zipPath = join-path $tempPath "Azure.zip"
     $extractPath = join-path $tempPath "Azure"
@@ -152,10 +153,8 @@ function DownloadAzureIcons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -218,6 +217,76 @@ function DownloadAzureIcons {
     Write-Output "Done"
 }
 
+function DownloadAzurePatternsIcons {
+    Write-Output "------ Azure Patterns ------"
+    $destPath = join-path $iconsPath "AzurePatterns"
+    $cookieJar = join-path $tempPath "AzurePatterns.cookies"
+
+    #using curl here as heavy slowness from invoke-webrequest. Seem cookie related. If someone make it work without, please let me know
+    Write-Output "Download Base Page..."
+    if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
+        $webPageContent = curl.exe -s -b $cookieJar -c $cookieJar "https://azure.microsoft.com/en-us/patterns/styles/glyphs-icons/"
+    }
+    else {
+        $webPageContent = curl -s -b $cookieJar -c $cookieJar "https://azure.microsoft.com/en-us/patterns/styles/glyphs-icons/"
+    }
+    #Invoke-WebRequest -Uri "https://azure.microsoft.com/en-us/patterns/styles/glyphs-icons/" -OutFile $sourcePath
+    Write-Output "Done"
+
+    Write-Output "Creating Output Directory ..."
+    New-Item -Type Directory -Path $destPath -Force | Out-Null
+    Write-Output "Done"
+
+    Write-Output "Extracting SVG links..."
+
+    $svgLinks = (($webPageContent | select-string -Pattern "<a class=""swatch"" href=""(.*)"" title").Matches `
+        | Select-Object @{Name = "Value"; Expression = { $_.Groups[1].Value } } `
+    ).Value
+
+    foreach ($link in $svgLinks) {
+        Write-Output "    Downloading $link..."
+        $fullLink = "https://azure.microsoft.com$link"
+
+        $svgPath = join-path $destPath "$($link -replace "/en-us/patterns/styles/glyphs-icons/", "/")"
+
+        if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
+            $webPageContent = curl.exe -s -b $cookieJar -c $cookieJar -o $svgPath $fullLink
+        }
+        else {
+            $webPageContent = curl -s -b $cookieJar -c $cookieJar -o $svgPath $fullLink
+        }
+    }
+    
+
+    Write-Output "Fix permission..."
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $destPath -Recurse -File) {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
+    Write-Output "Adding data to icons.json..."
+    $iconsJson = $null
+    
+    if (test-path $iconsJSONPath) {
+        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
+    }
+    else {
+        $iconsJson = [PSCustomObject]@{
+        }
+    }
+
+    $svgFiles = Get-ChildItem $destPath -Recurse | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith(".svg") }
+    
+    $iconsJson | Add-Member -MemberType NoteProperty -Name "AzurePatterns" -Value $svgFiles -Force | Out-Null
+    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
+
+    Write-Output "Done"
+}
+
 function DownloadM365Icons {
     Write-Output "------ M365 ------"
     $zipPath = join-path $tempPath "M365.zip"
@@ -234,10 +303,8 @@ function DownloadM365Icons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -248,33 +315,31 @@ function DownloadM365Icons {
         Select-Object -ExpandProperty FullName | `
         Where-Object { $_.EndsWith(".svg") }
 
-    foreach ($icon in $svgFilesRaw) {
-        Write-Output "    Editing  $($icon) ..."
-
-        $iconSVG = Get-Content -Path $icon -Raw
-
-        $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
-
-        $iconSVG = $iconSVG -replace 'cls-', "cls-$title-"
-        
-        $iconSVG | Set-Content -Path $icon -Force
-    }
     Write-Output "Done"
 
     Write-Output "Copy :"
     New-Item -Type Directory -Path $destPath -Force | Out-Null    
 
     $svgFilesParsed = @()
-    foreach ($svgFile in $svgFilesRaw) {       
+    foreach ($svgFile in $svgFilesRaw) {        
         $obj = [PSCustomObject]@{
             FullName = $svgFile
             FileName = Split-Path $svgFile -leaf
         }
 
-        $obj.FileName -match "(.*).svg" | Out-Null
+        $obj | Add-Member -MemberType NoteProperty -Name "LocalPath" -Value $obj.FullName.Replace($extractPath, "")
 
-        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])"
-        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
+        Write-Output "    Parsing  $($obj.LocalPath)..."
+
+        if ($obj.LocalPath -match "[\\/](.*)[\\/]\d{2}x\d{2} (.*) Icon[\\/](.*)\.svg") {
+            $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[3].Replace(" ", "-"))_$($Matches[2].Replace(" ", "-").Replace("&","and"))_$($Matches[1].Replace(" ", "-"))"
+        }
+        else {
+            $obj.LocalPath -match "[\\/](.*)[\\/]\d{2}x\d{2} SVG Icons[\\/](.*)\.svg" | Out-Null
+            $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[2].Replace(" ", "-"))_$($Matches[1].Replace(" ", "-"))"
+        }
+
+        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg") 
 
         $svgFilesParsed += $obj
     }
@@ -330,10 +395,8 @@ function DownloadD365Icons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -430,10 +493,8 @@ function DownloadPowerPlatformIcons {
     Write-Output "Done"
     
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -530,10 +591,8 @@ function DownloadGCPIcons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -629,10 +688,8 @@ function DownloadCiscoIcons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -768,10 +825,8 @@ function DownloadFortinetIcons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
@@ -876,10 +931,8 @@ function DownloadMerakiIcons {
     Write-Output "Done"
 
     Write-Output "Fix permission..."
-    if($IsLinux)
-    {
-        foreach($file in Get-ChildItem $extractPath -Recurse -File)
-        {
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
             $file.UnixFileMode += "OtherRead"
         }
     }
