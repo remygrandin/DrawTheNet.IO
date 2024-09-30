@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Diagrams as code for engineers">
+
+    <base href="./">
+
+    <link rel="icon" type="image/svg+xml" href="res/favicon/favicon.svg">
+    <link rel="icon" type="image/png" href="res/favicon/favicon.png">
+
+    <title>DrawTheNet.IO</title>
+
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+    <!-- D3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"
+        integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Ace Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/ace.min.js"
+        integrity="sha512-lwC0l9krGlq0b9AQ2sQ5nftG8CYsJnp35DZrNmMH5i09vPo6ZeBLV0OEyCRhSByTk1l6sV6wMa7inlMjSsQAGA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/worker-yaml.min.js"
+        integrity="sha512-aPWbb5NOpduMdiLegfMiFpIBsuOpfR53PQTqcSkaEpuBrwarcGPmdFBqBM9xk17uv+THGPPu3ZiGzGoCScaDEw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/mode-yaml.min.js"
+        integrity="sha512-WcvQVyf7ECu3mkQRpaJJ2l05xJAIlFM1bscCbwduQBztxzoGUWqkAawsMdLr6tkD9ke4V6soIh6aufeAuW1ruw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/theme-sqlserver.min.js"
+        integrity="sha512-hoqwTsZLk0vYlY96Jgf76OqVR92L6S5ayr01RGvbz0uSJzU6hh3jYq5MM7cKNvncS7ddLly2EkfcvuFiwm948g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.30.0/ext-language_tools.min.js"
+        integrity="sha512-a648FNqnBRP0M40yGgwCoyBLYQVxpXxzqPhVPCwThDIKXFPyyJW0Um1QD1zmE+6euMlWdRS/rkcQrffXRt8+GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+
+    <!-- Fuse -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"
+        integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- JS-YAML -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"
+        integrity="sha512-CSBhVREyzHAjAFfBlIBakjoRUKp5h7VSweP0InR/pAJyptH7peuhCsqAI/snV+TwZmXZqoUklpXp6R6wMnYf5Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- jQuery toast -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"
+        integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css"
+        integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Showdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"
+        integrity="sha512-LhccdVNGe2QMEfI3x4DVV3ckMRe36TfydKss6mJpdHjNFiV07dFpS2xzeZedptKZrwxfICJpez09iNioiSZ3hA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"
+        integrity="sha512-bgHRAiTjGrzHzLyKOnpFvaEpGzJet3z4tZnXGjpsCcqOnAH6VGUx9frc5bcIhKTVLEiCO6vEhNAgx5jtLUYrfA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/atelier-cave-light.min.css"
+        integrity="sha512-mb7hVnqouaHmHLJYLhdY+kUld4843IHJuRbVbhLXD41EJreUz0AeYU9t0XhwDFtnRVRvnLkbT/Xbjl1sajvpFQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"
+        integrity="sha512-axd5V66bnXpNVQzm1c7u1M614TVRXXtouyWCE+eMYl8ALK8ePJEs96Xtx7VVrPBc0UraCn63U1+ARFI3ofW+aA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"
+        integrity="sha512-qoCTmFwBtCPvFhA+WAqatSOrghwpDhFHxwAGh+cppWonXbHA09nG1z5zi4/NGnp8dUhXiVrzA6EnKgJA+fyrpw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Luxon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.3.0/luxon.min.js"
+        integrity="sha512-KKbQg5o92MwtJKR9sfm/HkREzfyzNMiKPIQ7i7SZOxwEdiNCm4Svayn2DBq7MKEdrqPJUOSIpy1v6PpFlCQ0YA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Local Styles -->
+    <link rel="stylesheet" href="res/css/notes.css">
+    <link rel="stylesheet" href="res/css/app.css">
+
+    <!-- Render Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <style type="text/css" media="screen">
+        /*metadata*/
+
+        .metadata {
+            background: none;
+            display: flex;
+        }
+
+        .metadata table {
+            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            border: .5vh solid rgba(0, 0, 0, 0.0)
+        }
+
+        .metadata td {
+            vertical-align: middle;
+        }
+
+        .metadata td:first-child {
+            font-weight: bold;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .axisNone line {
+            stroke: #AAAAAA;
+        }
+
+        .axisNone path {
+            stroke: none;
+        }
+
+        .axisNone text {
+            fill: #AAAAAA;
+        }
+
+        .mouseOver {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body class="">
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+        <div class="row" id="topBar">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg bg-secondary">
+                    <div class="container-fluid mb-1">
+                        <a id="titleText" class="navbar-brand" href=".">
+                            <img src="res/logo.png" class="d-inline-block" alt="DrawTheNet.IO" width="40" height="40">
+                            <span class="badge bg-info">DrawTheNet.IO</span>
+                        </a>
+                        <div class="navbar-collapse mt-1">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <button class="btn btn-primary me-2" type="button" id="btnSaveYAML">
+                                        <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
+                                        Export YAML code
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="btn btn-info me-2" type="button" id="btnSave">
+                                        <iconify-icon inline icon="material-symbols:save"></iconify-icon>
+                                        Save
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="p-2 pb-1 me-4 ms-2 text-black bg-info-subtle rounded fs-6"
+                                        id="contAutoSave">
+                                        <div class="form-check form-switch ">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="inpAutoSave" checked>
+                                            <label class="form-check-label" for="inpAutoSave">
+
+                                                Auto-Save <iconify-icon inline icon="ph:question-duotone"
+                                                    title="When ON, the current document will be saved to the browser localstorage and encoded into the URL for easy embeding."></iconify-icon>
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="btn btn-success me-2" type="button" data-bs-toggle="offcanvas"
+                                        data-bs-target="#iconOffcanvas">
+                                        <iconify-icon
+                                            icon="material-symbols:screen-search-desktop-outline-rounded"></iconify-icon>
+                                        Icon Explorer
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <div class="dropdown me-2" id="drpSamples">
+                                        <button class="btn btn-light dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Samples
+                                        </button>
+                                        <ul class="dropdown-menu"></ul>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="d-flex mt-1">
+                            <button class="btn btn-info me-2" type="button" id="btnFullscreen">
+                                <iconify-icon inline icon="bi:arrows-fullscreen"></iconify-icon>
+                                Fullscreen
+                            </button>
+
+                            <button class="btn btn-success me-2" type="button" id="btnUpdate">
+                                <iconify-icon inline icon="zondicons:reload"></iconify-icon>
+                                Update
+                            </button>
+
+                            <div class="p-2 pb-1 me-4 ms-2 text-black bg-success-subtle rounded fs-6"
+                                id="contAutoUpdate">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="inpAutoUpdate"
+                                        checked>
+                                    <label class="form-check-label" for="inpAutoUpdate">
+                                        Auto-Update <iconify-icon inline icon="bi:question-circle"
+                                            title="When ON, the preview will render automaticly after a couple of seconds of inactivity or on window resize."></iconify-icon>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="btn-group me-2" role="group">
+                                <button class="btn btn-warning" type="button" id="btnSaveSVG">
+                                    <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
+                                    Export SVG
+                                </button>
+                                <button class="btn btn-primary" type="button" id="btnSavePNG">
+                                    <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
+                                    Export PNG
+                                </button>
+
+                            </div>
+                            <button class="btn btn-light px-3" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modHelp">
+                                <strong>?</strong>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+        <div class="row flex-grow-1 gx-0">
+            <div class="col border border-dark" id="editorCol">
+                <div id="editor"></div>
+            </div>
+            <div class="col bg-dark bg-gradient border border-dark p-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary ms-2 mt-2 pt-2 position-absolute opacity-50"
+                            style="display: none; right: 25px;" id="btnReduce" title="Edit Diagram">
+                            <iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon>
+                        </button>
+                        <div class="h-100" id="preview">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modHelp" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        <small>DrawTheNet.IO</small> - Help & Infos
+                        <a href="./help.html" target="_blank" title="Open in a separate tab">
+                            <iconify-icon inline icon="material-symbols:open-in-new"></iconify-icon>
+                        </a>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <iframe class="w-100" height="800px" src="./help.html"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="iconOffcanvas" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header bg-warning-subtle">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="mt-2">Icon Explorer</h4>
+                    </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            <input type="search" class="form-control" id="txtSearchIcon" placeholder="Search">
+                            <label for="txtSearchIcon">Search</label>
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn-close float-end mt-2" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offcanvas-body bg-light">
+            <div class="row g-2" id="iconCards">
+                <div class="col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-header icon-family">
+                            {{family}}
+                        </div>
+                        <div class="card-body bg-light bg-gradient icon-full">
+                            <img {{url}} class="iconCardIcon" class="card-img-top">
+                        </div>
+                        <div class="card-footer px-1 icon-name">
+                            {{icon}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="module">
+    import { Render as Renderer } from './res/js/render.js';
+    import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
+
+    $(async function () {
+        // =============================================
+        // =============== Param Loading ===============
+        // =============================================
+        function genParamString(obj) {
+            let urlParams = new URLSearchParams();
+
+            urlParams.set("fullscreen", obj.fullscreen);
+            urlParams.set("autosave", obj.autosave);
+            urlParams.set("autoupdate", obj.autoupdate);
+            urlParams.set("doc", LZString.compressToEncodedURIComponent(obj.doc));
+
+            return urlParams.toString();
+        }
+
+        function parseParamString(paramString) {
+            let urlParams = new URLSearchParams(paramString);
+
+            let returnObj = {
+                "fullscreen": urlParams.get("fullscreen") === "true",
+                "autosave": urlParams.get("autosave") !== "false",
+                "autoupdate": urlParams.get("autoupdate") !== "false",
+                "doc": LZString.decompressFromEncodedURIComponent(urlParams.get("doc"))
+            };
+            return returnObj;
+        }
+
+        async function LoadParams() {
+            let returnObj = parseParamString(window.location.hash.substring(1));
+
+            if (returnObj.doc == null || returnObj.doc == "") {
+                let lastDoc = localStorage.getItem('lastDoc');
+                if (lastDoc != null) {
+                    returnObj.doc = LZString.decompressFromEncodedURIComponent(lastDoc);
+                }
+                if (returnObj.doc == null || returnObj.doc == "") {
+                    returnObj.doc = await fetch("./samples/welcome.yaml").then(r => r.text());
+                }
+            }
+
+            return returnObj;
+        }
+
+        function SetParams(params) {
+            window.location.hash = "#" + genParamString(params)
+
+            history.pushState(null, null, '#' + genParamString(params));
+            /*
+                        if (window.location.hash == '#' + urlParams.toString()) {
+                            history.replaceState(null, null, '#');
+                            history.replaceState(null, null, '#' + urlParams.toString());
+                        }
+                        else {
+                            history.pushState(null, null, '#' + urlParams.toString());
+                        }
+            
+                        */
+        }
+
+        // =============================================
+        // ============== Editor & Hl.js ===============
+        // =============================================
+
+        // Highlight.js Init
+        hljs.highlightAll();
+
+        // Ace Editor Init & settings
+        ace.config.set("basePath", "https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/");
+
+        let langTools = ace.require("ace/ext/language_tools");
+
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/sqlserver");
+        editor.session.setMode("ace/mode/yaml");
+        editor.setOption("tabSize", 2);
+        editor.setOption("wrap", true);
+        editor.setOption("enableBasicAutocompletion", true);
+        editor.setShowPrintMargin(false);
+
+        let completerKeywords = {
+            document: [
+                "aspectRatio",
+                "margin",
+                "fill",
+                "watermark",
+                "renderRatio",
+                "fileTitlePrefix",
+                "schemasVersion"
+            ],
+            diagram: [
+                "columns",
+                "rows",
+                "invertY",
+                "gridLines",
+                "margin"
+            ]
+
+        }
+
+        let completer = {
+            getCompletions: function (editor, session, pos, prefix, callback) {
+
+                let lineStart = editor.session.getLine(pos.row).substr(0, pos.column);
+
+                let wsCount = lineStart.search(/\S|$/);
+
+                // case root of document
+                if(pos.column == 0)
+                {
+                    let rootKeywords = Object.keys(completerKeywords);
+
+                    let completions = rootKeywords.map(keyword => {
+                        return {
+                            caption: keyword,
+                            value: keyword,
+                            meta: "root",
+                            score: 1000
+                        }
+                    });
+
+
+                }
+
+
+
+
+
+            }
+        }
+
+        langTools.setCompleters([completer]);
+
+
+        // Data storage Init
+        var Data = {};
+
+        // =============================================
+        // ======= Settings & session loading ==========
+        // =============================================
+
+        let params = await LoadParams();
+
+        $('#inpAutoSave').prop('checked', params.autosave === true);
+        $('#inpAutoUpdate').prop('checked', params.autoupdate === true);
+
+        editor.setValue(params.doc, -1);
+
+        $('#contAutoSave').on("click", function () {
+            $('#inpAutoSave').prop("checked", !$('#inpAutoSave').is(":checked"));
+        });
+        $('#inpAutoSave').change(async function () {
+            params = await LoadParams();
+
+            params.autosave = $(this).is(":checked");
+
+            SetParams(params);
+        });
+        $('#contAutoUpdate').on("click", function () {
+            $('#inpAutoUpdate').prop("checked", !$('#inpAutoUpdate').is(":checked"));
+        });
+        $('#inpAutoUpdate').change(async function () {
+            params = await LoadParams();
+
+            params.autoupdate = $(this).is(":checked");
+
+            SetParams(params);
+        });
+
+        // =============================================
+        // ======= Settings & session loading ==========
+        // =============================================
+        let debounceRenderTimer;
+        let lastDocument = null;
+        let errorToast = null;
+
+        function Render(maxDelay = 2000) {
+            clearTimeout(debounceRenderTimer);
+            debounceRenderTimer = setTimeout(async () => {
+                try {
+                    let text = editor.session.getValue();
+
+                    if (text === null || text === "" || text.trim() === "") {
+                        return;
+                    }
+
+                    if ($("#inpAutoSave").is(":checked")) {
+                        let params = await LoadParams();
+                        params.doc = text;
+                        SetParams(params);
+                    }
+
+                    let doc = jsyaml.load(text);
+                    Renderer("#preview", doc)
+
+                    if (errorToast !== null) {
+                        errorToast.reset();
+                        errorToast = null;
+                    }
+
+                    lastDocument = doc;
+                } catch (e) {
+                    console.error(e);
+                    errorToast = $.toast({
+                        text: `<pre>${e.message}</pre>`,
+                        heading: 'Error in document',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: false,
+                        stack: false,
+                        position: 'top-right',
+                        loader: true
+                    });
+                    return;
+                }
+            }, maxDelay);
+        }
+
+        if ($('#inpAutoUpdate').is(":checked")) {
+            Render(0);
+        }
+
+        $("#btnUpdate").click(function () {
+            Render(0);
+        });
+
+        // Auto Update on change
+        let debounceEditTimer;
+        editor.session.on('change', function (delta) {
+            if ($('#inpAutoUpdate').is(":checked")) {
+                Render();
+            }
+
+        });
+
+        window.addEventListener("resize", (event) => {
+            if ($('#inpAutoUpdate').is(":checked")) {
+                Render(50);
+            }
+        });
+
+
+
+        // =============================================
+        // ================== Samples ==================
+        // =============================================
+        fetch("./samples/samples.json")
+            .then(response => response.json())
+            .then(function (res) {
+                Object.keys(res).forEach(function (category) {
+                    $("#drpSamples .dropdown-menu").append(`<li class="bg-warning"><h6 class="dropdown-header">
+                        <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
+                        ${category}
+                        <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
+                        </h6></li>`);
+
+                    Object.keys(res[category]).forEach(function (key) {
+                        $("#drpSamples .dropdown-menu").append(`<li file="${res[category][key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
+                    });
+                });
+            });
+
+        $("#drpSamples").on("click", "li", function (event) {
+            event.preventDefault();
+
+            let fileName = $(this).attr("file");
+
+            if (fileName === null || fileName === undefined) {
+                return;
+            }
+
+            fetch(`./samples/${fileName}`)
+                .then(response => response.text())
+                .then(function (res) {
+                    editor.setValue(res, -1);
+                });
+
+        });
+
+
+        // =============================================
+        // =============== Icons Search ================
+        // =============================================
+        fetch("./res/icons/icons.json")
+            .then(response => response.json())
+            .then(function (res) {
+                Object.keys(res).forEach(function (key) {
+                    $("#drpIconsSets .dropdown-menu").append(`<li file="${res[key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
+                });
+
+                Data.Icons = res;
+
+                let flattenIcons = [];
+
+                Object.keys(res).forEach(key => {
+                    res[key].forEach(key2 => {
+                        flattenIcons.push({ Icon: key2, Family: key });
+                    });
+                });
+
+                Data.IconsFlat = flattenIcons;
+            });
+
+        let iconCardTemplate = $("#iconCards").html();
+        $("#iconCards").empty();
+        let searchOptions = {
+            includeScore: true,
+            keys: ['Icon', 'Family']
+        }
+
+        function searchIcons(search) {
+            fetch("https://api.iconify.design/search?query=" + search)
+                .then(response => response.json())
+                .then(function (res) {
+
+                    let iconifyIcons = res.icons.map(icon => {
+                        return { Icon: icon, Family: "Iconify" };
+                    });
+
+                    let allIcons = Data.IconsFlat.concat(iconifyIcons);
+
+                    const fuse = new Fuse(allIcons, searchOptions)
+
+                    let searchRes = fuse.search(search)
+
+                    if (searchRes.length == 0) {
+                        $("#iconCards").html("<div class='col-md-12'><h3>No results found</h3></div>");
+                        return;
+                    }
+
+                    let maxSearchResult = 500;
+
+                    if (searchRes.length > maxSearchResult) {
+                        searchRes.length = maxSearchResult;
+                    }
+
+                    $("#iconCards").empty();
+
+                    searchRes.forEach(res => {
+                        let icon = res.item.Icon;
+                        let family = res.item.Family;
+
+                        let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
+
+                        if (family == "Iconify") {
+                            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                        }
+
+                        let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", `src="${url}"`);
+
+                        $("#iconCards").append(card);
+                    });
+                });
+        }
+
+        let debounceSearchIconTimer;
+        $("#txtSearchIcon").on("input", function (event) {
+            clearTimeout(debounceSearchIconTimer);
+            debounceSearchIconTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
+        });
+
+        $("#iconCards").on("click", ".icon-family", function (event) {
+            event.preventDefault();
+
+            let text = $(this).text().trim();
+
+            navigator.clipboard.writeText(`"${text}"`).then(
+                () => {
+                    $.toast({
+                        heading: 'Icon family copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                },
+                () => {
+                    $.toast({
+                        heading: 'Icon family copying to clipboard failed. Please allow permission and try again',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            );
+        });
+
+        $("#iconCards").on("click", ".icon-name", function (event) {
+            event.preventDefault();
+
+            let text = $(this).text().trim();
+
+            navigator.clipboard.writeText(`"${text}"`).then(
+                () => {
+                    $.toast({
+                        heading: 'Icon name copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                },
+                () => {
+                    $.toast({
+                        heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            );
+        });
+
+        $("#iconCards").on("click", ".icon-full", function (event) {
+            event.preventDefault();
+
+            let family = $(this).parents(".card").children(".icon-family").text().trim();
+            let name = $(this).parents(".card").children(".icon-name").text().trim();
+
+            navigator.clipboard.writeText(`iconFamily: "${family}", icon: "${name}"`).then(
+                () => {
+                    $.toast({
+                        heading: 'Icon name copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                },
+                () => {
+                    $.toast({
+                        heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            );
+        });
+
+        // =============================================
+        // =============== FullScreen ==================
+        // =============================================
+
+        $("#btnFullscreen, #btnReduce").on("click", function (event) {
+            event.preventDefault();
+            params.fullscreen = !params.fullscreen;
+            SetParams(params);
+            applyFullscreen();
+        });
+
+        function applyFullscreen() {
+            if (params.fullscreen) {
+                $("#topBar").hide();
+                $("#editorCol").hide();
+                $("#btnReduce").show();
+            }
+            else {
+                $("#topBar").show();
+                $("#editorCol").show();
+                $("#btnReduce").hide();
+            }
+
+            Render(0);
+        }
+
+        if (params.fullscreen) {
+            applyFullscreen();
+        }
+
+        // =============================================
+        // =========== Keyboard Shortcut ===============
+        // =============================================
+
+        $(document).on("keydown", function (event) {
+            if (event.ctrlKey && event.key == "s") {
+                event.preventDefault();
+                $("#btnSave").click();
+            }
+            else if (event.ctrlKey && event.key == "Enter") {
+                event.preventDefault();
+                $("#btnFullscreen").click();
+            }
+        });
+
+        // =============================================
+        // =============== Local Save ==================
+        // =============================================
+
+
+        $("#btnSave").on("click", async function (event) {
+            let text = editor.session.getValue();
+
+            let params = await LoadParams();
+            params.doc = text;
+            SetParams(params);
+        });
+
+        // =============================================
+        // ================= Exports ===================
+        // =============================================
+
+        // Preloading fonts for PNG export
+        LoadFonts();
+
+        function saveAs(blob, title) {
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = title;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        $("#btnSaveYAML").on("click", function (event) {
+            event.preventDefault();
+
+            if (lastDocument == null) return;
+
+            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.yml`
+
+            let text = editor.session.getValue();
+            let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+
+            saveAs(blob, title);
+        });
+
+
+
+        $("#btnSaveSVG").on("click", async function (event) {
+            event.preventDefault();
+
+            if (lastDocument == null) return;
+
+            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
+
+            let svg = (await ExportSVG($(".render")[0], lastDocument.document.renderRatio, !event.ctrlKey)).outerHTML;
+            let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+
+            saveAs(blob, title);
+        });
+
+        $("#btnSavePNG").on("click", async function (event) {
+            event.preventDefault();
+
+            if (lastDocument == null) return;
+
+            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.png`
+            let blob = await ExportPNG($(".render")[0], lastDocument.document.renderRatio);
+
+            saveAs(blob, title);
+
+            return;
+        });
+    });
+
+</script>
+
+</html>

@@ -1,4 +1,10 @@
 {
+    "Full Samples": {        
+        "Welcome": "welcome.yaml",
+        "NTP": "ntp.yaml",
+        "Simple": "simple.yaml",
+        "Super Spine": "superspine.yaml"
+    },
     "Functions Demo": {
         "Icons": "icons.yaml",
         "Groups": "groups.yaml",
@@ -11,11 +17,5 @@
         "Notes": "notes.yaml",
         "URLs": "urls.yaml",
         "Coffee colors": "coffee.yaml"
-    },
-    "Full Samples": {        
-        "Welcome": "welcome.yaml",
-        "NTP": "ntp.yaml",
-        "Simple": "simple.yaml",
-        "Super Spine": "superspine.yaml"
     }
 }

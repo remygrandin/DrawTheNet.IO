@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en" class="h-100" data-bs-theme="auto">
 
 <head>
-    <!-- META -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <meta name="robots" content="index,follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Diagrams as code for engineers">
 
     <base href="./">
@@ -21,11 +19,13 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+        integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"
+        integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     <!-- D3 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"
@@ -97,817 +97,708 @@
         integrity="sha512-KKbQg5o92MwtJKR9sfm/HkREzfyzNMiKPIQ7i7SZOxwEdiNCm4Svayn2DBq7MKEdrqPJUOSIpy1v6PpFlCQ0YA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Local Styles -->
-    <link rel="stylesheet" href="res/css/notes.css">
-    <link rel="stylesheet" href="res/css/app.css">
 
-    <!-- Render Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
-
-    <style type="text/css" media="screen">
-        /*metadata*/
-
-        .metadata {
-            background: none;
+    <style>
+        .nav-scroller .nav {
             display: flex;
-        }
-
-        .metadata table {
-            color: white;
-            background: rgba(0, 0, 0, 0.8);
-            border: .5vh solid rgba(0, 0, 0, 0.0)
-        }
-
-        .metadata td {
-            vertical-align: middle;
-        }
-
-        .metadata td:first-child {
-            font-weight: bold;
-            text-align: right;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
             white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .axisNone line {
-            stroke: #AAAAAA;
-        }
-
-        .axisNone path {
-            stroke: none;
-        }
-
-        .axisNone text {
-            fill: #AAAAAA;
-        }
-
-        .mouseOver {
-            width: 100%;
-            height: 100%;
+        main>.container-fluid {
+            padding: 66px 0 0;
         }
     </style>
+
+
 </head>
 
-<body class="">
-    <div class="container-fluid min-vh-100 d-flex flex-column">
-        <div class="row" id="topBar">
-            <div class="col">
-                <nav class="navbar navbar-expand-lg bg-secondary">
-                    <div class="container-fluid mb-1">
-                        <a id="titleText" class="navbar-brand" href=".">
-                            <img src="res/logo.png" class="d-inline-block" alt="DrawTheNet.IO" width="40" height="40">
-                            <span class="badge bg-info">DrawTheNet.IO</span>
-                        </a>
-                        <div class="navbar-collapse mt-1">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <button class="btn btn-primary me-2" type="button" id="btnSaveYAML">
-                                        <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
-                                        Export YAML code
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="btn btn-info me-2" type="button" id="btnSave">
-                                        <iconify-icon inline icon="material-symbols:save"></iconify-icon>
-                                        Save
-                                    </button>
-                                </li>
-                                <li>
-                                    <div class="p-2 pb-1 me-4 ms-2 text-black bg-info-subtle rounded fs-6"
-                                        id="contAutoSave">
-                                        <div class="form-check form-switch ">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="inpAutoSave" checked>
-                                            <label class="form-check-label" for="inpAutoSave">
+<body class="d-flex flex-column h-100">
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <div class="navbar-brand">
 
-                                                Auto-Save <iconify-icon inline icon="ph:question-duotone"
-                                                    title="When ON, the current document will be saved to the browser localstorage and encoded into the URL for easy embeding."></iconify-icon>
+                    <div class="bg-light d-inline-block rounded">
+                        <img src="res/logo.png" class="d-inline-block " alt="DrawTheNet.IO" width="40" height="40">
+                    </div>
+                    DrawTheNet.IO
 
-                                            </label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="btn btn-success me-2" type="button" data-bs-toggle="offcanvas"
-                                        data-bs-target="#iconOffcanvas">
-                                        <iconify-icon
-                                            icon="material-symbols:screen-search-desktop-outline-rounded"></iconify-icon>
-                                        Icon Explorer
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <div class="dropdown me-2" id="drpSamples">
-                                        <button class="btn btn-light dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Samples
-                                        </button>
-                                        <ul class="dropdown-menu"></ul>
-                                    </div>
+                </div>
+                <div class="btn-toolbar justify-content-between">
 
-                                </li>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger" title="App's Help Guide">
+                            <iconify-icon inline icon="ion:library-sharp"></iconify-icon> Library
+                        </button>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                title="Complete icons sets on a single diagram">
+                                Contact Sheets
+                            </button>
+                            <ul class="dropdown-menu" id="drpdwn-contact">
                             </ul>
                         </div>
-                        <div class="d-flex mt-1">
-                            <button class="btn btn-info me-2" type="button" id="btnFullscreen">
-                                <iconify-icon inline icon="bi:arrows-fullscreen"></iconify-icon>
-                                Fullscreen
+
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Samples
                             </button>
-
-                            <button class="btn btn-success me-2" type="button" id="btnUpdate">
-                                <iconify-icon inline icon="zondicons:reload"></iconify-icon>
-                                Update
-                            </button>
-
-                            <div class="p-2 pb-1 me-4 ms-2 text-black bg-success-subtle rounded fs-6"
-                                id="contAutoUpdate">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="inpAutoUpdate"
-                                        checked>
-                                    <label class="form-check-label" for="inpAutoUpdate">
-                                        Auto-Update <iconify-icon inline icon="bi:question-circle"
-                                            title="When ON, the preview will render automaticly after a couple of seconds of inactivity or on window resize."></iconify-icon>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="btn-group me-2" role="group">
-                                <button class="btn btn-warning" type="button" id="btnSaveSVG">
-                                    <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
-                                    Export SVG
-                                </button>
-                                <button class="btn btn-primary" type="button" id="btnSavePNG">
-                                    <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
-                                    Export PNG
-                                </button>
-
-                            </div>
-                            <button class="btn btn-light px-3" type="button" data-bs-toggle="modal"
-                                data-bs-target="#modHelp">
-                                <strong>?</strong>
-                            </button>
-
+                            <ul class="dropdown-menu" id="drpdwn-samples">
+                            </ul>
                         </div>
-                    </div>
-
-                </nav>
-            </div>
-        </div>
-        <div class="row flex-grow-1 gx-0">
-            <div class="col border border-dark" id="editorCol">
-                <div id="editor"></div>
-            </div>
-            <div class="col bg-dark bg-gradient border border-dark p-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <button type="button" class="btn btn-primary ms-2 mt-2 pt-2 position-absolute opacity-50"
-                            style="display: none; right: 25px;" id="btnReduce" title="Edit Diagram">
-                            <iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon>
+                        <button type="button" class="btn btn-success" title="App's Help Guide">
+                            <iconify-icon inline icon="oi:book"></iconify-icon> User Guide
                         </button>
-                        <div class="h-100" id="preview">
-                        </div>
-
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </nav>
+    </header>
 
-    <div class="modal fade" id="modHelp" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                        <small>DrawTheNet.IO</small> - Help & Infos
-                        <a href="./help.html" target="_blank" title="Open in a separate tab">
-                            <iconify-icon inline icon="material-symbols:open-in-new"></iconify-icon>
-                        </a>
-                    </h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Begin page content -->
+    <main class="h-100">
+        <div class="container-fluid h-100">
+            <div class="row h-100 gx-0">
+                <div class="col-md-4 h-100">
+                    <div id="editor" class="h-100"></div>
                 </div>
-                <div class="modal-body p-2">
-                    <iframe class="w-100" height="800px" src="./help.html"></iframe>
+                <div class="col-md-1 bg-dark-subtle h-100 p-2">
+                    <div class="position-relative h-100">
+                        <div class="position-absolute top-50 start-50 translate-middle w-100">
+                            <div class="d-grid mx-auto gap-2">
+                                <button class="btn btn-success" type="button" id="btnUpdate">
+                                    <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
+                                </button>
+                                <div class="p-2 pb-1 text-black bg-success-subtle rounded fs-6" id="contAutoUpdate">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="inpAutoUpdate"
+                                            checked>
+                                        <label class="form-check-label" for="inpAutoUpdate"
+                                            title="When ON, the preview will render automaticly after a couple of seconds of inactivity or on window resize.">
+                                            <iconify-icon inline icon="mdi:refresh-auto"></iconify-icon> Auto-Update
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-info" title="Icon Explorer">
+                                    <iconify-icon inline icon="material-symbols-light:image-search"></iconify-icon> Icon
+                                    Explorer
+                                </button>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 start-50 translate-middle w-100 text-center">
+                            <p class="mb-0">Last update at : <span id="LastUpdateTime"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 h-100">
+                    <div class="h-100" id="preview"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="btn-toolbar justify-content-between">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary" title="Export YAML code" id="btnSaveYAML">
+                        <iconify-icon inline icon="bi:filetype-yml"></iconify-icon> Save Code
+                    </button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" title="Export as PNG" id="btnSavePNG">
+                        <iconify-icon inline icon="bi:filetype-png"></iconify-icon> PNG
+                    </button>
+                    <button type="button" class="btn btn-success" title="Export as SVG" id="btnSaveSVG">
+                        <iconify-icon inline icon="bi:filetype-svg"></iconify-icon> SVG
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
+    <script type="module">
+        import { Render as Renderer } from './res/js/render.js';
+        import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
 
-    <div class="offcanvas offcanvas-bottom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-        id="iconOffcanvas" aria-labelledby="offcanvasScrollingLabel">
-        <div class="offcanvas-header bg-warning-subtle">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col">
-                        <h4 class="mt-2">Icon Explorer</h4>
-                    </div>
-                    <div class="col">
-                        <div class="form-floating">
-                            <input type="search" class="form-control" id="txtSearchIcon" placeholder="Search">
-                            <label for="txtSearchIcon">Search</label>
-                        </div>
+        $(async function () {
+            // =============================================
+            // =============== Param Loading ===============
+            // =============================================
+            function genParamString(obj) {
+                let urlParams = new URLSearchParams();
 
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn-close float-end mt-2" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="offcanvas-body bg-light">
-            <div class="row g-2" id="iconCards">
-                <div class="col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-4">
-                    <div class="card h-100 text-center">
-                        <div class="card-header icon-family">
-                            {{family}}
-                        </div>
-                        <div class="card-body bg-light bg-gradient icon-full">
-                            <img {{url}} class="iconCardIcon" class="card-img-top">
-                        </div>
-                        <div class="card-footer px-1 icon-name">
-                            {{icon}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+                urlParams.set("fullscreen", obj.fullscreen);
+                urlParams.set("autosave", obj.autosave);
+                urlParams.set("autoupdate", obj.autoupdate);
+                urlParams.set("doc", LZString.compressToEncodedURIComponent(obj.doc));
 
-<script type="module">
-    import { Render as Renderer } from './res/js/render.js';
-    import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
+                return urlParams.toString();
+            }
 
-    $(async function () {
-        // =============================================
-        // =============== Param Loading ===============
-        // =============================================
-        function genParamString(obj) {
-            let urlParams = new URLSearchParams();
+            function parseParamString(paramString) {
+                let urlParams = new URLSearchParams(paramString);
 
-            urlParams.set("fullscreen", obj.fullscreen);
-            urlParams.set("autosave", obj.autosave);
-            urlParams.set("autoupdate", obj.autoupdate);
-            urlParams.set("doc", LZString.compressToEncodedURIComponent(obj.doc));
+                let returnObj = {
+                    "fullscreen": urlParams.get("fullscreen") === "true",
+                    "autosave": urlParams.get("autosave") !== "false",
+                    "autoupdate": urlParams.get("autoupdate") !== "false",
+                    "doc": LZString.decompressFromEncodedURIComponent(urlParams.get("doc"))
+                };
+                return returnObj;
+            }
 
-            return urlParams.toString();
-        }
+            async function LoadParams() {
+                let returnObj = parseParamString(window.location.hash.substring(1));
 
-        function parseParamString(paramString) {
-            let urlParams = new URLSearchParams(paramString);
-
-            let returnObj = {
-                "fullscreen": urlParams.get("fullscreen") === "true",
-                "autosave": urlParams.get("autosave") !== "false",
-                "autoupdate": urlParams.get("autoupdate") !== "false",
-                "doc": LZString.decompressFromEncodedURIComponent(urlParams.get("doc"))
-            };
-            return returnObj;
-        }
-
-        async function LoadParams() {
-            let returnObj = parseParamString(window.location.hash.substring(1));
-
-            if (returnObj.doc == null || returnObj.doc == "") {
-                let lastDoc = localStorage.getItem('lastDoc');
-                if (lastDoc != null) {
-                    returnObj.doc = LZString.decompressFromEncodedURIComponent(lastDoc);
-                }
                 if (returnObj.doc == null || returnObj.doc == "") {
-                    returnObj.doc = await fetch("./samples/welcome.yaml").then(r => r.text());
+                    let lastDoc = localStorage.getItem('lastDoc');
+                    if (lastDoc != null) {
+                        returnObj.doc = LZString.decompressFromEncodedURIComponent(lastDoc);
+                    }
+                    if (returnObj.doc == null || returnObj.doc == "") {
+                        returnObj.doc = await fetch("./samples/welcome.yaml").then(r => r.text());
+                    }
+                }
+
+                return returnObj;
+            }
+
+            function SetParams(params) {
+                window.location.hash = "#" + genParamString(params)
+
+                history.pushState(null, null, '#' + genParamString(params));
+                /*
+                            if (window.location.hash == '#' + urlParams.toString()) {
+                                history.replaceState(null, null, '#');
+                                history.replaceState(null, null, '#' + urlParams.toString());
+                            }
+                            else {
+                                history.pushState(null, null, '#' + urlParams.toString());
+                            }
+                
+                            */
+            }
+
+            // =============================================
+            // ============== Editor & Hl.js ===============
+            // =============================================
+
+            // Highlight.js Init
+            hljs.highlightAll();
+
+            // Ace Editor Init & settings
+            ace.config.set("basePath", "https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/");
+
+            let langTools = ace.require("ace/ext/language_tools");
+
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/sqlserver");
+            editor.session.setMode("ace/mode/yaml");
+            editor.setOption("tabSize", 2);
+            editor.setOption("wrap", true);
+            editor.setOption("enableBasicAutocompletion", true);
+            editor.setShowPrintMargin(false);
+
+            let completerKeywords = {
+                document: [
+                    "aspectRatio",
+                    "margin",
+                    "fill",
+                    "watermark",
+                    "renderRatio",
+                    "fileTitlePrefix",
+                    "schemasVersion"
+                ],
+                diagram: [
+                    "columns",
+                    "rows",
+                    "invertY",
+                    "gridLines",
+                    "margin"
+                ]
+
+            }
+
+            let completer = {
+                getCompletions: function (editor, session, pos, prefix, callback) {
+
+                    let lineStart = editor.session.getLine(pos.row).substr(0, pos.column);
+
+                    let wsCount = lineStart.search(/\S|$/);
+
+                    // case root of document
+                    if (pos.column == 0) {
+                        let rootKeywords = Object.keys(completerKeywords);
+
+                        let completions = rootKeywords.map(keyword => {
+                            return {
+                                caption: keyword,
+                                value: keyword,
+                                meta: "root",
+                                score: 1000
+                            }
+                        });
+
+
+                    }
                 }
             }
 
-            return returnObj;
-        }
+            langTools.setCompleters([completer]);
 
-        function SetParams(params) {
-            window.location.hash = "#" + genParamString(params)
 
-            history.pushState(null, null, '#' + genParamString(params));
-            /*
-                        if (window.location.hash == '#' + urlParams.toString()) {
-                            history.replaceState(null, null, '#');
-                            history.replaceState(null, null, '#' + urlParams.toString());
+            // Data storage Init
+            var Data = {};
+
+            // =============================================
+            // ======= Settings & session loading ==========
+            // =============================================
+
+            let params = await LoadParams();
+
+            $('#inpAutoSave').prop('checked', params.autosave === true);
+            $('#inpAutoUpdate').prop('checked', params.autoupdate === true);
+
+            editor.setValue(params.doc, -1);
+
+            $('#contAutoSave').on("click", function () {
+                $('#inpAutoSave').prop("checked", !$('#inpAutoSave').is(":checked"));
+            });
+            $('#inpAutoSave').change(async function () {
+                params = await LoadParams();
+
+                params.autosave = $(this).is(":checked");
+
+                SetParams(params);
+            });
+            $('#contAutoUpdate').on("click", function () {
+                $('#inpAutoUpdate').prop("checked", !$('#inpAutoUpdate').is(":checked"));
+            });
+            $('#inpAutoUpdate').change(async function () {
+                params = await LoadParams();
+
+                params.autoupdate = $(this).is(":checked");
+
+                SetParams(params);
+            });
+
+            // =============================================
+            // ===============  Render =====================
+            // =============================================
+            let debounceRenderTimer;
+            let lastDocument = null;
+            let errorToast = null;
+
+            function Render(maxDelay = 2000, keepZoom = true) {
+                clearTimeout(debounceRenderTimer);
+                debounceRenderTimer = setTimeout(async () => {
+                    try {
+                        $("#btnUpdate").prop("disabled", true);
+
+                        let text = editor.session.getValue();
+
+                        if (text === null || text === "" || text.trim() === "") {
+                            return;
                         }
-                        else {
-                            history.pushState(null, null, '#' + urlParams.toString());
+
+                        if ($("#inpAutoSave").is(":checked")) {
+                            let params = await LoadParams();
+                            params.doc = text;
+                            SetParams(params);
                         }
-            
-                        */
-        }
 
-        // =============================================
-        // ============== Editor & Hl.js ===============
-        // =============================================
+                        let doc = jsyaml.load(text);
+                        Renderer("#preview", doc, keepZoom);
 
-        // Highlight.js Init
-        hljs.highlightAll();
-
-        // Ace Editor Init & settings
-        ace.config.set("basePath", "https://cdnjs.cloudflare.com/ajax/libs/ace/1.15.0/");
-
-        let langTools = ace.require("ace/ext/language_tools");
-
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/sqlserver");
-        editor.session.setMode("ace/mode/yaml");
-        editor.setOption("tabSize", 2);
-        editor.setOption("wrap", true);
-        editor.setOption("enableBasicAutocompletion", true);
-        editor.setShowPrintMargin(false);
-
-        let completerKeywords = {
-            document: [
-                "aspectRatio",
-                "margin",
-                "fill",
-                "watermark",
-                "renderRatio",
-                "fileTitlePrefix",
-                "schemasVersion"
-            ],
-            diagram: [
-                "columns",
-                "rows",
-                "invertY",
-                "gridLines",
-                "margin"
-            ]
-
-        }
-
-        let completer = {
-            getCompletions: function (editor, session, pos, prefix, callback) {
-
-                let lineStart = editor.session.getLine(pos.row).substr(0, pos.column);
-
-                let wsCount = lineStart.search(/\S|$/);
-
-                // case root of document
-                if(pos.column == 0)
-                {
-                    let rootKeywords = Object.keys(completerKeywords);
-
-                    let completions = rootKeywords.map(keyword => {
-                        return {
-                            caption: keyword,
-                            value: keyword,
-                            meta: "root",
-                            score: 1000
+                        if (errorToast !== null) {
+                            errorToast.reset();
+                            errorToast = null;
                         }
-                    });
 
-
-                }
-
-
-
-
-
-            }
-        }
-
-        langTools.setCompleters([completer]);
-
-
-        // Data storage Init
-        var Data = {};
-
-        // =============================================
-        // ======= Settings & session loading ==========
-        // =============================================
-
-        let params = await LoadParams();
-
-        $('#inpAutoSave').prop('checked', params.autosave === true);
-        $('#inpAutoUpdate').prop('checked', params.autoupdate === true);
-
-        editor.setValue(params.doc, -1);
-
-        $('#contAutoSave').on("click", function () {
-            $('#inpAutoSave').prop("checked", !$('#inpAutoSave').is(":checked"));
-        });
-        $('#inpAutoSave').change(async function () {
-            params = await LoadParams();
-
-            params.autosave = $(this).is(":checked");
-
-            SetParams(params);
-        });
-        $('#contAutoUpdate').on("click", function () {
-            $('#inpAutoUpdate').prop("checked", !$('#inpAutoUpdate').is(":checked"));
-        });
-        $('#inpAutoUpdate').change(async function () {
-            params = await LoadParams();
-
-            params.autoupdate = $(this).is(":checked");
-
-            SetParams(params);
-        });
-
-        // =============================================
-        // ======= Settings & session loading ==========
-        // =============================================
-        let debounceRenderTimer;
-        let lastDocument = null;
-        let errorToast = null;
-
-        function Render(maxDelay = 2000) {
-            clearTimeout(debounceRenderTimer);
-            debounceRenderTimer = setTimeout(async () => {
-                try {
-                    let text = editor.session.getValue();
-
-                    if (text === null || text === "" || text.trim() === "") {
+                        lastDocument = doc;
+                    } catch (e) {
+                        console.error(e);
+                        errorToast = $.toast({
+                            text: `<pre>${e.message}</pre>`,
+                            heading: 'Error in document',
+                            icon: 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: false,
+                            stack: false,
+                            position: 'top-right',
+                            loader: true
+                        });
                         return;
                     }
-
-                    if ($("#inpAutoSave").is(":checked")) {
-                        let params = await LoadParams();
-                        params.doc = text;
-                        SetParams(params);
+                    finally {
+                        $("#btnUpdate").prop("disabled", false);
                     }
 
-                    let doc = jsyaml.load(text);
-                    Renderer("#preview", doc)
+                    LastUpdateTime.innerText = luxon.DateTime.now().toFormat("HH:mm:ss");
+                }, maxDelay);
+            }
 
-                    if (errorToast !== null) {
-                        errorToast.reset();
-                        errorToast = null;
-                    }
+            if ($('#inpAutoUpdate').is(":checked")) {
+                Render(0);
+            }
 
-                    lastDocument = doc;
-                } catch (e) {
-                    console.error(e);
-                    errorToast = $.toast({
-                        text: `<pre>${e.message}</pre>`,
-                        heading: 'Error in document',
-                        icon: 'error',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: false,
-                        stack: false,
-                        position: 'top-right',
-                        loader: true
-                    });
-                    return;
+            $("#btnUpdate").click(function () {
+                Render(0);
+            });
+
+            // Auto Update on change
+            editor.session.on('change', function (delta) {
+                if ($('#inpAutoUpdate').is(":checked")) {
+                    Render();
                 }
-            }, maxDelay);
-        }
 
-        if ($('#inpAutoUpdate').is(":checked")) {
-            Render(0);
-        }
+            });
 
-        $("#btnUpdate").click(function () {
-            Render(0);
-        });
-
-        // Auto Update on change
-        let debounceEditTimer;
-        editor.session.on('change', function (delta) {
-            if ($('#inpAutoUpdate').is(":checked")) {
-                Render();
-            }
-
-        });
-
-        window.addEventListener("resize", (event) => {
-            if ($('#inpAutoUpdate').is(":checked")) {
-                Render(50);
-            }
-        });
+            window.addEventListener("resize", (event) => {
+                if ($('#inpAutoUpdate').is(":checked")) {
+                    Render(50, false);
+                }
+            });
 
 
 
-        // =============================================
-        // ================== Samples ==================
-        // =============================================
-        fetch("./samples/samples.json")
-            .then(response => response.json())
-            .then(function (res) {
-                Object.keys(res).forEach(function (category) {
-                    $("#drpSamples .dropdown-menu").append(`<li class="bg-warning"><h6 class="dropdown-header">
+            // =============================================
+            // ================== Samples ==================
+            // =============================================
+            fetch("./samples/samples.json")
+                .then(response => response.json())
+                .then(function (res) {
+                    Object.keys(res).forEach(function (category) {
+                        $("#drpdwn-samples").append(`<li class="bg-warning"><h6 class="dropdown-header">
                         <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
                         ${category}
                         <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
                         </h6></li>`);
 
-                    Object.keys(res[category]).forEach(function (key) {
-                        $("#drpSamples .dropdown-menu").append(`<li file="${res[category][key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
-                    });
-                });
-            });
-
-        $("#drpSamples").on("click", "li", function (event) {
-            event.preventDefault();
-
-            let fileName = $(this).attr("file");
-
-            if (fileName === null || fileName === undefined) {
-                return;
-            }
-
-            fetch(`./samples/${fileName}`)
-                .then(response => response.text())
-                .then(function (res) {
-                    editor.setValue(res, -1);
-                });
-
-        });
-
-
-        // =============================================
-        // =============== Icons Search ================
-        // =============================================
-        fetch("./res/icons/icons.json")
-            .then(response => response.json())
-            .then(function (res) {
-                Object.keys(res).forEach(function (key) {
-                    $("#drpIconsSets .dropdown-menu").append(`<li file="${res[key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
-                });
-
-                Data.Icons = res;
-
-                let flattenIcons = [];
-
-                Object.keys(res).forEach(key => {
-                    res[key].forEach(key2 => {
-                        flattenIcons.push({ Icon: key2, Family: key });
+                        Object.keys(res[category]).forEach(function (key) {
+                            $("#drpdwn-samples").append(`<li file="${res[category][key]}"><a class="dropdown-item" href="#">${key}</a></li>`);
+                        });
                     });
                 });
 
-                Data.IconsFlat = flattenIcons;
+            $("#drpdwn-samples, #drpdwn-contact").on("click", "li", function (event) {
+                event.preventDefault();
+
+                let fileName = $(this).attr("file");
+
+                if (fileName === null || fileName === undefined) {
+                    return;
+                }
+
+                fetch(`./samples/${fileName}`)
+                    .then(response => response.text())
+                    .then(function (res) {
+                        editor.setValue(res, -1);
+                    });
+
             });
 
-        let iconCardTemplate = $("#iconCards").html();
-        $("#iconCards").empty();
-        let searchOptions = {
-            includeScore: true,
-            keys: ['Icon', 'Family']
-        }
 
-        function searchIcons(search) {
-            fetch("https://api.iconify.design/search?query=" + search)
+            // =============================================
+            // =============== Icons Search ================
+            // =============================================
+            fetch("./res/icons/icons.json")
                 .then(response => response.json())
                 .then(function (res) {
-
-                    let iconifyIcons = res.icons.map(icon => {
-                        return { Icon: icon, Family: "Iconify" };
+                    // Contact Sheets
+                    Object.keys(res).forEach(function (key) {
+                        $("#drpdwn-contact").append(`<li file="${key.toLowerCase()}.yaml"><a class="dropdown-item" href="#">${key}</a></li>`);
                     });
 
-                    let allIcons = Data.IconsFlat.concat(iconifyIcons);
+                    Data.Icons = res;
 
-                    const fuse = new Fuse(allIcons, searchOptions)
+                    let flattenIcons = [];
 
-                    let searchRes = fuse.search(search)
+                    Object.keys(res).forEach(key => {
+                        res[key].forEach(key2 => {
+                            flattenIcons.push({ Icon: key2, Family: key });
+                        });
+                    });
 
-                    if (searchRes.length == 0) {
-                        $("#iconCards").html("<div class='col-md-12'><h3>No results found</h3></div>");
-                        return;
-                    }
+                    Data.IconsFlat = flattenIcons;
+                });
 
-                    let maxSearchResult = 500;
+            let iconCardTemplate = $("#iconCards").html();
+            $("#iconCards").empty();
+            let searchOptions = {
+                includeScore: true,
+                keys: ['Icon', 'Family']
+            }
 
-                    if (searchRes.length > maxSearchResult) {
-                        searchRes.length = maxSearchResult;
-                    }
+            function searchIcons(search) {
+                fetch("https://api.iconify.design/search?query=" + search)
+                    .then(response => response.json())
+                    .then(function (res) {
 
-                    $("#iconCards").empty();
+                        let iconifyIcons = res.icons.map(icon => {
+                            return { Icon: icon, Family: "Iconify" };
+                        });
 
-                    searchRes.forEach(res => {
-                        let icon = res.item.Icon;
-                        let family = res.item.Family;
+                        let allIcons = Data.IconsFlat.concat(iconifyIcons);
 
-                        let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
+                        const fuse = new Fuse(allIcons, searchOptions)
 
-                        if (family == "Iconify") {
-                            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                        let searchRes = fuse.search(search)
+
+                        if (searchRes.length == 0) {
+                            $("#iconCards").html("<div class='col-md-12'><h3>No results found</h3></div>");
+                            return;
                         }
 
-                        let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", `src="${url}"`);
+                        let maxSearchResult = 500;
 
-                        $("#iconCards").append(card);
+                        if (searchRes.length > maxSearchResult) {
+                            searchRes.length = maxSearchResult;
+                        }
+
+                        $("#iconCards").empty();
+
+                        searchRes.forEach(res => {
+                            let icon = res.item.Icon;
+                            let family = res.item.Family;
+
+                            let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
+
+                            if (family == "Iconify") {
+                                url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                            }
+
+                            let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", `src="${url}"`);
+
+                            $("#iconCards").append(card);
+                        });
                     });
-                });
-        }
+            }
 
-        let debounceSearchIconTimer;
-        $("#txtSearchIcon").on("input", function (event) {
-            clearTimeout(debounceSearchIconTimer);
-            debounceSearchIconTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
-        });
+            let debounceSearchIconTimer;
+            $("#txtSearchIcon").on("input", function (event) {
+                clearTimeout(debounceSearchIconTimer);
+                debounceSearchIconTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
+            });
 
-        $("#iconCards").on("click", ".icon-family", function (event) {
-            event.preventDefault();
+            $("#iconCards").on("click", ".icon-family", function (event) {
+                event.preventDefault();
 
-            let text = $(this).text().trim();
+                let text = $(this).text().trim();
 
-            navigator.clipboard.writeText(`"${text}"`).then(
-                () => {
-                    $.toast({
-                        heading: 'Icon family copied to clipboard',
-                        icon: 'success',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: 2000,
-                        position: 'bottom-right',
-                        loader: true
-                    });
-                },
-                () => {
-                    $.toast({
-                        heading: 'Icon family copying to clipboard failed. Please allow permission and try again',
-                        icon: 'error',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: 5000,
-                        position: 'bottom-right',
-                        loader: true
-                    });
+                navigator.clipboard.writeText(`"${text}"`).then(
+                    () => {
+                        $.toast({
+                            heading: 'Icon family copied to clipboard',
+                            icon: 'success',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 2000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    },
+                    () => {
+                        $.toast({
+                            heading: 'Icon family copying to clipboard failed. Please allow permission and try again',
+                            icon: 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 5000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    }
+                );
+            });
+
+            $("#iconCards").on("click", ".icon-name", function (event) {
+                event.preventDefault();
+
+                let text = $(this).text().trim();
+
+                navigator.clipboard.writeText(`"${text}"`).then(
+                    () => {
+                        $.toast({
+                            heading: 'Icon name copied to clipboard',
+                            icon: 'success',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 2000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    },
+                    () => {
+                        $.toast({
+                            heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
+                            icon: 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 5000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    }
+                );
+            });
+
+            $("#iconCards").on("click", ".icon-full", function (event) {
+                event.preventDefault();
+
+                let family = $(this).parents(".card").children(".icon-family").text().trim();
+                let name = $(this).parents(".card").children(".icon-name").text().trim();
+
+                navigator.clipboard.writeText(`iconFamily: "${family}", icon: "${name}"`).then(
+                    () => {
+                        $.toast({
+                            heading: 'Icon name copied to clipboard',
+                            icon: 'success',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 2000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    },
+                    () => {
+                        $.toast({
+                            heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
+                            icon: 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 5000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    }
+                );
+            });
+
+            // =============================================
+            // =============== FullScreen ==================
+            // =============================================
+
+            $("#btnFullscreen, #btnReduce").on("click", function (event) {
+                event.preventDefault();
+                params.fullscreen = !params.fullscreen;
+                SetParams(params);
+                applyFullscreen();
+            });
+
+            function applyFullscreen() {
+                if (params.fullscreen) {
+                    $("#topBar").hide();
+                    $("#editorCol").hide();
+                    $("#btnReduce").show();
                 }
-            );
-        });
-
-        $("#iconCards").on("click", ".icon-name", function (event) {
-            event.preventDefault();
-
-            let text = $(this).text().trim();
-
-            navigator.clipboard.writeText(`"${text}"`).then(
-                () => {
-                    $.toast({
-                        heading: 'Icon name copied to clipboard',
-                        icon: 'success',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: 2000,
-                        position: 'bottom-right',
-                        loader: true
-                    });
-                },
-                () => {
-                    $.toast({
-                        heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
-                        icon: 'error',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: 5000,
-                        position: 'bottom-right',
-                        loader: true
-                    });
+                else {
+                    $("#topBar").show();
+                    $("#editorCol").show();
+                    $("#btnReduce").hide();
                 }
-            );
-        });
 
-        $("#iconCards").on("click", ".icon-full", function (event) {
-            event.preventDefault();
+                Render(0);
+            }
 
-            let family = $(this).parents(".card").children(".icon-family").text().trim();
-            let name = $(this).parents(".card").children(".icon-name").text().trim();
-
-            navigator.clipboard.writeText(`iconFamily: "${family}", icon: "${name}"`).then(
-                () => {
-                    $.toast({
-                        heading: 'Icon name copied to clipboard',
-                        icon: 'success',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: 2000,
-                        position: 'bottom-right',
-                        loader: true
-                    });
-                },
-                () => {
-                    $.toast({
-                        heading: 'Icon name copying to clipboard failed. Please allow permission and try again',
-                        icon: 'error',
-                        showHideTransition: 'slide',
-                        allowToastClose: true,
-                        hideAfter: 5000,
-                        position: 'bottom-right',
-                        loader: true
-                    });
-                }
-            );
-        });
-
-        // =============================================
-        // =============== FullScreen ==================
-        // =============================================
-
-        $("#btnFullscreen, #btnReduce").on("click", function (event) {
-            event.preventDefault();
-            params.fullscreen = !params.fullscreen;
-            SetParams(params);
-            applyFullscreen();
-        });
-
-        function applyFullscreen() {
             if (params.fullscreen) {
-                $("#topBar").hide();
-                $("#editorCol").hide();
-                $("#btnReduce").show();
-            }
-            else {
-                $("#topBar").show();
-                $("#editorCol").show();
-                $("#btnReduce").hide();
+                applyFullscreen();
             }
 
-            Render(0);
-        }
+            // =============================================
+            // =========== Keyboard Shortcut ===============
+            // =============================================
 
-        if (params.fullscreen) {
-            applyFullscreen();
-        }
+            $(document).on("keydown", function (event) {
+                if (event.ctrlKey && event.key == "s") {
+                    event.preventDefault();
+                    $("#btnSave").click();
+                }
+                else if (event.ctrlKey && event.key == "Enter") {
+                    event.preventDefault();
+                    $("#btnFullscreen").click();
+                }
+            });
 
-        // =============================================
-        // =========== Keyboard Shortcut ===============
-        // =============================================
+            // =============================================
+            // =============== Local Save ==================
+            // =============================================
 
-        $(document).on("keydown", function (event) {
-            if (event.ctrlKey && event.key == "s") {
+
+            $("#btnSave").on("click", async function (event) {
+                let text = editor.session.getValue();
+
+                let params = await LoadParams();
+                params.doc = text;
+                SetParams(params);
+            });
+
+            // =============================================
+            // ================= Exports ===================
+            // =============================================
+
+            // Preloading fonts for PNG export
+            LoadFonts();
+
+            function saveAs(blob, title) {
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = title;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }
+
+            $("#btnSaveYAML").on("click", function (event) {
                 event.preventDefault();
-                $("#btnSave").click();
-            }
-            else if (event.ctrlKey && event.key == "Enter") {
+
+                if (lastDocument == null) return;
+
+                let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.yml`
+
+                let text = editor.session.getValue();
+                let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+
+                saveAs(blob, title);
+            });
+
+
+            $("#btnSaveSVG").on("click", async function (event) {
                 event.preventDefault();
-                $("#btnFullscreen").click();
-            }
+
+                if (lastDocument == null) return;
+
+                let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
+
+                let svg = (await ExportSVG($(".render")[0], lastDocument.document.renderRatio, !event.ctrlKey)).outerHTML;
+                let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+
+                saveAs(blob, title);
+            });
+
+            $("#btnSavePNG").on("click", async function (event) {
+                event.preventDefault();
+
+                if (lastDocument == null) return;
+
+                let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.png`
+                let blob = await ExportPNG($(".render")[0], lastDocument.document.renderRatio);
+
+                saveAs(blob, title);
+
+                return;
+            });
         });
-
-        // =============================================
-        // =============== Local Save ==================
-        // =============================================
-
-
-        $("#btnSave").on("click", async function (event) {
-            let text = editor.session.getValue();
-
-            let params = await LoadParams();
-            params.doc = text;
-            SetParams(params);
-        });
-
-        // =============================================
-        // ================= Exports ===================
-        // =============================================
-
-        // Preloading fonts for PNG export
-        LoadFonts();
-
-        function saveAs(blob, title) {
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = title;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-
-        $("#btnSaveYAML").on("click", function (event) {
-            event.preventDefault();
-
-            if (lastDocument == null) return;
-
-            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.yml`
-
-            let text = editor.session.getValue();
-            let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-
-            saveAs(blob, title);
-        });
-
-
-
-        $("#btnSaveSVG").on("click", async function (event) {
-            event.preventDefault();
-
-            if (lastDocument == null) return;
-
-            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
-
-            let svg = (await ExportSVG($(".render")[0], lastDocument.document.renderRatio, !event.ctrlKey)).outerHTML;
-            let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-
-            saveAs(blob, title);
-        });
-
-        $("#btnSavePNG").on("click", async function (event) {
-            event.preventDefault();
-
-            if (lastDocument == null) return;
-
-            let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.png`
-            let blob = await ExportPNG($(".render")[0], lastDocument.document.renderRatio);
-
-            saveAs(blob, title);
-
-            return;
-        });
-    });
-
-</script>
+    </script>
+</body>
 
 </html>

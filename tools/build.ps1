@@ -279,7 +279,9 @@ function DownloadAzurePatternsIcons {
 
     $svgFiles = Get-ChildItem $destPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith(".svg") }
+        Where-Object { $_.EndsWith(".svg") } | `
+        ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_)}
+
     
     $iconsJson | Add-Member -MemberType NoteProperty -Name "AzurePatterns" -Value $svgFiles -Force | Out-Null
     $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
@@ -1066,17 +1068,9 @@ function GenContactSheets {
     Write-Output "====== Generating contact sheets ======"
     $icons = Get-Content $iconsJSONPath | ConvertFrom-Json
     $samples = Get-Content -Path $samplesJSONPath | ConvertFrom-Json
+    $contactSheetTemplatePath = Join-Path $iconsPath "contactSheet.yaml"
 
-    $template = @"
-diagram:
-  columns: {{columns}}
-  rows: {{rows}}
-  gridLines: false
-title:
-  type: none
-icons:
-{{icons}}
-"@
+    $template = Get-Content -Path $contactSheetTemplatePath -Raw
 
     $samples | Add-Member -Name 'Contact Sheets' -Type NoteProperty -Value @{} -ErrorAction SilentlyContinue
 
@@ -1102,7 +1096,7 @@ icons:
                 $y++;
             }
 
-            $iconsStrs += "  $($icon): { icon: ""$icon"", iconFamily: ""$iconSet"", x: $x, y: $y}`r`n"
+            $iconsStrs += "  $($icon): { <<: *iconBase, icon: ""$icon"", iconFamily: ""$iconSet"", x: $x, y: $y}`r`n"
             $x++;
         }
 

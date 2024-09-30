@@ -1,13 +1,16 @@
-import { ApplyTextLocation, GetPropByStringPath, DeepClone, ComputeNodeValue } from './common.js'
+import { ApplyTextLocation, GetPropByStringPath, DeepClone, ComputeNodeValue, RandomInt, HashCode } from './common.js'
+import PQueue from 'https://cdn.jsdelivr.net/npm/p-queue@8.0.1/+esm'
 
 export function RenderIcons(container, doc, dataBag) {
     let iconsContainer = container.append("g")
         .attr("class", "icons");
 
+    let queue = new PQueue({ concurrency: 20 });
+
     dataBag.icons = {};
 
     let previous = {};
-    Object.keys(doc.icons).forEach(function (key, index) {
+    Object.keys(doc.icons).forEach(async function (key, index) {
 
         let computed = {};
 
@@ -246,71 +249,83 @@ export function RenderIcons(container, doc, dataBag) {
         if (doc.icons[key].iconFamily != null && doc.icons[key].iconFamily != "none" && doc.icons[key].icon != null && doc.icons[key].icon != "none") {
             let family = doc.icons[key].iconFamily.toLowerCase();
             let icon = doc.icons[key].icon.toLowerCase();
+
             let url = "./res/icons/" + family + "/" + icon + ".svg";
 
             if (family == "iconify") {
                 url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
             }
 
+            let urlHash = HashCode(url);
+
             let iconImage = iconContainer.append("g")
                 .attr("transform", `translate(${iconSize / 2 * -1 + computed.iconImageXOffset / 2}, ${iconSize / 2 * -1 + computed.iconImageYOffset / 2})`);
 
-            fetch(url).then(function (raw) {
-                let svg = raw.text().then(text => {
-                    let parser = new DOMParser();
-                    let svg = parser.parseFromString(text, "image/svg+xml").documentElement;
+            let iconProcessor = function (text) {
+                iconCache[urlHash] = text;
 
-                    svg.setAttribute("width", iconSize);
-                    svg.setAttribute("height", iconSize);
+                let parser = new DOMParser();
+                let svg = parser.parseFromString(text, "image/svg+xml").documentElement;
 
-                    let scripts = svg.querySelectorAll("script");
-                    if (scripts != null && scripts.length > 0) {
-                        scripts.forEach(script => {
-                            script.remove();
+                svg.setAttribute("width", iconSize);
+                svg.setAttribute("height", iconSize);
+
+                let scripts = svg.querySelectorAll("script");
+                if (scripts != null && scripts.length > 0) {
+                    scripts.forEach(script => {
+                        script.remove();
+                    });
+                }
+
+                let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
+
+                if ("iconFill" in doc.icons[key]) {
+                    let fills = svg.querySelectorAll("[fill]");
+                    if (fills != null && fills.length > 0) {
+                        fills.forEach(fill => {
+                            let fillAttr = fill.getAttribute("fill");
+                            if (!preserveWhite) {
+                                fill.setAttribute("fill", doc.icons[key].iconFill);
+                            }
+                            else {
+                                if (!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white"))
+                                    fill.setAttribute("fill", doc.icons[key].iconFill);
+                            }
                         });
                     }
+                }
 
-                    let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
-
-                    if ("iconFill" in doc.icons[key]) {
-                        let fills = svg.querySelectorAll("[fill]");
-                        if (fills != null && fills.length > 0) {
-                            fills.forEach(fill => {
-                                let fillAttr = fill.getAttribute("fill");
-                                if (!preserveWhite) {
-                                    fill.setAttribute("fill", doc.icons[key].iconFill);
-                                }
-                                else {
-                                    if (!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white"))
-                                        fill.setAttribute("fill", doc.icons[key].iconFill);
-                                }
-                            });
-                        }
-                    }
-
-                    if ("iconStroke" in doc.icons[key]) {
-                        let strokes = svg.querySelectorAll("[stroke]");
-                        if (strokes != null && strokes.length > 0) {
-                            strokes.forEach(stroke => {
-                                let strokeAttr = stroke.getAttribute("stroke");
-                                if (!preserveWhite) {
+                if ("iconStroke" in doc.icons[key]) {
+                    let strokes = svg.querySelectorAll("[stroke]");
+                    if (strokes != null && strokes.length > 0) {
+                        strokes.forEach(stroke => {
+                            let strokeAttr = stroke.getAttribute("stroke");
+                            if (!preserveWhite) {
+                                stroke.setAttribute("stroke", doc.icons[key].iconStroke);
+                            }
+                            else {
+                                if (!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
                                     stroke.setAttribute("stroke", doc.icons[key].iconStroke);
-                                }
-                                else {
-                                    if (!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
-                                        stroke.setAttribute("stroke", doc.icons[key].iconStroke);
-                                }
-                            });
-                        }
+                            }
+                        });
                     }
+                }
 
-                    iconImage._groups[0][0].innerHTML = svg.outerHTML;
-                });
-            });
-        }
+                iconImage._groups[0][0].innerHTML = svg.outerHTML;
+            };
+
+            if (!(urlHash in iconCache)) {
+                queue.add(async () => await fetch(url).then((raw) => raw.text()).then(iconProcessor));
+
+            }
+            else {
+                iconProcessor(iconCache[urlHash]);
+            }
+        };
 
         dataBag.icons[key] = computed;
         previous = doc.icons[key];
     });
-
 }
+
+let iconCache = {};
