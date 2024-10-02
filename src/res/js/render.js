@@ -10,6 +10,7 @@ import { RenderNotes } from './notes.js'
 export function Render(containerSelector, doc, keepZoom) {
     ApplyDefaults(doc);
     
+    /*
     let initialZoom = null;
     if(d3.select(`${containerSelector} svg`).node() != null)
     {
@@ -19,6 +20,7 @@ export function Render(containerSelector, doc, keepZoom) {
     {
         initialZoom = d3.zoomIdentity;
     }
+        */
 
     d3.select(`${containerSelector} > svg`).remove();
 
@@ -62,7 +64,7 @@ export function Render(containerSelector, doc, keepZoom) {
         .attr("width", containerBox.width)
         .attr("height", containerBox.height)
         .style("background-color", doc.document.fill)
-        .call(d3.zoom().transform().on("zoom", function (e) {
+        .call(d3.zoom().on("zoom", function (e) {
             zoomContainer.attr("transform", e.transform);
             document.querySelectorAll(".render .metadata").forEach(function (element) {
                 let evt = new Event('mouseleave');
@@ -74,7 +76,7 @@ export function Render(containerSelector, doc, keepZoom) {
         .attr("class", "zoom")
         //.attr("transform", zoom);
 
-    d3.select(`${containerSelector} svg`).node().call(zoom.transform, initialZoom)
+    //d3.select(`${containerSelector} svg`).node().call(zoom.transform, initialZoom)
 
     let documentContainer = zoomContainer.append("g")
         .attr("transform", `translate(${doc.document.margin.left + dataBag.HCenterOffset}, ${doc.document.margin.top + dataBag.VCenterOffset})`)

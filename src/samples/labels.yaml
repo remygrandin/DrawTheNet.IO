@@ -10,9 +10,7 @@ defs:
   icon: &icon
     color: "#004BAF"
     fill: "#E1E000"
-    iconFill: "#54565B"
-    iconStroke: "none"
-    stroke: "#A8A8AA"
+
   internet: &internet
     <<: *icon
     iconFamily: "M365"

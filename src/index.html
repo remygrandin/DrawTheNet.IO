@@ -26,7 +26,6 @@
         integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
     <!-- D3 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js"
         integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA=="
@@ -113,6 +112,39 @@
         main>.container-fluid {
             padding: 66px 0 0;
         }
+
+        .heightTransition {
+
+            transition-property: height;
+            transition-duration: 0.5s;
+            transition-timing-function: ease;
+
+        }
+
+        .h-0 {
+            height: 0 !important;
+        }
+
+        .iconCard {
+            height: 130px;
+        }
+
+        .iconCard img {
+            height: 50px;
+        }
+
+        .iconCard .card-text {
+            white-space: nowrap;
+            font-size: x-small;
+        }
+
+        .iconCard .icon-name {
+            text-overflow: ellipsis;
+        }
+
+        .iconCard {
+            cursor: pointer;
+        }
     </style>
 
 
@@ -163,38 +195,72 @@
         </nav>
     </header>
 
-    <!-- Begin page content -->
     <main class="h-100">
         <div class="container-fluid h-100">
             <div class="row h-100 gx-0">
-                <div class="col-md-4 h-100">
-                    <div id="editor" class="h-100"></div>
-                </div>
-                <div class="col-md-1 bg-dark-subtle h-100 p-2">
-                    <div class="position-relative h-100">
-                        <div class="position-absolute top-50 start-50 translate-middle w-100">
-                            <div class="d-grid mx-auto gap-2">
-                                <button class="btn btn-success" type="button" id="btnUpdate">
-                                    <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
-                                </button>
-                                <div class="p-2 pb-1 text-black bg-success-subtle rounded fs-6" id="contAutoUpdate">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="inpAutoUpdate"
-                                            checked>
-                                        <label class="form-check-label" for="inpAutoUpdate"
-                                            title="When ON, the preview will render automaticly after a couple of seconds of inactivity or on window resize.">
-                                            <iconify-icon inline icon="mdi:refresh-auto"></iconify-icon> Auto-Update
-                                        </label>
+                <div class="col-md-5 h-100">
+                    <div class="row h-100 gx-0">
+                        <div class="col-md-9 h-50 heightTransition" id="editorContainer">
+                            <div id="editor" class="h-100"></div>
+                        </div>
+                        <div class="col-md-3 bg-dark-subtle h-50 p-2 heightTransition" id="centralButtonsContainer">
+                            <div class="position-relative h-100">
+                                <div class="position-absolute top-50 start-50 translate-middle w-100">
+                                    <div class="d-grid mx-auto gap-2">
+                                        <button class="btn btn-success" type="button" id="btnUpdate">
+                                            <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
+                                        </button>
+                                        <div class="p-2 pb-1 text-black bg-success-subtle rounded fs-6 text-center"
+                                            id="contAutoUpdate">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="inpAutoUpdate" checked>
+                                                <label class="form-check-label" for="inpAutoUpdate"
+                                                    title="When ON, the preview will render automaticly after a couple of seconds of inactivity or on window resize.">
+                                                    <iconify-icon inline icon="mdi:refresh-auto"></iconify-icon>
+                                                    Auto-Update
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-info" title="Icon Explorer"
+                                            id="btnToggleIconExplorer">
+                                            <iconify-icon inline
+                                                icon="material-symbols-light:image-search"></iconify-icon>
+                                            Icon
+                                            Explorer
+                                        </button>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-info" title="Icon Explorer">
-                                    <iconify-icon inline icon="material-symbols-light:image-search"></iconify-icon> Icon
-                                    Explorer
-                                </button>
+                                <div class="position-absolute bottom-0 start-50 translate-middle w-100 text-center">
+                                    <p class="mb-0">Last update at : <span id="LastUpdateTime"></span></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="position-absolute bottom-0 start-50 translate-middle w-100 text-center">
-                            <p class="mb-0">Last update at : <span id="LastUpdateTime"></span></p>
+                        <div class="col-md-12 h-50 bg-info-subtle" id="iconExplorerContainer">
+                            <div class="row h-100 gx-0">
+                                <div class="col-md-9 h-100">
+                                    <div id="iconSearchResults" class="row gx-0 row-cols-8 h-100 overflow-auto">
+                                        <h4 class="float-end">Type here to search for icons =></h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 bg-info h-100 p-2">
+                                    <div class="bg-warning-subtle p-1 pt-2 rounded mb-3">
+                                        <h4 class="text-center">Icon Explorer</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control form-control" type="text" placeholder="Search"
+                                            id="inpSearchIcon">
+                                        <label for="inpSearchIcon">Search</label>
+                                    </div>
+
+                                    <hr>
+                                    <h5 class="text-center">Icon Sets</h5>
+
+                                    <div id="iconSets" class="p-2">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -225,6 +291,26 @@
             </div>
         </div>
     </footer>
+
+    <div class="modal fade" id="modHelp" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        <small>DrawTheNet.IO</small> - Help & Infos
+                        <a href="./help.html" target="_blank" title="Open in a separate tab">
+                            <iconify-icon inline icon="material-symbols:open-in-new"></iconify-icon>
+                        </a>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <iframe class="w-100" height="800px" src="./help.html"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { Render as Renderer } from './res/js/render.js';
         import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
@@ -512,6 +598,21 @@
             // =============================================
             // =============== Icons Search ================
             // =============================================
+            $("#btnToggleIconExplorer").on("click", function (event) {
+                event.preventDefault();
+
+                console.log("Bip");
+
+                if ($("#iconExplorerContainer").hasClass("h-0")) {
+                    $("#iconExplorerContainer").addClass("h-50").removeClass("h-0");
+                    $("#editorContainer, #centralButtonsContainer").addClass('h-50').removeClass('h-100');
+                }
+                else {
+                    $("#iconExplorerContainer").addClass("h-0").removeClass("h-50");
+                    $("#editorContainer, #centralButtonsContainer").addClass('h-100').removeClass('h-0');
+                }
+            });
+
             fetch("./res/icons/icons.json")
                 .then(response => response.json())
                 .then(function (res) {
@@ -519,6 +620,26 @@
                     Object.keys(res).forEach(function (key) {
                         $("#drpdwn-contact").append(`<li file="${key.toLowerCase()}.yaml"><a class="dropdown-item" href="#">${key}</a></li>`);
                     });
+
+                    // Icon Explorer
+                    $("#iconSets").append(`<div class="form-check form-switch">
+                                                <label class="form-check-label w-100" for="inpIconIconify">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="inpIconIconify" set="Iconify" checked>
+                                                    Iconify
+                                                </label>
+                                            </div>`);
+
+                    Object.keys(res).forEach(function (key) {
+                        $("#iconSets").append(`<div class="form-check form-switch">
+                                                    <label class="form-check-label w-100" for="inpIcon${key}">
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="inpIcon${key}" set="${key}" checked>
+                                                        ${key}
+                                                    </label>
+                                                </div>`);
+                    });
+
+
+
 
                     Data.Icons = res;
 
@@ -533,65 +654,101 @@
                     Data.IconsFlat = flattenIcons;
                 });
 
-            let iconCardTemplate = $("#iconCards").html();
-            $("#iconCards").empty();
+
             let searchOptions = {
                 includeScore: true,
                 keys: ['Icon', 'Family']
             }
 
+
             function searchIcons(search) {
-                fetch("https://api.iconify.design/search?query=" + search)
-                    .then(response => response.json())
-                    .then(function (res) {
+                let iconSets = [];
 
-                        let iconifyIcons = res.icons.map(icon => {
-                            return { Icon: icon, Family: "Iconify" };
+                $("#iconSets input:checked").each(function () {
+                    iconSets.push($(this).attr("set"));
+                });
+
+                let allIcons = Data.IconsFlat.filter(icon => iconSets.includes(icon.Family));
+
+                if (iconSets.includes("Iconify")) {
+                    fetch("https://api.iconify.design/search?query=" + search)
+                        .then(response => response.json())
+                        .then(function (res) {
+                            let iconifyIcons = res.icons.map(icon => {
+                                return { Icon: icon, Family: "Iconify" };
+                            });
+
+                            let allIcons = Data.IconsFlat.concat(iconifyIcons);
+
+                            let fuse = new Fuse(allIcons, searchOptions);
+
+                            let searchRes = fuse.search(search);
+
+                            RenderSearchResults(searchRes);
                         });
+                }
+                else {
+                    let fuse = new Fuse(allIcons, searchOptions);
 
-                        let allIcons = Data.IconsFlat.concat(iconifyIcons);
+                    let searchRes = fuse.search(search);
 
-                        const fuse = new Fuse(allIcons, searchOptions)
-
-                        let searchRes = fuse.search(search)
-
-                        if (searchRes.length == 0) {
-                            $("#iconCards").html("<div class='col-md-12'><h3>No results found</h3></div>");
-                            return;
-                        }
-
-                        let maxSearchResult = 500;
-
-                        if (searchRes.length > maxSearchResult) {
-                            searchRes.length = maxSearchResult;
-                        }
-
-                        $("#iconCards").empty();
-
-                        searchRes.forEach(res => {
-                            let icon = res.item.Icon;
-                            let family = res.item.Family;
-
-                            let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
-
-                            if (family == "Iconify") {
-                                url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
-                            }
-
-                            let card = iconCardTemplate.replaceAll("{{icon}}", icon).replaceAll("{{family}}", family).replaceAll("{{url}}", `src="${url}"`);
-
-                            $("#iconCards").append(card);
-                        });
-                    });
+                    RenderSearchResults(searchRes);
+                }
             }
 
+            function RenderSearchResults(searchRes) {
+                $("#iconSearchResults").empty();
+                if (searchRes.length == 0) {
+                    $("#iconSearchResults").html("<div class='col-md-12'><h3>No results found</h3></div>");
+                    return;
+                }
+
+                let maxSearchResult = 500;
+
+                if (searchRes.length > maxSearchResult) {
+                    searchRes.length = maxSearchResult;
+                }
+
+                searchRes.forEach(res => {
+                    let icon = res.item.Icon;
+                    let family = res.item.Family;
+
+                    let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
+
+                    if (family == "Iconify") {
+                        url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                    }
+
+                    $("#iconSearchResults").append(`
+                    <div class="col p-1" >
+                        <div class="card iconCard">
+                            <div class="card-body p-2 bg-dark-subtle icon-full">
+                                <img src="${url}" class="img-fluid w-100">
+                            </div>
+                            <div class="card-body p-2">
+                                <p class="card-text icon-family mb-0"><small>${family}</small></p>
+                                <p class="card-text icon-name mb-0"><small>${icon}</small></p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    `);
+                });
+            }
+
+
             let debounceSearchIconTimer;
-            $("#txtSearchIcon").on("input", function (event) {
+            $("#inpSearchIcon").on("input", function (event) {
                 clearTimeout(debounceSearchIconTimer);
-                debounceSearchIconTimer = setTimeout(() => searchIcons($("#txtSearchIcon").val()), 200);
+                debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 200);
             });
 
-            $("#iconCards").on("click", ".icon-family", function (event) {
+            $("#iconSets").on("change", "input", function (event) {
+                clearTimeout(debounceSearchIconTimer);
+                debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 0);
+            });
+
+            $("#iconSearchResults").on("click", ".icon-family", function (event) {
                 event.preventDefault();
 
                 let text = $(this).text().trim();
@@ -622,7 +779,7 @@
                 );
             });
 
-            $("#iconCards").on("click", ".icon-name", function (event) {
+            $("#iconSearchResults").on("click", ".icon-name", function (event) {
                 event.preventDefault();
 
                 let text = $(this).text().trim();
@@ -653,7 +810,7 @@
                 );
             });
 
-            $("#iconCards").on("click", ".icon-full", function (event) {
+            $("#iconSearchResults").on("click", ".icon-full", function (event) {
                 event.preventDefault();
 
                 let family = $(this).parents(".card").children(".icon-family").text().trim();

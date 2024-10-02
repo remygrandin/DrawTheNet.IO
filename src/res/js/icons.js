@@ -246,9 +246,9 @@ export function RenderIcons(container, doc, dataBag) {
         let iconSize = Math.min(computed.wPadded - Math.abs(computed.iconImageXOffset), computed.hPadded - Math.abs(computed.iconImageYOffset));
 
 
-        if (doc.icons[key].iconFamily != null && doc.icons[key].iconFamily != "none" && doc.icons[key].icon != null && doc.icons[key].icon != "none") {
-            let family = doc.icons[key].iconFamily.toLowerCase();
+        if (doc.icons[key].iconFamily != null && doc.icons[key].iconFamily != "none" && doc.icons[key].icon != null && doc.icons[key].icon != "none") {            
             let icon = doc.icons[key].icon.toLowerCase();
+            let family = doc.icons[key].iconFamily.toLowerCase();
 
             let url = "./res/icons/" + family + "/" + icon + ".svg";
 

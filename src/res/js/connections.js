@@ -58,7 +58,6 @@ export function RenderConnections(container, doc, dataBag) {
 
         dataBag.connections[key] = computed;
     });
-
 }
 
 function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) {
