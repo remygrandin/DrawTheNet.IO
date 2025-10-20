@@ -2,6 +2,8 @@ param(
     [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "GenContactSheets", "AllLowercase", "CopyDist", "EndCleanup")
 )
 
+$startTime = Get-Date
+
 $distRootPath = Join-Path $PSScriptRoot ..
 $distPath = Join-Path $distRootPath "dist"
 $srcPath = Join-Path $PSScriptRoot .. "src"
@@ -388,7 +390,7 @@ function DownloadD365Icons {
     $destPath = join-path $iconsPath "D365"
 
     Write-Output "Download..."
-    Invoke-WebRequest -Uri "https://download.microsoft.com/download/3/e/a/3eaa9444-906f-468d-92cb-ada53e87b977/Dynamics_365_Icons_scalable.zip" -OutFile $zipPath
+    Invoke-WebRequest -Uri "https://download.microsoft.com/download/3/e/a/3eaa9444-906f-468d-92cb-ada53e87b977/Dynamics_365_Icons_scalable_2024.zip" -OutFile $zipPath
     Write-Output "Done"
 
     Write-Output "Extract..."
@@ -1037,29 +1039,37 @@ function EndCleanup {
 
 function AllLowercase {
     Write-Output "====== Moving all to lowercase ======"
-    $items = Get-ChildItem -Directory -Path $buildPath -Recurse
+    $items = Get-ChildItem -Directory -Path $buildPath -Recurse | Sort-Object {([regex]::Matches($_.FullName, [regex]::Escape([System.IO.Path]::DirectorySeparatorChar))).count}
 
     $baseLength = (Join-Path $buildPath "" -Resolve).Length + 1
 
     foreach ($item in $items) {
-        $newPath = $item.FullName.ToLower()
-        $newPath = $item.FullName.Substring(0, $baseLength) + $newPath.Substring($baseLength)
+        $relativePath = $item.FullName.Substring($baseLength)
+        $newRelativePath = $relativePath.ToLower()
+        $newPath = $item.FullName.Substring(0, $baseLength) + $newRelativePath
 
         if ($item.FullName -cne $newPath) {
             Write-Output "    Moving $($item.FullName) to $($newPath)"
-            Move-Item -Path $item.FullName -Destination $newPath -Force
+            # Use two-step rename to handle case-insensitive filesystems
+            $tempPath = $newPath + "_temp_rename_$(Get-Random)"
+            Move-Item -Path $item.FullName -Destination $tempPath -Force
+            Move-Item -Path $tempPath -Destination $newPath -Force
         }
     }
 
-    $items = Get-ChildItem -File -Path $buildPath -Recurse
+    $items = Get-ChildItem -File -Path $buildPath -Recurse | Sort-Object {([regex]::Matches($_.FullName, [regex]::Escape([System.IO.Path]::DirectorySeparatorChar))).count}
 
     foreach ($item in $items) {
-        $newPath = $item.FullName.ToLower()
-        $newPath = $item.FullName.Substring(0, $baseLength) + $newPath.Substring($baseLength)
+        $relativePath = $item.FullName.Substring($baseLength)
+        $newRelativePath = $relativePath.ToLower()
+        $newPath = $item.FullName.Substring(0, $baseLength) + $newRelativePath
 
         if ($item.FullName -cne $newPath) {
             Write-Output "    Moving $($item.FullName) to $($newPath)"
-            Move-Item -Path $item.FullName -Destination $newPath -Force
+            # Use two-step rename to handle case-insensitive filesystems
+            $tempPath = $newPath + "_temp_rename_$(Get-Random)"
+            Move-Item -Path $item.FullName -Destination $tempPath -Force
+            Move-Item -Path $tempPath -Destination $newPath -Force
         }
     }
 }
@@ -1068,7 +1078,7 @@ function GenContactSheets {
     Write-Output "====== Generating contact sheets ======"
     $icons = Get-Content $iconsJSONPath | ConvertFrom-Json
     $samples = Get-Content -Path $samplesJSONPath | ConvertFrom-Json
-    $contactSheetTemplatePath = Join-Path $iconsPath "contactSheet.yaml"
+    $contactSheetTemplatePath = Join-Path $iconsPath "contactsheet.yaml"
 
     $template = Get-Content -Path $contactSheetTemplatePath -Raw
 
@@ -1146,3 +1156,8 @@ if ($steps -contains "EndCleanup") {
 }
 
 Write-Output "All Done"
+
+
+$endTime = Get-Date
+$buildDuration = $endTime - $startTime
+Write-Output "Build completed in $($buildDuration.TotalSeconds) seconds."
