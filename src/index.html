@@ -145,6 +145,21 @@
         .iconCard {
             cursor: pointer;
         }
+
+        .dropdown-menu{
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .dropdown-menu li:first-child {
+            border-top-left-radius: var(--bs-dropdown-border-radius);
+            border-top-right-radius: var(--bs-dropdown-border-radius);
+        }
+
+        .dropdown-menu li:last-child {
+            border-bottom-left-radius: var(--bs-dropdown-border-radius);
+            border-bottom-right-radius: var(--bs-dropdown-border-radius);
+        }
     </style>
 
 
@@ -565,7 +580,7 @@
                 .then(response => response.json())
                 .then(function (res) {
                     Object.keys(res).forEach(function (category) {
-                        $("#drpdwn-samples").append(`<li class="bg-warning"><h6 class="dropdown-header">
+                        $("#drpdwn-samples").append(`<li class="bg-warning"><h6 class="dropdown-header text-center">
                         <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
                         ${category}
                         <iconify-icon icon="ph:caret-down-fill"></iconify-icon>
@@ -583,6 +598,7 @@
                 let fileName = $(this).attr("file");
 
                 if (fileName === null || fileName === undefined) {
+                    event.stopImmediatePropagation();
                     return;
                 }
 
