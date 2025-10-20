@@ -1,0 +1,7 @@
+diagram:
+  columns: 5
+  rows: 10
+  gridLines: false
+title:
+  type: none
+icons:
