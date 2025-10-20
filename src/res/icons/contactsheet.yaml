@@ -1,7 +1,12 @@
 diagram:
-  columns: 5
-  rows: 10
+  columns: {{columns}}
+  rows: {{rows}}
   gridLines: false
 title:
   type: none
+defs:
+  iconBase: &iconBase
+    fill: lightGrey
 icons:
+
+{{icons}}

@@ -1,5 +1,5 @@
 param(
-    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "CopySrc", "GenContactSheets", "AllLowercase", "CopyDist", "EndCleanup")
+    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "GenContactSheets", "CopySrc", "AllLowercase", "CopyDist", "EndCleanup")
 )
 
 $startTime = Get-Date
@@ -1114,10 +1114,10 @@ function GenContactSheets {
 
         $templateFilled | Out-File (Join-Path $samplesPath "$iconSet.yaml") -Force
 
-        $samples."Contact Sheets".$iconSet = "$($iconSet.ToLower()).yaml"
+        #$samples."Contact Sheets".$iconSet = "$($iconSet.ToLower()).yaml"
     }
 
-    $samples | ConvertTo-Json | Out-File $samplesJSONPath -Force
+    #$samples | ConvertTo-Json | Out-File $samplesJSONPath -Force
 }
 
 
