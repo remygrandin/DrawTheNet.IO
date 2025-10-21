@@ -25,6 +25,8 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
         let defs = document.createElement("defs");
         clone.prepend(defs);
 
+/*
+
         let robotoFont = document.createElement("style");
         robotoFont.innerHTML = `<![CDATA[${fontCache.roboto}]]>`;
         defs.appendChild(robotoFont);
@@ -32,6 +34,15 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
         let robotoMonoFont = document.createElement("style");
         robotoMonoFont.innerHTML = `<![CDATA[${fontCache.robotoMono}]]>`;
         defs.appendChild(robotoMonoFont);
+
+        */
+
+        Object.keys(fontCache).forEach(fontKey => {
+            let elFont = document.createElement("style");
+            elFont.innerHTML = `<![CDATA[${fontCache[fontKey]}]]>`;
+            defs.appendChild(elFont);
+        });
+        
 
         let css = document.createElement("style");
         css.innerHTML = `<![CDATA[${cssExport}]]>`;
@@ -127,6 +138,36 @@ function GenCSSExport() {
 }
 
 export async function LoadFonts() {
+
+    let fontsDef = await fetch("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap").then(async resp => {
+        let text = await resp.text();
+        return text;
+    });
+
+    fontsDef.matchAll(/\/\* ([a-zA-Z0-9-]*) \*\/[\s\S]{0,2}(@font-face {[-\s\da-zA-Z.;:+()/'%_,]*})/gm).forEach(match => {
+        let fontType = match[1]
+        let fontDef = match[2];
+
+        if (!(fontType in ["latin", "latin-ext"])) {
+            let url = fontDef.match(/url\((\S*)\)/)[1];
+
+            fetch(url).then(async r => {
+                let rawData = await r.arrayBuffer();
+                let byteArray = new Uint8Array(rawData);
+                let charArray = Array.from(byteArray, byte => String.fromCharCode(byte));
+                let binaryString = charArray.join("");
+
+                let b64 = btoa(binaryString);
+                fontDef = fontDef.replace(/url\((\S*)\)/, `url(data:font/woff2;base64,${b64}) format('woff2')`);
+
+                fontCache[url] = fontDef;
+            });
+        }
+    });
+}
+
+
+    /*
     if (!("robotoMono" in fontCache)) {
         let fontB64 = await fetch("https://fonts.googleapis.com/css2?family=Roboto+Mono").then(async resp => {
             let text = await resp.text();
@@ -182,4 +223,4 @@ export async function LoadFonts() {
             src: url(data:font/woff2;base64,${fontB64}) format('woff2');\n \
         } \n `
     }
-}
+    */

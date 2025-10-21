@@ -315,7 +315,16 @@ export function RenderIcons(container, doc, dataBag) {
             };
 
             if (!(urlHash in iconCache)) {
-                queue.add(async () => await fetch(url).then((raw) => raw.text()).then(iconProcessor));
+                queue.add(async () => {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        // Handle fetch failure, e.g., skip or log error
+                        console.error(`Failed to fetch icon from ${url}: ${response.status} ${response.statusText}`);
+                        return;
+                    }
+                    const text = await response.text();
+                    iconProcessor(text);
+                });
 
             }
             else {
