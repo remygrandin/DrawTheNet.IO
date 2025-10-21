@@ -856,12 +856,12 @@ function DownloadFortinetIcons {
 
         $iconSVG = $iconSVG -replace 'transform=" scale([\d\.]*) "', ""
         
-        $iconSVG -match 'version="1.1" width="([\d\.]*)" height="([\d\.]*)"' | Out-Null
+        $iconSVG -match 'viewBox="0 0 ([\d\.]*) ([\d\.]*)"' | Out-Null
 
         $X = $Matches[1];
         $Y = $Matches[2];
         
-        $iconSVG = $iconSVG -replace 'version="1.1" width="[\d\.]*" height="[\d\.]*"', "version=""1.1"" viewBox=""0 0 $X $Y"" width=""$X"" height=""$Y"""
+        $iconSVG = $iconSVG -replace 'version="1.1" width="[\d\.]*" height="[\d\.]*" viewBox="[\d\.]* [\d\.]* [\d\.]* [\d\.]*"', "version=""1.1"" width=""$X"" height=""$Y"" viewBox=""0 0 $X $Y"""
         $iconSVG = $iconSVG -replace 'x="[-\d\.]*" y="[-\d\.]*"', ""
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
@@ -1152,7 +1152,7 @@ if ($steps -contains "CopyDist") {
 }
 
 if ($steps -contains "EndCleanup") {
-    EndCleanup
+    #EndCleanup
 }
 
 Write-Output "All Done"
