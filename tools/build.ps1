@@ -25,7 +25,6 @@ function DownloadIcons {
     
     DownloadAWSIcons
     DownloadAzureIcons
-    DownloadAzurePatternsIcons
     DownloadM365Icons
     DownloadD365Icons
     DownloadPowerPlatformIcons
@@ -214,78 +213,6 @@ function DownloadAzureIcons {
     $copiedFiles = $copiedFiles | Sort-Object
     
     $iconsJson | Add-Member -MemberType NoteProperty -Name "Azure" -Value $copiedFiles -Force | Out-Null
-    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
-
-    Write-Output "Done"
-}
-
-function DownloadAzurePatternsIcons {
-    Write-Output "------ Azure Patterns ------"
-    $destPath = join-path $iconsPath "AzurePatterns"
-    $cookieJar = join-path $tempPath "AzurePatterns.cookies"
-
-    #using curl here as heavy slowness from invoke-webrequest. Seem cookie related. If someone make it work without, please let me know
-    Write-Output "Download Base Page..."
-    if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
-        $webPageContent = curl.exe -s -b $cookieJar -c $cookieJar "https://azure.microsoft.com/en-us/patterns/styles/glyphs-icons/"
-    }
-    else {
-        $webPageContent = curl -s -b $cookieJar -c $cookieJar "https://azure.microsoft.com/en-us/patterns/styles/glyphs-icons/"
-    }
-    #Invoke-WebRequest -Uri "https://azure.microsoft.com/en-us/patterns/styles/glyphs-icons/" -OutFile $sourcePath
-    Write-Output "Done"
-
-    Write-Output "Creating Output Directory ..."
-    New-Item -Type Directory -Path $destPath -Force | Out-Null
-    Write-Output "Done"
-
-    Write-Output "Extracting SVG links..."
-
-    $svgLinks = (($webPageContent | select-string -Pattern "<a class=""swatch"" href=""(.*)"" title").Matches `
-        | Select-Object @{Name = "Value"; Expression = { $_.Groups[1].Value } } `
-    ).Value
-
-    foreach ($link in $svgLinks) {
-        Write-Output "    Downloading $link..."
-        $fullLink = "https://azure.microsoft.com$link"
-
-        $svgPath = join-path $destPath "$($link -replace "/en-us/patterns/styles/glyphs-icons/", "/")"
-
-        if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
-            $webPageContent = curl.exe -s -b $cookieJar -c $cookieJar -o $svgPath $fullLink
-        }
-        else {
-            $webPageContent = curl -s -b $cookieJar -c $cookieJar -o $svgPath $fullLink
-        }
-    }
-    
-
-    Write-Output "Fix permission..."
-    if ($IsLinux) {
-        foreach ($file in Get-ChildItem $destPath -Recurse -File) {
-            $file.UnixFileMode += "OtherRead"
-        }
-    }
-    Write-Output "Done"
-
-    Write-Output "Adding data to icons.json..."
-    $iconsJson = $null
-    
-    if (test-path $iconsJSONPath) {
-        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
-    }
-    else {
-        $iconsJson = [PSCustomObject]@{
-        }
-    }
-
-    $svgFiles = Get-ChildItem $destPath -Recurse | `
-        Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith(".svg") } | `
-        ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_)}
-
-    
-    $iconsJson | Add-Member -MemberType NoteProperty -Name "AzurePatterns" -Value $svgFiles -Force | Out-Null
     $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
 
     Write-Output "Done"
@@ -743,7 +670,7 @@ function DownloadCiscoIcons {
         $maxX = $points | Select-Object -ExpandProperty X | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
         $maxY = $points | Select-Object -ExpandProperty Y | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
 
-        $iconSVG = $iconSVG -replace 'width="[\d\.]*" height="[\d\.]*"', "viewBox=""0 0 $maxX $maxY"" width=""$maxX"" height=""$maxY"""
+        $iconSVG = $iconSVG -replace 'width="[\d\.]*" height="[\d\.]*" viewBox="0 0 [\d\.]* [\d\.]*"', "width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
@@ -767,6 +694,12 @@ function DownloadCiscoIcons {
         $obj.FileName -match "(.*).svg" | Out-Null
 
         $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])"
+        # Cleaning up names
+        $obj.BaseName = $obj.BaseName.Replace("___", "_")
+        $obj.BaseName = $obj.BaseName.Replace("__", "_")
+        if($obj.BaseName.EndsWith("_")) {
+            $obj.BaseName = $obj.BaseName.Substring(0, $obj.BaseName.Length - 1)
+        }
         $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
 
         $svgFilesParsed += $obj
