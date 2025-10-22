@@ -3,7 +3,7 @@ diagram:
   rows: {{rows}}
   gridLines: false
 title:
-  type: none
+  position: none
 defs:
   iconBase: &iconBase
     fill: lightGrey
