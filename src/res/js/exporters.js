@@ -25,18 +25,6 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
         let defs = document.createElement("defs");
         clone.prepend(defs);
 
-/*
-
-        let robotoFont = document.createElement("style");
-        robotoFont.innerHTML = `<![CDATA[${fontCache.roboto}]]>`;
-        defs.appendChild(robotoFont);
-
-        let robotoMonoFont = document.createElement("style");
-        robotoMonoFont.innerHTML = `<![CDATA[${fontCache.robotoMono}]]>`;
-        defs.appendChild(robotoMonoFont);
-
-        */
-
         Object.keys(fontCache).forEach(fontKey => {
             let elFont = document.createElement("style");
             elFont.innerHTML = `<![CDATA[${fontCache[fontKey]}]]>`;
@@ -165,62 +153,3 @@ export async function LoadFonts() {
         }
     });
 }
-
-
-    /*
-    if (!("robotoMono" in fontCache)) {
-        let fontB64 = await fetch("https://fonts.googleapis.com/css2?family=Roboto+Mono").then(async resp => {
-            let text = await resp.text();
-
-            let fileURL = text.match(/\/\* latin \*\/[\s\S]*url\((\S*)\)/)[1];
-
-            let fontData = await fetch(fileURL).then(async r => {
-                let rawData = await r.arrayBuffer();
-                let byteArray = new Uint8Array(rawData);
-                let charArray = Array.from(byteArray, byte => String.fromCharCode(byte));
-                let binaryString = charArray.join("");
-
-                return btoa(binaryString);
-            });
-
-            return fontData;
-        });
-
-
-        fontCache.robotoMono = `@font-face {\n \
-            font-family: 'Roboto Mono';\n \
-            font-style: normal;\n \
-            font-weight: 400;\n \
-            src: url(data:font/woff2;base64,${fontB64}) format('woff2');\n \
-        } \n `
-
-
-    }
-
-    if (!("roboto" in fontCache)) {
-        let fontB64 = await fetch("https://fonts.googleapis.com/css2?family=Roboto").then(async resp => {
-            let text = await resp.text();
-
-            let fileURL = text.match(/\/\* latin \*\/[\s\S]*url\((\S*)\)/)[1];
-
-            let fontData = await fetch(fileURL).then(async r => {
-                let rawData = await r.arrayBuffer();
-                let byteArray = new Uint8Array(rawData);
-                let charArray = Array.from(byteArray, byte => String.fromCharCode(byte));
-                let binaryString = charArray.join("");
-
-                return btoa(binaryString);
-            });
-
-            return fontData;
-        });
-
-
-        fontCache.roboto = `@font-face {\n \
-            font-family: 'Roboto';\n \
-            font-style: normal;\n \
-            font-weight: 400;\n \
-            src: url(data:font/woff2;base64,${fontB64}) format('woff2');\n \
-        } \n `
-    }
-    */
