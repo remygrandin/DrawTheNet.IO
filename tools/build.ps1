@@ -670,7 +670,7 @@ function DownloadCiscoIcons {
         $maxX = $points | Select-Object -ExpandProperty X | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
         $maxY = $points | Select-Object -ExpandProperty Y | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
 
-        $iconSVG = $iconSVG -replace 'width="[\d\.]*" height="[\d\.]*" viewBox="0 0 [\d\.]* [\d\.]*"', "width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
+        $iconSVG = $iconSVG -replace 'width="[\d\.]*" height="[\d\.]*"( viewBox="0 0 [\d\.]* [\d\.]*")?', "width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }

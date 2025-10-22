@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/powershell:7.3-ubuntu-22.04 AS builder
 WORKDIR /tmp/drawthenet.io
 
-RUN apt update && apt -y install git wget build-essential cmake libemf2svg-dev librevenge-dev libwmf-dev libvisio-dev
+RUN apt update && apt -y install git wget build-essential cmake libxml2-dev libwmf-dev gsfonts libemf2svg-dev libvisio-dev librevenge-dev
 
 RUN git clone https://github.com/kakwa/libvisio2svg.git -b master
 WORKDIR /tmp/drawthenet.io/libvisio2svg
