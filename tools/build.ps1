@@ -36,9 +36,9 @@ function DownloadIcons {
 
 function DownloadAWSIcons {
     Write-Output "------ AWS ------"
-    $zipPath = join-path $tempPath "AWS.zip"
-    $extractPath = join-path $tempPath "AWS"
-    $destPath = join-path $iconsPath "AWS"
+    $zipPath = Join-Path $tempPath "AWS.zip"
+    $extractPath = Join-Path $tempPath "AWS"
+    $destPath = Join-Path $iconsPath "AWS"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://d1.awsstatic.com/webteam/architecture-icons/q3-2022/Asset-Package_07312022.e9f969935ef6aa73b775f3a4cd8c67af2a4cf51e.zip" -OutFile $zipPath
@@ -61,7 +61,7 @@ function DownloadAWSIcons {
     New-Item -Type Directory -Path $destPath -Force | Out-Null
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith(".svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
+        Where-Object { $_.EndsWith(".svg") -and -not $_.Contains("\.") -and -not $_.Contains("__MACOSX") }
 
     # filtering the lowest resolution icons
     $svgFilesParsed = @()
@@ -120,7 +120,7 @@ function DownloadAWSIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -140,9 +140,9 @@ function DownloadAzureIcons {
 
 
     Write-Output "------ Azure ------"
-    $zipPath = join-path $tempPath "Azure.zip"
-    $extractPath = join-path $tempPath "Azure"
-    $destPath = join-path $iconsPath "Azure"
+    $zipPath = Join-Path $tempPath "Azure.zip"
+    $extractPath = Join-Path $tempPath "Azure"
+    $destPath = Join-Path $iconsPath "Azure"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://arch-center.azureedge.net/icons/Azure_Public_Service_Icons_V11.zip" -OutFile $zipPath
@@ -202,7 +202,7 @@ function DownloadAzureIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -220,9 +220,9 @@ function DownloadAzureIcons {
 
 function DownloadM365Icons {
     Write-Output "------ M365 ------"
-    $zipPath = join-path $tempPath "M365.zip"
-    $extractPath = join-path $tempPath "M365"
-    $destPath = join-path $iconsPath "M365"
+    $zipPath = Join-Path $tempPath "M365.zip"
+    $extractPath = Join-Path $tempPath "M365"
+    $destPath = Join-Path $iconsPath "M365"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=869455" -OutFile $zipPath
@@ -294,7 +294,7 @@ function DownloadM365Icons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -312,9 +312,9 @@ function DownloadM365Icons {
 
 function DownloadD365Icons {
     Write-Output "------ Dynamics 365 ------"
-    $zipPath = join-path $tempPath "D365.zip"
-    $extractPath = join-path $tempPath "D365"
-    $destPath = join-path $iconsPath "D365"
+    $zipPath = Join-Path $tempPath "D365.zip"
+    $extractPath = Join-Path $tempPath "D365"
+    $destPath = Join-Path $iconsPath "D365"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://download.microsoft.com/download/3/e/a/3eaa9444-906f-468d-92cb-ada53e87b977/Dynamics_365_Icons_scalable_2024.zip" -OutFile $zipPath
@@ -345,10 +345,10 @@ function DownloadD365Icons {
 
         $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
 
-        $iconSVG = $iconSVG -replace '(clip\d)', "`$1-$title"
-        $iconSVG = $iconSVG -replace '(mask\d)', "`$1-$title"
-        $iconSVG = $iconSVG -replace '(filter\d_f)', "`$1-$title"
-        $iconSVG = $iconSVG -replace '(paint\d_linear)', "`$1-$title"
+        $iconSVG = $iconSVG -replace "(clip\d)", "`$1-$title"
+        $iconSVG = $iconSVG -replace "(mask\d)", "`$1-$title"
+        $iconSVG = $iconSVG -replace "(filter\d_f)", "`$1-$title"
+        $iconSVG = $iconSVG -replace "(paint\d_linear)", "`$1-$title"
         
         $iconSVG | Set-Content -Path $icon -Force
     }
@@ -392,7 +392,7 @@ function DownloadD365Icons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -410,9 +410,9 @@ function DownloadD365Icons {
 
 function DownloadPowerPlatformIcons {
     Write-Output "------ Power Platform ------"
-    $zipPath = join-path $tempPath "PowerPlatform.zip"
-    $extractPath = join-path $tempPath "PowerPlatform"
-    $destPath = join-path $iconsPath "PowerPlatform"
+    $zipPath = Join-Path $tempPath "PowerPlatform.zip"
+    $extractPath = Join-Path $tempPath "PowerPlatform"
+    $destPath = Join-Path $iconsPath "PowerPlatform"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://download.microsoft.com/download/e/f/4/ef434e60-8cdc-4dd1-9d9f-e58670e57ec1/Power_Platform_scalable.zip" -OutFile $zipPath
@@ -443,10 +443,10 @@ function DownloadPowerPlatformIcons {
 
         $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
 
-        $iconSVG = $iconSVG -replace '(clip\d)', "`$1-$title"
-        $iconSVG = $iconSVG -replace '(mask\d(?:[_\d]*))', "`$1-$title"
-        $iconSVG = $iconSVG -replace '(filter\d_f(?:[_\d]*))', "`$1-$title"
-        $iconSVG = $iconSVG -replace '(paint\d_linear(?:[_\d]*))', "`$1-$title"
+        $iconSVG = $iconSVG -replace "(clip\d)", "`$1-$title"
+        $iconSVG = $iconSVG -replace "(mask\d(?:[_\d]*))", "`$1-$title"
+        $iconSVG = $iconSVG -replace "(filter\d_f(?:[_\d]*))", "`$1-$title"
+        $iconSVG = $iconSVG -replace "(paint\d_linear(?:[_\d]*))", "`$1-$title"
         
         $iconSVG | Set-Content -Path $icon -Force
     }
@@ -490,7 +490,7 @@ function DownloadPowerPlatformIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -508,9 +508,9 @@ function DownloadPowerPlatformIcons {
 
 function DownloadGCPIcons {
     Write-Output "------ GCP ------"
-    $zipPath = join-path $tempPath "GCP.zip"
-    $extractPath = join-path $tempPath "GCP"
-    $destPath = join-path $iconsPath "GCP"
+    $zipPath = Join-Path $tempPath "GCP.zip"
+    $extractPath = Join-Path $tempPath "GCP"
+    $destPath = Join-Path $iconsPath "GCP"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://cloud.google.com/static/icons/files/google-cloud-icons.zip" -OutFile $zipPath
@@ -540,8 +540,8 @@ function DownloadGCPIcons {
 
         $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
 
-        $iconSVG = $iconSVG -replace 'cls-', "cls-$title-"
-        $iconSVG = $iconSVG -replace 'clip-', "clip-$title-"
+        $iconSVG = $iconSVG -replace "cls-", "cls-$title-"
+        $iconSVG = $iconSVG -replace "clip-", "clip-$title-"
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
@@ -582,7 +582,7 @@ function DownloadGCPIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -604,9 +604,9 @@ function DownloadCiscoIcons {
         return
     }
 
-    $zipPath = join-path $tempPath "Cisco.zip"
-    $extractPath = join-path $tempPath "Cisco"
-    $destPath = join-path $iconsPath "Cisco"
+    $zipPath = Join-Path $tempPath "Cisco.zip"
+    $extractPath = Join-Path $tempPath "Cisco"
+    $destPath = Join-Path $iconsPath "Cisco"
 
 
     Write-Output "Download..."
@@ -643,8 +643,8 @@ function DownloadCiscoIcons {
 
         $iconSVG = Get-Content -Path $icon.FullName -Raw
 
-        $iconSVG = $iconSVG -replace 'transform=" ?scale([\d\.]*) ?"', ""
-        $iconSVG = $iconSVG -replace ' transform=" ?translate\([-\d\.]*, ?[-\d\.]*\) ?\"', ""
+        $iconSVG = $iconSVG -replace "transform="" ?scale([\d\.]*) ?""", ""
+        $iconSVG = $iconSVG -replace " transform="" ?translate\([-\d\.]*, ?[-\d\.]*\) ?""", ""
         
         $widths = ([regex]"stroke-width=""([\d\.]*)""").Matches($iconSVG)
 
@@ -652,13 +652,13 @@ function DownloadCiscoIcons {
             $iconSVG = $iconSVG -replace "stroke-width=""$($width.Groups[1].value)""", "stroke-width=""$([double]($width.Groups[1].value) * (1.0 / 2.0))"""
         }
 
-        if ($iconSVG -match '<image xmlns="http://www.w3.org/2000/svg"') {
-            $iconSVG = $iconSVG -replace '<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="([\d\.]*)" y="([\d\.]*)"', '<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"'
+        if ($iconSVG -match "<image xmlns=""http://www.w3.org/2000/svg""") {
+            $iconSVG = $iconSVG -replace "<image xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" x=""([\d\.]*)"" y=""([\d\.]*)""", "<image xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" x=""0"" y=""0"""
 
-            $widthMatch = ([regex]'<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="([\d\.]*)" height="([\d\.]*)"').Matches($iconSVG).Groups[1].Value
-            $heightMatch = ([regex]'<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="([\d\.]*)" height="([\d\.]*)"').Matches($iconSVG).Groups[2].Value
+            $widthMatch = ([regex]"<image xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" x=""0"" y=""0"" width=""([\d\.]*)"" height=""([\d\.]*)""").Matches($iconSVG).Groups[1].Value
+            $heightMatch = ([regex]"<image xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" x=""0"" y=""0"" width=""([\d\.]*)"" height=""([\d\.]*)""").Matches($iconSVG).Groups[2].Value
 
-            $iconSVG = $iconSVG -replace '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="[\d\.]*" height="[\d\.]*"( viewBox="0 0 [\d\.]* [\d\.]*")?', "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
+            $iconSVG = $iconSVG -replace "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""[\d\.]*"" height=""[\d\.]*""( viewBox=""0 0 [\d\.]* [\d\.]*"")?", "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
         }
         else {
             $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
@@ -678,7 +678,7 @@ function DownloadCiscoIcons {
             $maxX = $points | Select-Object -ExpandProperty X | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
             $maxY = $points | Select-Object -ExpandProperty Y | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
 
-            $iconSVG = $iconSVG -replace '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="[\d\.]*" height="[\d\.]*"( viewBox="0 0 [\d\.]* [\d\.]*")?', "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
+            $iconSVG = $iconSVG -replace "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""[\d\.]*"" height=""[\d\.]*""( viewBox=""0 0 [\d\.]* [\d\.]*"")?", "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
         }
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
@@ -725,7 +725,7 @@ function DownloadCiscoIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -747,9 +747,9 @@ function DownloadFortinetIcons {
         return
     }
 
-    $zipPath = join-path $tempPath "Fortinet.zip"
-    $extractPath = join-path $tempPath "Fortinet"
-    $destPath = join-path $iconsPath "Fortinet"
+    $zipPath = Join-Path $tempPath "Fortinet.zip"
+    $extractPath = Join-Path $tempPath "Fortinet"
+    $destPath = Join-Path $iconsPath "Fortinet"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://www.fortinet.com/content/dam/fortinet/assets/downloads/Fortinet%20Visio%20Stencil.zip" -OutFile $zipPath
@@ -795,15 +795,15 @@ function DownloadFortinetIcons {
 
         $iconSVG = Get-Content -Path $icon.FullName -Raw
 
-        $iconSVG = $iconSVG -replace 'transform=" scale([\d\.]*) "', ""
+        $iconSVG = $iconSVG -replace "transform="" scale([\d\.]*) """, ""
         
-        $iconSVG -match 'viewBox="0 0 ([\d\.]*) ([\d\.]*)"' | Out-Null
+        $iconSVG -match "viewBox=""0 0 ([\d\.]*) ([\d\.]*)""" | Out-Null
 
         $X = $Matches[1];
         $Y = $Matches[2];
         
-        $iconSVG = $iconSVG -replace 'version="1.1" width="[\d\.]*" height="[\d\.]*" viewBox="[\d\.]* [\d\.]* [\d\.]* [\d\.]*"', "version=""1.1"" width=""$X"" height=""$Y"" viewBox=""0 0 $X $Y"""
-        $iconSVG = $iconSVG -replace 'x="[-\d\.]*" y="[-\d\.]*"', ""
+        $iconSVG = $iconSVG -replace "version=""1.1"" width=""[\d\.]*"" height=""[\d\.]*"" viewBox=""[\d\.]* [\d\.]* [\d\.]* [\d\.]*""", "version=""1.1"" width=""$X"" height=""$Y"" viewBox=""0 0 $X $Y"""
+        $iconSVG = $iconSVG -replace "x=""[-\d\.]*"" y=""[-\d\.]*""", ""
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
@@ -846,7 +846,7 @@ function DownloadFortinetIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -862,9 +862,9 @@ function DownloadFortinetIcons {
 
 function DownloadMerakiIcons {
     Write-Output "------ Meraki ------"
-    $zipPath = join-path $tempPath "Meraki.zip"
-    $extractPath = join-path $tempPath "Meraki"
-    $destPath = join-path $iconsPath "Meraki"
+    $zipPath = Join-Path $tempPath "Meraki.zip"
+    $extractPath = Join-Path $tempPath "Meraki"
+    $destPath = Join-Path $iconsPath "Meraki"
 
     Write-Output "Download..."
     Invoke-WebRequest -Uri "https://meraki.cisco.com/product-collateral/cisco-meraki-topology-icons/?file" -OutFile $zipPath
@@ -886,7 +886,7 @@ function DownloadMerakiIcons {
     Write-Output "Edit..."
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith("-large.svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
+        Where-Object { $_.EndsWith("-large.svg") -and -not $_.Contains("\.") -and -not $_.Contains("__MACOSX") }
 
     foreach ($icon in $svgFilesRaw) {
         Write-Output "    Editing  $($icon) ..."
@@ -895,7 +895,7 @@ function DownloadMerakiIcons {
 
         $title = [System.IO.Path]::GetFileNameWithoutExtension($icon)
 
-        $iconSVG = $iconSVG -replace 'cls-', "cls-$title-"
+        $iconSVG = $iconSVG -replace "cls-", "cls-$title-"
         
         $iconSVG | Set-Content -Path $icon -Force
     }
@@ -905,7 +905,7 @@ function DownloadMerakiIcons {
     New-Item -Type Directory -Path $destPath -Force | Out-Null
     $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
         Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith("-large.svg") -and -not $_.Contains("\\.") -and -not $_.Contains("__MACOSX") }
+        Where-Object { $_.EndsWith("-large.svg") -and -not $_.Contains("\.") -and -not $_.Contains("__MACOSX") }
 
     # filtering the lowest resolution icons
     $svgFilesParsed = @()
@@ -934,7 +934,7 @@ function DownloadMerakiIcons {
     Write-Output "Adding data to icons.json..."
     $iconsJson = $null
     
-    if (test-path $iconsJSONPath) {
+    if (Test-Path $iconsJSONPath) {
         $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
     }
     else {
@@ -1023,7 +1023,7 @@ function GenContactSheets {
 
     $template = Get-Content -Path $contactSheetTemplatePath -Raw
 
-    $samples | Add-Member -Name 'Contact Sheets' -Type NoteProperty -Value @{} -ErrorAction SilentlyContinue
+    $samples | Add-Member -Name "Contact Sheets" -Type NoteProperty -Value @{} -ErrorAction SilentlyContinue
 
     foreach ($iconSet in $icons | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name) {
         Write-Output "    Generating contact sheet for $iconSet ..."
