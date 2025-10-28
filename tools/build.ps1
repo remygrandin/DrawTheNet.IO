@@ -645,7 +645,6 @@ function DownloadCiscoIcons {
 
         $iconSVG = $iconSVG -replace 'transform=" ?scale([\d\.]*) ?"', ""
         $iconSVG = $iconSVG -replace ' transform=" ?translate\([-\d\.]*, ?[-\d\.]*\) ?\"', ""
-        #$iconSVG = $iconSVG -replace 'stroke-width="[\d\.]*"', ""
         
         $widths = ([regex]"stroke-width=""([\d\.]*)""").Matches($iconSVG)
 
@@ -653,25 +652,34 @@ function DownloadCiscoIcons {
             $iconSVG = $iconSVG -replace "stroke-width=""$($width.Groups[1].value)""", "stroke-width=""$([double]($width.Groups[1].value) * (1.0 / 2.0))"""
         }
 
-        $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
+        if ($iconSVG -match '<image xmlns="http://www.w3.org/2000/svg"') {
+            $iconSVG = $iconSVG -replace '<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="([\d\.]*)" y="([\d\.]*)"', '<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0"'
 
-        $minX = $points | Select-Object -ExpandProperty X | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
-        $minY = $points | Select-Object -ExpandProperty Y | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
+            $widthMatch = ([regex]'<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="([\d\.]*)" height="([\d\.]*)"').Matches($iconSVG).Groups[1].Value
+            $heightMatch = ([regex]'<image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="([\d\.]*)" height="([\d\.]*)"').Matches($iconSVG).Groups[2].Value
 
-        foreach ($point in $points) {
-            $newX = $point.X - $minX
-            $newY = $point.Y - $minY
-
-            $iconSVG = $iconSVG -replace "$($point.X),$($point.Y)", "$newX,$newY"
+            $iconSVG = $iconSVG -replace '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="[\d\.]*" height="[\d\.]*"( viewBox="0 0 [\d\.]* [\d\.]*")?', "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
         }
+        else {
+            $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
 
-        $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
+            $minX = $points | Select-Object -ExpandProperty X | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
+            $minY = $points | Select-Object -ExpandProperty Y | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
 
-        $maxX = $points | Select-Object -ExpandProperty X | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
-        $maxY = $points | Select-Object -ExpandProperty Y | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
+            foreach ($point in $points) {
+                $newX = $point.X - $minX
+                $newY = $point.Y - $minY
 
-        $iconSVG = $iconSVG -replace 'width="[\d\.]*" height="[\d\.]*"( viewBox="0 0 [\d\.]* [\d\.]*")?', "width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
+                $iconSVG = $iconSVG -replace "$($point.X),$($point.Y)", "$newX,$newY"
+            }
 
+            $points = ([regex]"([-\d\.]*), ?([-\d\.]*)").Matches($iconSVG) | Select-Object @{label = "X"; expression = { $_.Groups[1].Value } }, @{label = "Y"; expression = { $_.Groups[2].Value } }
+
+            $maxX = $points | Select-Object -ExpandProperty X | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
+            $maxY = $points | Select-Object -ExpandProperty Y | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
+
+            $iconSVG = $iconSVG -replace '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="[\d\.]*" height="[\d\.]*"( viewBox="0 0 [\d\.]* [\d\.]*")?', "<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" version=""1.1"" width=""$maxX"" height=""$maxY"" viewBox=""0 0 $maxX $maxY"""
+        }
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
 
@@ -697,7 +705,7 @@ function DownloadCiscoIcons {
         # Cleaning up names
         $obj.BaseName = $obj.BaseName.Replace("___", "_")
         $obj.BaseName = $obj.BaseName.Replace("__", "_")
-        if($obj.BaseName.EndsWith("_")) {
+        if ($obj.BaseName.EndsWith("_")) {
             $obj.BaseName = $obj.BaseName.Substring(0, $obj.BaseName.Length - 1)
         }
         $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")        
@@ -972,7 +980,7 @@ function EndCleanup {
 
 function AllLowercase {
     Write-Output "====== Moving all to lowercase ======"
-    $items = Get-ChildItem -Directory -Path $buildPath -Recurse | Sort-Object {([regex]::Matches($_.FullName, [regex]::Escape([System.IO.Path]::DirectorySeparatorChar))).count}
+    $items = Get-ChildItem -Directory -Path $buildPath -Recurse | Sort-Object { ([regex]::Matches($_.FullName, [regex]::Escape([System.IO.Path]::DirectorySeparatorChar))).count }
 
     $baseLength = (Join-Path $buildPath "" -Resolve).Length + 1
 
@@ -990,7 +998,7 @@ function AllLowercase {
         }
     }
 
-    $items = Get-ChildItem -File -Path $buildPath -Recurse | Sort-Object {([regex]::Matches($_.FullName, [regex]::Escape([System.IO.Path]::DirectorySeparatorChar))).count}
+    $items = Get-ChildItem -File -Path $buildPath -Recurse | Sort-Object { ([regex]::Matches($_.FullName, [regex]::Escape([System.IO.Path]::DirectorySeparatorChar))).count }
 
     foreach ($item in $items) {
         $relativePath = $item.FullName.Substring($baseLength)
@@ -1085,7 +1093,7 @@ if ($steps -contains "CopyDist") {
 }
 
 if ($steps -contains "EndCleanup") {
-    #EndCleanup
+    EndCleanup
 }
 
 Write-Output "All Done"
