@@ -260,7 +260,7 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-    <header>
+    <header id="topBar">
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
@@ -275,6 +275,12 @@
                 <div class="btn-toolbar justify-content-between">
 
                     <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-info" id="btnFullscreen" title="Toggle Fullscreen Mode">
+                            <iconify-icon inline icon="bi:arrows-fullscreen"></iconify-icon> Fullscreen
+                        </button>
+                        <button type="button" class="btn btn-warning" id="btnReduce" title="Exit Fullscreen Mode" style="display: none;">
+                            <iconify-icon inline icon="bi:arrows-angle-contract"></iconify-icon> Reduce
+                        </button>
                         <button type="button" class="btn btn-danger" title="App's Help Guide">
                             <iconify-icon inline icon="ion:library-sharp"></iconify-icon> Library
                         </button>
@@ -312,7 +318,9 @@
     <main class="h-100">
         <div class="container-fluid h-100">
             <div class="row h-100 gx-0">
-                <div class="col-md-2 h-100 bg-dark-subtle d-flex flex-column">
+                <div id="editorCol" class="col-md-5 h-100">
+                    <div class="row h-100 gx-0">
+                        <div class="col-md-4 h-100 bg-dark-subtle d-flex flex-column">
                     <div class="p-3">
                         <div class="d-grid gap-2">
                             <button class="btn btn-success" type="button" id="btnUpdate">
@@ -394,18 +402,24 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 h-100">
+                <div class="col-md-8 h-100">
                     <div class="row h-100 gx-0">
                         <div id="editor" class="h-100"></div>
                     </div>
                 </div>
-                <div class="col-md-7 h-100">
+                    </div>
+                </div>
+                <div class="col-md-7 h-100" id="previewCol">
                     <div class="h-100" id="preview"></div>
                 </div>
             </div>
 
         </div>
     </main>
+
+    <!-- Fullscreen Preview Container -->
+    <div id="fullscreenPreview" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: white;">
+    </div>
 
     <div class="modal fade" id="modHelp" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -668,6 +682,14 @@
             let params = await LoadParams();
 
             editor.setValue(params.doc, -1);
+
+            // Save to localStorage on initial load if autosave is enabled
+            if (params.autosave) {
+                localStorage.setItem('lastDoc', LZString.compressToEncodedURIComponent(params.doc));
+            }
+
+            // Also update URL to ensure params are persisted
+            SetParams(params);
 
             // Settings modal synchronization
             $('#settingsAutoSave').change(async function () {
@@ -1089,30 +1111,45 @@
             // =============== FullScreen ==================
             // =============================================
 
-            $("#btnFullscreen, #btnReduce").on("click", function (event) {
+            $("#btnFullscreen, #btnReduce").on("click", async function (event) {
                 event.preventDefault();
-                params.fullscreen = !params.fullscreen;
-                SetParams(params);
-                applyFullscreen();
+                let currentParams = await LoadParams();
+                currentParams.fullscreen = !currentParams.fullscreen;
+                SetParams(currentParams);
+                applyFullscreen(currentParams.fullscreen);
             });
 
-            function applyFullscreen() {
-                if (params.fullscreen) {
+            function applyFullscreen(isFullscreen) {
+                if (isFullscreen) {
+                    // Hide UI elements
                     $("#topBar").hide();
                     $("#editorCol").hide();
                     $("#btnReduce").show();
+                    $("#btnFullscreen").hide();
+                    
+                    // Move preview content to fullscreen container
+                    $("#previewCol").hide();
+                    let previewContent = $("#preview").detach();
+                    $("#fullscreenPreview").append(previewContent).show();
                 }
                 else {
+                    // Show UI elements
                     $("#topBar").show();
                     $("#editorCol").show();
                     $("#btnReduce").hide();
+                    $("#btnFullscreen").show();
+                    
+                    // Move preview content back to original container
+                    let previewContent = $("#preview").detach();
+                    $("#previewCol").append(previewContent).show();
+                    $("#fullscreenPreview").hide();
                 }
 
-                Render(0);
+                Render(0, false);
             }
 
             if (params.fullscreen) {
-                applyFullscreen();
+                applyFullscreen(params.fullscreen);
             }
 
             // =============================================
