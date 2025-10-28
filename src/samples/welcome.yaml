@@ -15,7 +15,11 @@ defs:
     text: null
     x: "-0.25"
     w: 2
-    
+  animated: &animated
+     animated: true
+     strokeDashArray: "10,10"
+     animationSpeed: "medium"
+     
 icons:
   docPC:
     x: 0
@@ -42,6 +46,7 @@ icons:
     w: 1.5
     
   cms:
+    <<: *animated
     x: 1.75
     iconFamily: "iconify"
     icon: "vscode-icons:file-type-confluence"
@@ -88,10 +93,10 @@ icons:
     icon: "skill-icons:aws-light"
     
 connections:
-  - {endpoints: [docPC, docWAF]}
-  - {endpoints: [docWAF, docServer]}
+  - {<<: *animated, endpoints: [docPC, docWAF]}
+  - {<<: *animated, endpoints: [docWAF, docServer]}
   - {endpoints: [diff, cms]}
-  - {endpoints: [cms, docServer], curve: StepReversed}
+  - {<<: *animated, endpoints: [docServer, cms], curve: StepReversed}
   - {endpoints: [cms, vendors],  curve: StepReversed}
 groups:
   doc:

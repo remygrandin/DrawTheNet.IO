@@ -73,7 +73,15 @@ export function RenderIcons(container, doc, dataBag) {
         let { color: fillColor, opacity: fillOpacity } = ExtractColorAndOpacity(fill);
         let { color: strokeColor, opacity: strokeOpacity } = ExtractColorAndOpacity(stroke);
 
+        // Build class string for icon border
+        let borderClass = "icon-border";
+        if (doc.icons[key].animated) {
+            borderClass += " icon-border-animated";
+            borderClass += ` icon-border-animated-${doc.icons[key].animationSpeed.toLowerCase()}`;
+        }
+
         iconContainer.append("rect")
+            .attr("class", borderClass)
             .attr("x", computed.x1Marged)
             .attr("y", computed.y1Marged)
             .attr("width", computed.wMarged)
@@ -83,7 +91,8 @@ export function RenderIcons(container, doc, dataBag) {
             .attr("fill", fillColor)
             .attr("fill-opacity", fillOpacity)
             .attr("stroke", strokeColor)
-            .attr("stroke-opacity", strokeOpacity);
+            .attr("stroke-opacity", strokeOpacity)
+            .attr("stroke-dasharray", doc.icons[key].strokeDashArray);
 
         // Text
 

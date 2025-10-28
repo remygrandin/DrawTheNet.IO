@@ -116,145 +116,8 @@
         rel="stylesheet">
 
 
-    <style>
-        .nav-scroller .nav {
-            display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        main>.container-fluid {
-            padding: 66px 0 0;
-        }
-
-        .h-0 {
-            height: 0 !important;
-        }
-
-        .iconCard img {
-            height: 50px;
-        }
-
-        .iconCard .card-text {
-            white-space: nowrap;
-            font-size: x-small;
-        }
-
-        .iconCard .icon-name {
-            text-overflow: ellipsis;
-        }
-
-        .iconCard {
-            cursor: pointer;
-            border: 3px solid #dee2e6 !important;
-            background-color: lightGrey !important;
-        }
-
-        .iconCard.selected {
-            border: 3px solid #0d6efd !important;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-        }
-
-        #iconSearchFamily,
-        #iconSearchIcon,
-        #iconSearchFull {
-            cursor: pointer;
-            text-decoration: underline;
-
-        }
-
-        #iconSearchFull {
-            height: 78px;
-            background-color: lightGrey !important;
-        }
-
-
-
-        .dropdown-menu {
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-        .dropdown-menu li:first-child {
-            border-top-left-radius: var(--bs-dropdown-border-radius) !important;
-            border-top-right-radius: var(--bs-dropdown-border-radius) !important;
-        }
-
-        .dropdown-menu li:last-child {
-            border-bottom-left-radius: var(--bs-dropdown-border-radius) !important;
-            border-bottom-right-radius: var(--bs-dropdown-border-radius) !important;
-        }
-
-        .jq-toast-wrap {
-            width: auto;
-        }
-
-        .render {
-            font-family: "Roboto", sans-serif !important;
-        }
-
-        .render code {
-            font-family: "Roboto Mono", monospace !important;
-        }
-
-        /* Select2 custom styling */
-        .select2-container {
-            width: 100% !important;
-        }
-
-        .select2-container--default .select2-selection--multiple {
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            min-height: 32px;
-            max-height: 80px;
-            overflow-y: auto;
-        }
-
-        .select2-container--default.select2-container--focus .select2-selection--multiple {
-            border-color: #86b7fe;
-            outline: 0;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #0d6efd;
-            border: 1px solid #0d6efd;
-            color: white;
-            border-radius: 0.25rem;
-            padding: 0 0.35rem;
-            margin-top: 0.2rem;
-            margin-right: 0.2rem;
-            font-size: 0.8rem;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: white;
-            margin-right: 0.25rem;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
-            color: #fff;
-        }
-
-        .select2-dropdown {
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-        }
-
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
-            background-color: #0d6efd;
-        }
-
-        .select2-container--default .select2-search--inline .select2-search__field {
-            margin-top: 0.2rem;
-        }
-    </style>
+    <link rel="stylesheet" href="res/css/app.css">
+    <link rel="stylesheet" href="res/css/notes.css">
 
 
 </head>
@@ -278,7 +141,8 @@
                         <button type="button" class="btn btn-info" id="btnFullscreen" title="Toggle Fullscreen Mode">
                             <iconify-icon inline icon="bi:arrows-fullscreen"></iconify-icon> Fullscreen
                         </button>
-                        <button type="button" class="btn btn-warning" id="btnReduce" title="Exit Fullscreen Mode" style="display: none;">
+                        <button type="button" class="btn btn-warning" id="btnReduce" title="Exit Fullscreen Mode"
+                            style="display: none;">
                             <iconify-icon inline icon="bi:arrows-angle-contract"></iconify-icon> Reduce
                         </button>
                         <button type="button" class="btn btn-danger" title="App's Help Guide">
@@ -321,92 +185,98 @@
                 <div id="editorCol" class="col-md-5 h-100">
                     <div class="row h-100 gx-0">
                         <div class="col-md-4 h-100 bg-dark-subtle d-flex flex-column">
-                    <div class="p-3">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-success" type="button" id="btnUpdate">
-                                <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
-                            </button>
+                            <div class="p-3">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success" type="button" id="btnUpdate">
+                                        <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
+                                    </button>
 
-                            <div class="w-100 text-center text-muted">
-                                <small>Last update: <span id="LastUpdateTime">--:--:--</span></small>
+                                    <div class="w-100 text-center text-muted">
+                                        <small>Last update: <span id="LastUpdateTime">--:--:--</span></small>
+                                    </div>
+                                </div>
+
+                                <hr class="my-3">
+
+                                <h6 class="text-center fw-bold mb-">Save & Export</h6>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-outline-primary" title="Export YAML code"
+                                        id="btnSaveYAML">
+                                        <iconify-icon inline icon="bi:filetype-yml"></iconify-icon> Save Code
+                                    </button>
+
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary" title="Export as PNG"
+                                            id="btnSavePNG">
+                                            <iconify-icon inline icon="bi:filetype-png"></iconify-icon> PNG
+                                        </button>
+                                        <button type="button" class="btn btn-success" title="Export as SVG"
+                                            id="btnSaveSVG">
+                                            <iconify-icon inline icon="bi:filetype-svg"></iconify-icon> SVG
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <hr class="my-3">
+
+                                <h6 class="text-center fw-bold mb-1">Icon Explorer</h6>
+
+                                <div class="mb-2">
+                                    <label for="inpIconSets" class="form-label small fw-semibold ms-1">Icon Sets</label>
+                                    <select class="form-select form-select-sm" id="inpIconSets" multiple></select>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="inpSearchIcon" class="form-label small fw-semibold ms-1">Search
+                                        Query</label>
+                                    <input class="form-control form-control-sm" type="text"
+                                        placeholder="Type here to search..." id="inpSearchIcon">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="inpSearchIcon" class="form-label small fw-semibold ms-1">Selected Icon
+                                        Preview</label>
+                                    <div class="card card-body p-2 mb-2" id="iconSearchFull" style="cursor: pointer;">
+                                        <img id="imgIconSearchPreview" class="img-fluid"
+                                            style="max-height: 60px; object-fit: contain;">
+                                    </div>
+                                </div>
+
+                                <div class="small">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted">Family</span>
+                                        <span id="iconSearchFamily"
+                                            class="text-primary text-end ms-2 flex-shrink-1 text-truncate"
+                                            style="cursor: pointer;" title="">
+                                            <span id="iconFamilyName">-</span>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted">Icon</span>
+                                        <span id="iconSearchIcon"
+                                            class="text-primary text-end ms-2 flex-shrink-1 text-truncate"
+                                            style="cursor: pointer;" title="">
+                                            <span id="iconIconName">-</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1 overflow-hidden px-3 pb-3">
+                                <div id="iconSearchResults" class="h-100 overflow-auto bg-white rounded p-2 border">
+                                    <div class='text-center text-muted p-3'><small>Search above, results will be
+                                            displayed
+                                            here</small></div>
+                                </div>
                             </div>
                         </div>
 
-                        <hr class="my-3">
-
-                        <h6 class="text-center fw-bold mb-">Save & Export</h6>
-
-                        <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-outline-primary" title="Export YAML code"
-                                id="btnSaveYAML">
-                                <iconify-icon inline icon="bi:filetype-yml"></iconify-icon> Save Code
-                            </button>
-
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary" title="Export as PNG" id="btnSavePNG">
-                                    <iconify-icon inline icon="bi:filetype-png"></iconify-icon> PNG
-                                </button>
-                                <button type="button" class="btn btn-success" title="Export as SVG" id="btnSaveSVG">
-                                    <iconify-icon inline icon="bi:filetype-svg"></iconify-icon> SVG
-                                </button>
+                        <div class="col-md-8 h-100">
+                            <div class="row h-100 gx-0">
+                                <div id="editor" class="h-100"></div>
                             </div>
                         </div>
-
-                        <hr class="my-3">
-
-                        <h6 class="text-center fw-bold mb-1">Icon Explorer</h6>
-
-                        <div class="mb-2">
-                            <label for="inpIconSets" class="form-label small fw-semibold ms-1">Icon Sets</label>
-                            <select class="form-select form-select-sm" id="inpIconSets" multiple></select>
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="inpSearchIcon" class="form-label small fw-semibold ms-1">Search Query</label>
-                            <input class="form-control form-control-sm" type="text" placeholder="Type here to search..."
-                                id="inpSearchIcon">
-                        </div>
-
-                        <div class="mb-2">
-                            <label for="inpSearchIcon" class="form-label small fw-semibold ms-1">Selected Icon Preview</label>
-                            <div class="card card-body p-2 mb-2" id="iconSearchFull" style="cursor: pointer;">
-                                <img id="imgIconSearchPreview" class="img-fluid"
-                                    style="max-height: 60px; object-fit: contain;">
-                            </div>
-                        </div>
-
-                        <div class="small">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">Family</span>
-                                <span id="iconSearchFamily"
-                                    class="text-primary text-end ms-2 flex-shrink-1 text-truncate"
-                                    style="cursor: pointer;" title="">
-                                    <span id="iconFamilyName">-</span>
-                                </span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">Icon</span>
-                                <span id="iconSearchIcon" class="text-primary text-end ms-2 flex-shrink-1 text-truncate"
-                                    style="cursor: pointer;" title="">
-                                    <span id="iconIconName">-</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex-grow-1 overflow-hidden px-3 pb-3">
-                        <div id="iconSearchResults" class="h-100 overflow-auto bg-white rounded p-2 border">
-                            <div class='text-center text-muted p-3'><small>Search above, results will be displayed
-                                    here</small></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-8 h-100">
-                    <div class="row h-100 gx-0">
-                        <div id="editor" class="h-100"></div>
-                    </div>
-                </div>
                     </div>
                 </div>
                 <div class="col-md-7 h-100" id="previewCol">
@@ -418,7 +288,8 @@
     </main>
 
     <!-- Fullscreen Preview Container -->
-    <div id="fullscreenPreview" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: white;">
+    <div id="fullscreenPreview"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: white;">
     </div>
 
     <div class="modal fade" id="modHelp" data-bs-keyboard="false" tabindex="-1">
@@ -933,54 +804,65 @@
             }
 
             function RenderSearchResults(searchRes) {
-                $("#iconSearchResults").empty();
-                if (searchRes.length == 0) {
-                    $("#iconSearchResults").html("<div class='text-center text-muted p-3'><small>No results found</small></div>");
-                    return;
-                }
-
-                let maxSearchResult = 500;
-
-                if (searchRes.length > maxSearchResult) {
-                    searchRes.length = maxSearchResult;
-                }
-
-                let resultsHtml = '<div class="row g-2">';
-                searchRes.forEach(res => {
-                    let icon = res.item.Icon;
-                    let family = res.item.Family;
-
-                    let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
-
-                    if (family == "Iconify") {
-                        url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                // Use requestAnimationFrame to sync with browser paint cycle
+                requestAnimationFrame(() => {
+                    const resultsContainer = document.getElementById("iconSearchResults");
+                    
+                    if (searchRes.length == 0) {
+                        resultsContainer.innerHTML = "<div class='text-center text-muted p-3'><small>No results found</small></div>";
+                        return;
                     }
 
-                    resultsHtml += `
-                    <div class="col-6 col-xl-4">
-                        <div class="card iconCard h-100" fam="${family}" icon="${icon}" style="cursor: pointer;">
-                            <div class="card-body p-2 text-center icon-full">
-                                <img src="${url}" class="img-fluid" style="max-height: 40px; object-fit: contain;">
-                            </div>                            
+                    let maxSearchResult = 200; // Reduced from 100 to minimize DOM size
+
+                    if (searchRes.length > maxSearchResult) {
+                        searchRes.length = maxSearchResult;
+                    }
+
+                    // Use array and join instead of string concatenation for better performance
+                    const htmlParts = ['<div class="row g-2">'];
+                    
+                    searchRes.forEach(res => {
+                        let icon = res.item.Icon;
+                        let family = res.item.Family;
+
+                        let url = `res/icons/${family.toLowerCase()}/${icon.toLowerCase()}.svg`;
+
+                        if (family == "Iconify") {
+                            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+                        }
+
+                        htmlParts.push(`
+                        <div class="col-6 col-xl-4">
+                            <div class="card iconCard h-100" fam="${family}" icon="${icon}" style="cursor: pointer;" title="Family: ${family}&#10;Icon: ${icon}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<strong>Family:</strong> ${family}<br><strong>Icon:</strong> ${icon}">
+                                <div class="card-body p-2 text-center icon-full">
+                                    <img src="${url}" class="img-fluid" loading="lazy" style="max-height: 40px; object-fit: contain;">
+                                </div>                            
+                            </div>
                         </div>
-                    </div>
-                    `;
+                        `);
+                    });
+                    
+                    htmlParts.push('</div>');
+                    resultsContainer.innerHTML = htmlParts.join('');
+                    
+                    // Initialize Bootstrap tooltips for the newly added elements
+                    const tooltipTriggerList = resultsContainer.querySelectorAll('[data-bs-toggle="tooltip"]');
+                    [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
                 });
-                resultsHtml += '</div>';
-                $("#iconSearchResults").html(resultsHtml);
             }
 
 
             let debounceSearchIconTimer;
             $("#inpSearchIcon").on("input", function (event) {
                 clearTimeout(debounceSearchIconTimer);
-                debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 200);
+                debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 300);
             });
 
             // Select2 change event
             $("#inpIconSets").on("change", function (event) {
                 clearTimeout(debounceSearchIconTimer);
-                debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 0);
+                debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 100);
             });
 
             $("#iconSearchFamily").on("click", function (event) {
@@ -1050,7 +932,7 @@
 
                 // Remove selected class from all icon cards
                 $("#iconSearchResults").find(".iconCard").removeClass("selected");
-                
+
                 // Add selected class to the clicked card
                 $(this).parents(".card").addClass("selected");
 
@@ -1126,7 +1008,7 @@
                     $("#editorCol").hide();
                     $("#btnReduce").show();
                     $("#btnFullscreen").hide();
-                    
+
                     // Move preview content to fullscreen container
                     $("#previewCol").hide();
                     let previewContent = $("#preview").detach();
@@ -1138,7 +1020,7 @@
                     $("#editorCol").show();
                     $("#btnReduce").hide();
                     $("#btnFullscreen").show();
-                    
+
                     // Move preview content back to original container
                     let previewContent = $("#preview").detach();
                     $("#previewCol").append(previewContent).show();

@@ -76,7 +76,9 @@ const iconDefaults = {
     fill: "white",
     stroke: "black",
     color: "black",
-    strokeDashArray: "0,0"
+    strokeDashArray: "0,0",
+    animated: false,
+    animationSpeed: "medium"
 }
 
 const groupDefaults = {
@@ -106,7 +108,8 @@ const connectionDefaults = {
         endp1: 0.08,
         endp2: 0.08
     },
-    
+    animated: false,
+    animationSpeed: "medium"
 }
 
 const noteDefaults = {

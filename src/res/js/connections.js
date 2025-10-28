@@ -69,27 +69,27 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let { color: strokeColor, opacity: strokeOpacity } = ExtractColorAndOpacity(rootConnection.stroke);
     let { color: textColor, opacity: textOpacity } = ExtractColorAndOpacity(rootConnection.color);
 
+    // Build class string for path
+    let pathClass = "connection-path";
+    if (rootConnection.animated) {
+        pathClass += " connection-animated";
+        pathClass += ` connection-animated-${rootConnection.animationSpeed.toLowerCase()}`;
+    }
+
     let path = connectionContainer.append("path")
         .attr("id", `path-${pathId}`)
-        .attr("class", "connection-path")
+        .attr("class", pathClass)
         .attr("fill", "none")
         .attr("stroke", strokeColor)
         .attr("stroke-opacity", strokeOpacity || 1)
         .attr("stroke-width", rootConnection.strokeWidth)
         .attr("stroke-dasharray", rootConnection.strokeDashArray);
 
-    if (enp1.nodeComputed.xScaled > enp2.nodeComputed.xScaled) {
-        let temp = enp1;
-        enp1 = enp2;
-        enp2 = temp;
-    }
-
     let fontSize = rootConnection.textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs);
 
     let curveType = rootConnection.curve.toLowerCase();
 
     let pathD = "";
-
 
     if (curveType == "linear") {
         pathD += `M ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
@@ -151,9 +151,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         throw new Error(`Curve type ${curveType} not supported.`);
     }
 
-
     path.attr("d", pathD)
-
 
     let label1XOffset = 0;
     let label2XOffset = 0;
@@ -206,7 +204,6 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         bottomRight: radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.corners.bottomRight.x, enp2.nodeComputed.corners.bottomRight.y))
     };
 
-
     if (curveType == "linear" || curveType == "curved") {
         totalDist1 = getDistance2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled);
         totalDist2 = getDistance2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled);
@@ -242,8 +239,6 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         endp1Angle = radToDeg(getAngle2Points(enp1.nodeComputed.xScaled, enp1.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
         endp2Angle = radToDeg(getAngle2Points(enp2.nodeComputed.xScaled, enp2.nodeComputed.yScaled, enp2.nodeComputed.xScaled, enp1.nodeComputed.yScaled));
     }
-
-
 
     if (enp1.nodeComputed.cornerAngles.topRight <= endp1Angle && endp1Angle <= enp1.nodeComputed.cornerAngles.bottomRight) {
         label1XOffset = enp1.nodeComputed.marginDist.right
