@@ -151,6 +151,13 @@
 
         .iconCard {
             cursor: pointer;
+            border: 3px solid #dee2e6 !important;
+            background-color: lightGrey !important;
+        }
+
+        .iconCard.selected {
+            border: 3px solid #0d6efd !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
         }
 
         #iconSearchFamily,
@@ -158,6 +165,12 @@
         #iconSearchFull {
             cursor: pointer;
             text-decoration: underline;
+
+        }
+
+        #iconSearchFull {
+            height: 78px;
+            background-color: lightGrey !important;
         }
 
 
@@ -199,6 +212,8 @@
             border: 1px solid #ced4da;
             border-radius: 0.375rem;
             min-height: 32px;
+            max-height: 80px;
+            overflow-y: auto;
         }
 
         .select2-container--default.select2-container--focus .select2-selection--multiple {
@@ -212,8 +227,10 @@
             border: 1px solid #0d6efd;
             color: white;
             border-radius: 0.25rem;
-            padding: 0 0.5rem;
-            margin-top: 0.25rem;
+            padding: 0 0.35rem;
+            margin-top: 0.2rem;
+            margin-right: 0.2rem;
+            font-size: 0.8rem;
         }
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
@@ -235,7 +252,7 @@
         }
 
         .select2-container--default .select2-search--inline .select2-search__field {
-            margin-top: 0.25rem;
+            margin-top: 0.2rem;
         }
     </style>
 
@@ -309,10 +326,11 @@
 
                         <hr class="my-3">
 
-                        <h6 class="text-center fw-bold mb-3">Save & Export</h6>
+                        <h6 class="text-center fw-bold mb-">Save & Export</h6>
 
                         <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-outline-primary" title="Export YAML code" id="btnSaveYAML">
+                            <button type="button" class="btn btn-outline-primary" title="Export YAML code"
+                                id="btnSaveYAML">
                                 <iconify-icon inline icon="bi:filetype-yml"></iconify-icon> Save Code
                             </button>
 
@@ -328,34 +346,40 @@
 
                         <hr class="my-3">
 
-                        <h6 class="text-center fw-bold mb-3">Icon Explorer</h6>
+                        <h6 class="text-center fw-bold mb-1">Icon Explorer</h6>
 
-                         <div class="mb-3">
-                            <label for="inpIconSets" class="form-label small fw-semibold">Icon Sets</label>
+                        <div class="mb-2">
+                            <label for="inpIconSets" class="form-label small fw-semibold ms-1">Icon Sets</label>
                             <select class="form-select form-select-sm" id="inpIconSets" multiple></select>
                         </div>
 
-                        <div class="mb-3">
-                            <input class="form-control form-control-sm" type="text" placeholder="Search icons..."
+                        <div class="mb-2">
+                            <label for="inpSearchIcon" class="form-label small fw-semibold ms-1">Search Query</label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Type here to search..."
                                 id="inpSearchIcon">
                         </div>
 
-                       
-
-                        <div class="card card-body p-2 mb-2" id="iconSearchFull" style="cursor: pointer;">
-                            <img id="imgIconSearchPreview" class="img-fluid" style="max-height: 60px; object-fit: contain;">
+                        <div class="mb-2">
+                            <label for="inpSearchIcon" class="form-label small fw-semibold ms-1">Selected Icon Preview</label>
+                            <div class="card card-body p-2 mb-2" id="iconSearchFull" style="cursor: pointer;">
+                                <img id="imgIconSearchPreview" class="img-fluid"
+                                    style="max-height: 60px; object-fit: contain;">
+                            </div>
                         </div>
 
-                        <div class="mb-2 small">
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted">Family:</span>
-                                <span id="iconSearchFamily" class="text-primary" style="cursor: pointer;">
+                        <div class="small">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">Family</span>
+                                <span id="iconSearchFamily"
+                                    class="text-primary text-end ms-2 flex-shrink-1 text-truncate"
+                                    style="cursor: pointer;" title="">
                                     <span id="iconFamilyName">-</span>
                                 </span>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-muted">Icon:</span>
-                                <span id="iconSearchIcon" class="text-primary" style="cursor: pointer;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">Icon</span>
+                                <span id="iconSearchIcon" class="text-primary text-end ms-2 flex-shrink-1 text-truncate"
+                                    style="cursor: pointer;" title="">
                                     <span id="iconIconName">-</span>
                                 </span>
                             </div>
@@ -364,6 +388,8 @@
 
                     <div class="flex-grow-1 overflow-hidden px-3 pb-3">
                         <div id="iconSearchResults" class="h-100 overflow-auto bg-white rounded p-2 border">
+                            <div class='text-center text-muted p-3'><small>Search above, results will be displayed
+                                    here</small></div>
                         </div>
                     </div>
                 </div>
@@ -838,6 +864,10 @@
                     });
 
                     Data.IconsFlat = flattenIcons;
+
+                    // Perform default search for "network"
+                    $('#inpSearchIcon').val('Network');
+                    searchIcons('network');
                 });
 
 
@@ -996,6 +1026,12 @@
             $("#iconSearchResults").on("click", ".icon-full", function (event) {
                 event.preventDefault();
 
+                // Remove selected class from all icon cards
+                $("#iconSearchResults").find(".iconCard").removeClass("selected");
+                
+                // Add selected class to the clicked card
+                $(this).parents(".card").addClass("selected");
+
                 let family = $(this).parents(".card").attr("fam");
                 let name = $(this).parents(".card").attr("icon");
 
@@ -1008,6 +1044,10 @@
                 $("#imgIconSearchPreview").attr("src", url);
                 $("#iconFamilyName").text(family);
                 $("#iconIconName").text(name);
+
+                // Set title attributes for tooltip on hover
+                $("#iconSearchFamily").attr("title", family);
+                $("#iconSearchIcon").attr("title", name);
             });
 
 
