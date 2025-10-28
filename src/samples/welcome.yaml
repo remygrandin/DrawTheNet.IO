@@ -1,9 +1,11 @@
+document:
+  watermark: false
 diagram:
   columns: 5
   rows: 5
   gridLines: false
 title:
-  type: none
+  position: none
 defs:
   noBackground: &noBackground
     fill: none
@@ -28,15 +30,15 @@ icons:
     text: WAF
   docServer:
     x: "+1"
-    iconFamily: "M365"
-    icon: "server_farm"
+    iconFamily: "Iconify"
+    icon: "mdi:server"
     text: Servers
 
   diff:
     x: 0.25
     y: "+1"
-    iconFamily: "M365"
-    icon: "SiteShared-blue"
+    iconFamily: "Iconify"
+    icon: "ant-design:diff-twotone"
     w: 1.5
     
   cms:
@@ -132,18 +134,18 @@ notes:
     yAlign: center
     w: 2
     text:  |
-      #####The files are easily diffable and can be integrated into many content managment systems. Alternativly, for ease of use, documents are embeded in the URL and can be stored as simple links in documentations.
+      #####The files are easily diffable and can be integrated into many content management systems. Alternatively, for ease of use, documents are embedded in the URL and can be stored as simple links in documentations.
   vendorText:
     y: "+1"
     xAlign: left
     yAlign: center
     w: 2
     text:  |
-      #####You can use icons from many vendors linke AWS, Azure, GCP, Cisco ...
+      #####You can use icons from many vendors like AWS, Azure, GCP, Cisco ...
   more:
     w: 5
     y: "+1"
     x: 2
     yAlign: center
     text: |
-      You can find more exemples in the **Samples** menu above and a full documentation with the **?** button in the top right corner. Don't hesitate to hit us on [Github](https://github.com/remygrandin/drawthenet.io) :-)
+      You can find more examples in the **Samples** menu above and a full documentation with the **?** button in the top right corner. Don't hesitate to hit us on [Github](https://github.com/remygrandin/drawthenet.io) :-)
