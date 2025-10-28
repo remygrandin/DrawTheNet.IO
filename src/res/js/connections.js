@@ -1,3 +1,5 @@
+import { ExtractColorAndOpacity } from "./common.js"
+
 export function RenderConnections(container, doc, dataBag) {
     let connectionsContainer = container.append("g")
         .attr("class", "connections");
@@ -64,11 +66,15 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let connectionContainer = container.append("g")
         .attr("class", "connection");
 
+    let { color: strokeColor, opacity: strokeOpacity } = ExtractColorAndOpacity(rootConnection.stroke);
+    let { color: textColor, opacity: textOpacity } = ExtractColorAndOpacity(rootConnection.color);
+
     let path = connectionContainer.append("path")
         .attr("id", `path-${pathId}`)
         .attr("class", "connection-path")
         .attr("fill", "none")
-        .attr("stroke", rootConnection.stroke)
+        .attr("stroke", strokeColor)
+        .attr("stroke-opacity", strokeOpacity || 1)
         .attr("stroke-width", rootConnection.strokeWidth)
         .attr("stroke-dasharray", rootConnection.strokeDashArray);
 
@@ -296,7 +302,8 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let enp1Label = connectionContainer.append("text")
         .attr("class", "connection-label")
         .attr("font-size", `${fontSize}px`)
-        .attr("fill", rootConnection.color)
+        .attr("fill", textColor)
+        .attr("fill-opacity", textOpacity || 1)
         .attr("dx", `${label1XOffset}`)
         .attr("dy", `${fontSize / 3 * -1}`);
 
@@ -308,7 +315,8 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let enp2Label = connectionContainer.append("text")
         .attr("class", "connection-label")
         .attr("font-size", `${fontSize}px`)
-        .attr("fill", rootConnection.color)
+        .attr("fill", textColor)
+        .attr("fill-opacity", textOpacity || 1)
         .attr("dx", `${label2XOffset * -1}`)
         .attr("dy", `${fontSize}`);
 
@@ -321,7 +329,8 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     let conLabel = connectionContainer.append("text")
         .attr("class", "connection-label")
         .attr("font-size", `${fontSize}px`)
-        .attr("fill", rootConnection.color)
+        .attr("fill", textColor)
+        .attr("fill-opacity", textOpacity || 1)
         .attr("dy", `${fontSize}`);
 
     conLabel.append("textPath")

@@ -1,4 +1,4 @@
-import { ApplyTextLocation, GetPropByStringPath, DeepClone, ComputeNodeValue, RandomInt, HashCode } from './common.js'
+import { ApplyTextLocation, GetPropByStringPath, DeepClone, ComputeNodeValue, HashCode, ExtractColorAndOpacity } from './common.js'
 import PQueue from 'https://cdn.jsdelivr.net/npm/p-queue@8.0.1/+esm'
 
 export function RenderIcons(container, doc, dataBag) {
@@ -67,6 +67,12 @@ export function RenderIcons(container, doc, dataBag) {
             .attr("id", "icon-" + key)
             .attr("transform", `translate(${computed.xScaled}, ${computed.yScaled})`);
 
+        let fill = doc.icons[key].fill;
+        let stroke = doc.icons[key].stroke;
+
+        let { color: fillColor, opacity: fillOpacity } = ExtractColorAndOpacity(fill);
+        let { color: strokeColor, opacity: strokeOpacity } = ExtractColorAndOpacity(stroke);
+
         iconContainer.append("rect")
             .attr("x", computed.x1Marged)
             .attr("y", computed.y1Marged)
@@ -74,16 +80,21 @@ export function RenderIcons(container, doc, dataBag) {
             .attr("height", computed.hMarged)
             .attr("rx", computed.cornerRad)
             .attr("ry", computed.cornerRad)
-            .attr("fill", doc.icons[key].fill)
-            .attr("stroke", doc.icons[key].stroke);
+            .attr("fill", fillColor)
+            .attr("fill-opacity", fillOpacity)
+            .attr("stroke", strokeColor)
+            .attr("stroke-opacity", strokeOpacity);
 
         // Text
 
         let fontSize = doc.icons[key].textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs)
 
+        let { color: textColor, opacity: textOpacity } = ExtractColorAndOpacity(doc.icons[key].color);
+
         let iconText = iconContainer.append("text")
             .attr("class", "icon-label")
-            .attr("fill", doc.icons[key].color)
+            .attr("fill", textColor)
+            .attr("fill-opacity", textOpacity)
             .style("font-size", `${fontSize}px`);
 
         let textContent = key;
@@ -280,32 +291,40 @@ export function RenderIcons(container, doc, dataBag) {
                 let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
 
                 if ("iconFill" in doc.icons[key]) {
+                    let { color: iconFillColor, opacity: iconFillOpacity } = ExtractColorAndOpacity(doc.icons[key].iconFill);
                     let fills = svg.querySelectorAll("[fill]");
                     if (fills != null && fills.length > 0) {
                         fills.forEach(fill => {
                             let fillAttr = fill.getAttribute("fill");
                             if (!preserveWhite) {
-                                fill.setAttribute("fill", doc.icons[key].iconFill);
+                                fill.setAttribute("fill", iconFillColor);
+                                fill.setAttribute("fill-opacity", iconFillOpacity);
                             }
                             else {
-                                if (!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white"))
-                                    fill.setAttribute("fill", doc.icons[key].iconFill);
+                                if (!(fillAttr == "#fff" || fillAttr == "#ffffff" || fillAttr == "white")) {
+                                    fill.setAttribute("fill", iconFillColor);
+                                    fill.setAttribute("fill-opacity", iconFillOpacity);
+                                }
                             }
                         });
                     }
                 }
 
                 if ("iconStroke" in doc.icons[key]) {
+                    let { color: iconStrokeColor, opacity: iconStrokeOpacity } = ExtractColorAndOpacity(doc.icons[key].iconStroke);
                     let strokes = svg.querySelectorAll("[stroke]");
                     if (strokes != null && strokes.length > 0) {
                         strokes.forEach(stroke => {
                             let strokeAttr = stroke.getAttribute("stroke");
                             if (!preserveWhite) {
-                                stroke.setAttribute("stroke", doc.icons[key].iconStroke);
+                                stroke.setAttribute("stroke", iconStrokeColor);
+                                stroke.setAttribute("stroke-opacity", iconStrokeOpacity);
                             }
                             else {
-                                if (!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white"))
-                                    stroke.setAttribute("stroke", doc.icons[key].iconStroke);
+                                if (!(strokeAttr == "#fff" || strokeAttr == "#ffffff" || strokeAttr == "white")) {
+                                    stroke.setAttribute("stroke", iconStrokeColor);
+                                    stroke.setAttribute("stroke-opacity", iconStrokeOpacity);
+                                }
                             }
                         });
                     }

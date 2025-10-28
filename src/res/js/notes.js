@@ -1,4 +1,4 @@
-import { ComputeNodeValue } from './common.js'
+import { ComputeNodeValue, ExtractColorAndOpacity } from './common.js'
 
 export function RenderNotes(container, doc, dataBag) {
 
@@ -29,9 +29,6 @@ export function RenderNotes(container, doc, dataBag) {
     });
     converter.setOption('prefixHeaderId', 'notes-');
     converter.setOption('tables', 'true');
-
-
-
 
     let notesContainer = container.append("g")
         .attr("class", "notes");
@@ -97,6 +94,9 @@ export function RenderNotes(container, doc, dataBag) {
         let noteContainer = notesContainer.append("g")
             .attr("transform", `translate(${computed.xScaled}, ${computed.yScaled})`)
 
+        let fillData = ExtractColorAndOpacity(doc.notes[key].fill);
+        let strokeData = ExtractColorAndOpacity(doc.notes[key].stroke);
+
         let noteRect = noteContainer.append("rect")
             .attr("x", computed.x1Marged)
             .attr("y", computed.y1Marged)
@@ -104,8 +104,10 @@ export function RenderNotes(container, doc, dataBag) {
             .attr("height", computed.hMarged)
             .attr("rx", computed.cornerRad)
             .attr("ry", computed.cornerRad)
-            .attr("fill", doc.notes[key].fill)
-            .attr("stroke", doc.notes[key].stroke);
+            .attr("fill", fillData.color)
+            .attr("fill-opacity", fillData.opacity)
+            .attr("stroke", strokeData.color)
+            .attr("stroke-opacity", strokeData.opacity);
 
         let noteFO = noteContainer.append("foreignObject")
             .attr("width", computed.wPadded)

@@ -1,4 +1,4 @@
-import { ApplyTextLocation } from './common.js'
+import { ApplyTextLocation, ExtractColorAndOpacity } from './common.js'
 
 export function RenderGroups(container, doc, dataBag) {
     let groupsContainer = container.append("g")
@@ -64,6 +64,11 @@ export function RenderGroups(container, doc, dataBag) {
 
         computed.cornerRad = Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs) * (1 / 16);
 
+
+
+        let fillData = ExtractColorAndOpacity(doc.groups[key].fill);
+        let strokeData = ExtractColorAndOpacity(doc.groups[key].stroke);
+
         let groupRect = groupContainer.append("rect")
             .attr("x", 0)
             .attr("y", 0)
@@ -71,15 +76,19 @@ export function RenderGroups(container, doc, dataBag) {
             .attr("height", computed.hScaled)
             .attr("rx", computed.cornerRad)
             .attr("ry", computed.cornerRad)
-            .attr("fill", doc.groups[key].fill)
-            .attr("stroke", doc.groups[key].stroke);
-
+            .attr("fill", fillData.color)
+            .attr("fill-opacity", fillData.opacity)
+            .attr("stroke", strokeData.color)
+            .attr("stroke-opacity", strokeData.opacity);
 
         let fontSize = doc.groups[key].textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs) / 2
 
+        let textColorData = ExtractColorAndOpacity(doc.groups[key].color);
+
         let groupText = groupContainer.append("text")
             .attr("class", "group-label")
-            .attr("fill", doc.groups[key].color)
+            .attr("fill", textColorData.color)
+            .attr("fill-opacity", textColorData.opacity)
             .style("font-size", `${fontSize}px`);
 
         let textContent = key;

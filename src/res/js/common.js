@@ -166,3 +166,20 @@ export function HashCode(str) {
     }
     return hash;
 }
+
+export function ExtractColorAndOpacity(colorStr) {
+    if (colorStr.startsWith("rgba(")) {
+        let match = colorStr.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
+        if (match) {
+            let r = match[1], g = match[2], b = match[3], a = match[4];
+            return { color: `rgb(${r},${g},${b})`, opacity: parseFloat(a) };
+        }
+    } else if (colorStr.startsWith("hsla(")) {
+        let match = colorStr.match(/hsla\((\d+),\s*(\d+)%,\s*(\d+)%,\s*([\d.]+)\)/);
+        if (match) {
+            let h = match[1], s = match[2], l = match[3], a = match[4];
+            return { color: `hsl(${h},${s}%,${l}%)`, opacity: parseFloat(a) };
+        }
+    }
+    return { color: colorStr, opacity: null };
+}
