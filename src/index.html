@@ -97,15 +97,17 @@
         integrity="sha512-KKbQg5o92MwtJKR9sfm/HkREzfyzNMiKPIQ7i7SZOxwEdiNCm4Svayn2DBq7MKEdrqPJUOSIpy1v6PpFlCQ0YA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Bootstrap Select -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"
-        integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css"
-        integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg=="
+    <!-- Select2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+        integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-5-theme/1.3.0/select2-bootstrap-5-theme.min.css"
+        integrity="sha512-z/90a5SWiu4MWVelb5+ny7sAayYUfMmdXKEAbpj27PfdkamNdyI3hcjxPxkOPbrXoKIm7r9V2mElt5f1OtVhqA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"
+        integrity="sha512-RtZU3AyMVArmHLiW0suEZ9McadTdegwbgtiQl5Qqo9kunkVg1ofwueXD8/8wv3Af8jkME3DDe3yLfR8HSJfT2g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -190,6 +192,55 @@
         #iconSearchResults {
             height: calc(30vh);
         }
+
+        /* Select2 custom styling */
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            min-height: 38px;
+        }
+
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #0d6efd;
+            border: 1px solid #0d6efd;
+            color: white;
+            border-radius: 0.25rem;
+            padding: 0 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: white;
+            margin-right: 0.25rem;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #fff;
+        }
+
+        .select2-dropdown {
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #0d6efd;
+        }
+
+        .select2-container--default .select2-search--inline .select2-search__field {
+            margin-top: 0.25rem;
+        }
     </style>
 
 
@@ -231,8 +282,13 @@
                             <ul class="dropdown-menu" id="drpdwn-samples">
                             </ul>
                         </div>
-                        <button type="button" class="btn btn-success" title="App's Help Guide">
+                        <button type="button" class="btn btn-success" title="App's Help Guide" data-bs-toggle="modal"
+                            data-bs-target="#modHelp">
                             <iconify-icon inline icon="oi:book"></iconify-icon> User Guide
+                        </button>
+                        <button type="button" class="btn btn-info" title="Application Settings" data-bs-toggle="modal"
+                            data-bs-target="#modSettings">
+                            <iconify-icon inline icon="mdi:cog"></iconify-icon> Settings
                         </button>
                     </div>
                 </div>
@@ -249,28 +305,6 @@
                             <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
                         </button>
 
-                        <div class="p-2 pb-1 me-4 ms-2 text-black bg-info-subtle rounded fs-6" id="contAutoSave">
-                            <div class="form-check form-switch ">
-                                <input class="form-check-input" type="checkbox" role="switch" id="inpAutoSave" checked>
-                                <label class="form-check-label" for="inpAutoSave">
-
-                                    Auto-Save <iconify-icon inline icon="ph:question-duotone"
-                                        title="When ON, the current document will be saved to the browser localstorage and encoded into the URL for easy embeding."></iconify-icon>
-
-                                </label>
-                            </div>
-                        </div>
-                        <div class="p-2 pb-1 text-black bg-success-subtle rounded fs-6 text-center" id="contAutoUpdate">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="inpAutoUpdate"
-                                    checked>
-                                <label class="form-check-label" for="inpAutoUpdate"
-                                    title="When ON, the preview will render automaticly after a couple of seconds of inactivity or on window resize.">
-                                    <iconify-icon inline icon="mdi:refresh-auto"></iconify-icon>
-                                    Auto-Update
-                                </label>
-                            </div>
-                        </div>
                         <div class="position-absolute bottom-0 start-50 translate-middle w-100 text-center">
                             <p class="mb-0">Last update at : <span id="LastUpdateTime"></span></p>
                         </div>
@@ -283,9 +317,9 @@
                             <label for="inpSearchIcon">Search</label>
                         </div>
 
-                        <div class="form-floating mb-3">
-                            <select class="" data-live-search="true" id="inpIconSets" multiple></select>
-                            <label for="inpIconSets">Icon Sets</label>
+                        <div class="mb-3">
+                            <label for="inpIconSets" class="form-label">Icon Sets</label>
+                            <select class="form-select" id="inpIconSets" multiple></select>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
@@ -358,6 +392,103 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modSettings" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">
+                        <iconify-icon inline icon="mdi:cog"></iconify-icon> Settings
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <h5 class="mb-3">Application Settings</h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header bg-success-subtle">
+                                        <h6 class="mb-0">Auto-Update</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="settingsAutoUpdate" checked>
+                                            <label class="form-check-label" for="settingsAutoUpdate">
+                                                Enable automatic preview rendering when typing stops or on window resize
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header bg-info-subtle">
+                                        <h6 class="mb-0">Auto-Save</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="settingsAutoSave" checked>
+                                            <label class="form-check-label" for="settingsAutoSave">
+                                                Automatically save document to browser localStorage and encode into URL
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header bg-primary-subtle">
+                                        <h6 class="mb-0">SVG Export Options</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="settingsIncludeYamlInSvg" checked>
+                                            <label class="form-check-label" for="settingsIncludeYamlInSvg">
+                                                Include YAML code in a hidden SVG tag
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="settingsEmbedFontsInSvg" checked>
+                                            <label class="form-check-label" for="settingsEmbedFontsInSvg">
+                                                Embed fonts in SVG export. Without it, the host rendering the svg must
+                                                have the fonts (Roboto & Roboto Mono) installed. Without it the
+                                                rendering may differ.
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-info" role="alert">
+                                    <iconify-icon inline icon="mdi:information"></iconify-icon>
+                                    <strong>Note:</strong> Settings are synchronized with the main interface controls
+                                    and saved in the URL parameters.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { Render as Renderer } from './res/js/render.js';
         import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
@@ -372,6 +503,8 @@
                 urlParams.set("fullscreen", obj.fullscreen);
                 urlParams.set("autosave", obj.autosave);
                 urlParams.set("autoupdate", obj.autoupdate);
+                urlParams.set("includeYamlInSvg", obj.includeYamlInSvg);
+                urlParams.set("embedFontsInSvg", obj.embedFontsInSvg);
                 urlParams.set("doc", LZString.compressToEncodedURIComponent(obj.doc));
 
                 return urlParams.toString();
@@ -384,6 +517,8 @@
                     "fullscreen": urlParams.get("fullscreen") === "true",
                     "autosave": urlParams.get("autosave") !== "false",
                     "autoupdate": urlParams.get("autoupdate") !== "false",
+                    "includeYamlInSvg": urlParams.get("includeYamlInSvg") !== "false",
+                    "embedFontsInSvg": urlParams.get("embedFontsInSvg") !== "false",
                     "doc": LZString.decompressFromEncodedURIComponent(urlParams.get("doc"))
                 };
                 return returnObj;
@@ -498,30 +633,40 @@
 
             let params = await LoadParams();
 
-            $('#inpAutoSave').prop('checked', params.autosave === true);
-            $('#inpAutoUpdate').prop('checked', params.autoupdate === true);
-
             editor.setValue(params.doc, -1);
 
-            $('#contAutoSave').on("click", function () {
-                $('#inpAutoSave').prop("checked", !$('#inpAutoSave').is(":checked"));
-            });
-            $('#inpAutoSave').change(async function () {
+            // Settings modal synchronization
+            $('#settingsAutoSave').change(async function () {
                 params = await LoadParams();
-
                 params.autosave = $(this).is(":checked");
-
                 SetParams(params);
             });
-            $('#contAutoUpdate').on("click", function () {
-                $('#inpAutoUpdate').prop("checked", !$('#inpAutoUpdate').is(":checked"));
-            });
-            $('#inpAutoUpdate').change(async function () {
+
+            $('#settingsAutoUpdate').change(async function () {
                 params = await LoadParams();
-
                 params.autoupdate = $(this).is(":checked");
-
                 SetParams(params);
+            });
+
+            $('#settingsIncludeYamlInSvg').change(async function () {
+                params = await LoadParams();
+                params.includeYamlInSvg = $(this).is(":checked");
+                SetParams(params);
+            });
+
+            $('#settingsEmbedFontsInSvg').change(async function () {
+                params = await LoadParams();
+                params.embedFontsInSvg = $(this).is(":checked");
+                SetParams(params);
+            });
+
+            // Sync settings modal when opened
+            $('#modSettings').on('show.bs.modal', async function () {
+                params = await LoadParams();
+                $('#settingsAutoSave').prop('checked', params.autosave);
+                $('#settingsAutoUpdate').prop('checked', params.autoupdate);
+                $('#settingsIncludeYamlInSvg').prop('checked', params.includeYamlInSvg);
+                $('#settingsEmbedFontsInSvg').prop('checked', params.embedFontsInSvg);
             });
 
             // =============================================
@@ -543,10 +688,10 @@
                             return;
                         }
 
-                        if ($("#inpAutoSave").is(":checked")) {
-                            let params = await LoadParams();
-                            params.doc = text;
-                            SetParams(params);
+                        let currentParams = await LoadParams();
+                        if (currentParams.autosave) {
+                            currentParams.doc = text;
+                            SetParams(currentParams);
                         }
 
                         let doc = jsyaml.load(text);
@@ -581,24 +726,29 @@
                 }, maxDelay);
             }
 
-            if ($('#inpAutoUpdate').is(":checked")) {
-                Render(0);
-            }
+            (async function () {
+                let currentParams = await LoadParams();
+                if (currentParams.autoupdate) {
+                    Render(0);
+                }
+            })();
 
             $("#btnUpdate").click(function () {
                 Render(0);
             });
 
             // Auto Update on change
-            editor.session.on('change', function (delta) {
-                if ($('#inpAutoUpdate').is(":checked")) {
+            editor.session.on('change', async function (delta) {
+                let currentParams = await LoadParams();
+                if (currentParams.autoupdate) {
                     Render();
                 }
 
             });
 
-            window.addEventListener("resize", (event) => {
-                if ($('#inpAutoUpdate').is(":checked")) {
+            window.addEventListener("resize", async (event) => {
+                let currentParams = await LoadParams();
+                if (currentParams.autoupdate) {
                     Render(50, false);
                 }
             });
@@ -661,12 +811,13 @@
                         $("#inpIconSets").append(`<option value="${key}" selected>${key}</option>`);
                     });
 
-                    //$('#inpIconSets').selectpicker();
-                    //$('#inpIconSets').selectpicker('render');
-                    //$('#inpIconSets').selectpicker('refresh');
-
-
-
+                    // Initialize Select2
+                    $('#inpIconSets').select2({
+                        placeholder: "Select icon sets",
+                        allowClear: true,
+                        closeOnSelect: false,
+                        width: '100%'
+                    });
 
                     Data.Icons = res;
 
@@ -763,7 +914,8 @@
                 debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 200);
             });
 
-            $("#inpIconSets").on("change", "input", function (event) {
+            // Select2 change event
+            $("#inpIconSets").on("change", function (event) {
                 clearTimeout(debounceSearchIconTimer);
                 debounceSearchIconTimer = setTimeout(() => searchIcons($("#inpSearchIcon").val()), 0);
             });
@@ -976,7 +1128,15 @@
 
                 let title = `${lastDocument.document.fileTitlePrefix}-${luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss")}.svg`
 
-                let svg = (await ExportSVG($(".render")[0], lastDocument.document.renderRatio, !event.ctrlKey)).outerHTML;
+                // Get current settings
+                let currentParams = await LoadParams();
+                let embedFonts = currentParams.embedFontsInSvg;
+                let includeYaml = currentParams.includeYamlInSvg;
+
+                // Get YAML code if needed
+                let yamlCode = includeYaml ? editor.session.getValue() : null;
+
+                let svg = (await ExportSVG($(".render")[0], lastDocument.document.renderRatio, embedFonts, yamlCode)).outerHTML;
                 let blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
 
                 saveAs(blob, title);

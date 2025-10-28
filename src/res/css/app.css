@@ -37,11 +37,6 @@ body {
     stroke-width: 0;
 }
 
-#contAutoSave *,
-#contAutoUpdate * {
-    cursor: pointer;
-}
-
 .jq-toast-wrap {
     width: 500px;
 }

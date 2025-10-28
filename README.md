@@ -14,7 +14,7 @@ Given a yaml file describing the hierarchy of the network and it's connections, 
 
 Complex network diagrams typically involve specific placement of icons, connections and labels using a tool like Visio or OmniGraffle, using a mouse, and constantly zooming in and out for single pixel placement. 
 
-The goal behind drawthenet.io is to be able to describe the digram in a text file and have it rendered in SVG in the browser.
+The goal behind drawthenet.io is to be able to describe the diagram in a text file and have it rendered in SVG in the browser.
 
 Also, being able to store a diagram as text makes it easy to version control and share.
 
@@ -24,7 +24,7 @@ Go to https://drawthenet.io and start creating diagrams.
 
 # More Info
 
-You can find a detailed help guide, including a full list of availalble properties integrated into the app by using the ? button in the top left corner of it, or [here](https://drawthenet.io/help.html)
+You can find a detailed help guide, including a full list of available properties integrated into the app by using the ? button in the top left corner of it, or [here](https://drawthenet.io/help.html)
 
 # Vendors Icons
 The follwing vendors are available by default:
@@ -57,7 +57,7 @@ docker build -t local/drawthenet.io .
 It will build the docker image from scratch, including downloading the icons from all vendor specified above. It will run the app with nginx, listening on port 80.
 
 ## Local Build
-You need [libvisio2svg](https://github.com/kakwa/libvisio2svg) and powershell installed and available in you path for the full build to work.
+You need [libvisio2svg](https://github.com/kakwa/libvisio2svg) includning its dependencies (libxml2-dev libwmf-dev gsfonts libemf2svg-dev libvisio-dev librevenge-dev) and powershell installed and available in you path for the full build to work.
 If not, some icons set (Cisco, Fortinet) will not be generated and available.
 You can find the build script in the [tools folder](./tools/build.ps1)
 

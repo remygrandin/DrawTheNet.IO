@@ -1,6 +1,6 @@
 let fontCache = {};
 
-export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
+export async function ExportSVG(el, scaleFactor, embedFontAndStyle, yamlCode = null) {
 
     let width = parseFloat(el.attributes["width"].value);
     let height = parseFloat(el.attributes["height"].value);
@@ -35,6 +35,14 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle) {
         let css = document.createElement("style");
         css.innerHTML = `<![CDATA[${cssExport}]]>`;
         defs.appendChild(css);
+    }
+
+    // Add YAML code as hidden metadata if provided
+    if (yamlCode != null && yamlCode.trim() !== "") {
+        let metadata = document.createElement("metadata");
+        metadata.setAttribute("id", "drawthenet-yaml-source");
+        metadata.innerHTML = `<![CDATA[${yamlCode}]]>`;
+        clone.prepend(metadata);
     }
 
     let images = clone.querySelectorAll("image");
