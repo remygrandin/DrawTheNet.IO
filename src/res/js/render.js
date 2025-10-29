@@ -10,17 +10,12 @@ import { RenderNotes } from './notes.js'
 export function Render(containerSelector, doc, keepZoom) {
     ApplyDefaults(doc);
     
-    /*
-    let initialZoom = null;
-    if(d3.select(`${containerSelector} svg`).node() != null)
+    // Save the current zoom transform if keepZoom is true
+    let initialZoom = d3.zoomIdentity;
+    if(keepZoom && d3.select(`${containerSelector} svg`).node() != null)
     {
         initialZoom = d3.zoomTransform(d3.select(`${containerSelector} svg`).node());
     }
-    else
-    {
-        initialZoom = d3.zoomIdentity;
-    }
-        */
 
     d3.select(`${containerSelector} > svg`).remove();
 
@@ -63,20 +58,27 @@ export function Render(containerSelector, doc, keepZoom) {
         .attr("class", "render")
         .attr("width", containerBox.width)
         .attr("height", containerBox.height)
-        .style("background-color", doc.document.fill)
-        .call(d3.zoom().on("zoom", function (e) {
-            zoomContainer.attr("transform", e.transform);
-            document.querySelectorAll(".render .metadata").forEach(function (element) {
-                let evt = new Event('mouseleave');
-                element.dispatchEvent(evt);
-            });
-        }));
+        .style("background-color", doc.document.fill);
 
     let zoomContainer = mainContainer.append("g")
-        .attr("class", "zoom")
-        //.attr("transform", zoom);
+        .attr("class", "zoom");
 
-    //d3.select(`${containerSelector} svg`).node().call(zoom.transform, initialZoom)
+    // Create zoom behavior after zoomContainer is defined
+    let zoom = d3.zoom().on("zoom", function (e) {
+        zoomContainer.attr("transform", e.transform);
+        document.querySelectorAll(".render .metadata").forEach(function (element) {
+            let evt = new Event('mouseleave');
+            element.dispatchEvent(evt);
+        });
+    });
+
+    // Apply zoom behavior to the main container
+    mainContainer.call(zoom);
+
+    // Apply the saved zoom transform if keepZoom was true
+    if (keepZoom && initialZoom && (initialZoom.k !== 1 || initialZoom.x !== 0 || initialZoom.y !== 0)) {
+        mainContainer.call(zoom.transform, initialZoom);
+    }
 
     let documentContainer = zoomContainer.append("g")
         .attr("transform", `translate(${doc.document.margin.left + dataBag.HCenterOffset}, ${doc.document.margin.top + dataBag.VCenterOffset})`)
