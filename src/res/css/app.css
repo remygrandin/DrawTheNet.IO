@@ -17,6 +17,37 @@ main>.container-fluid {
     height: 0 !important;
 }
 
+/* Floating Edit Button in Fullscreen */
+#btnFloatingEdit {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+#btnFloatingEdit:hover {
+    opacity: 1 !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Floating Export Buttons in Fullscreen */
+#btnFloatingExport {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+#btnFloatingExport:hover {
+    opacity: 1 !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+#btnFloatingExport .btn {
+    transition: transform 0.2s;
+}
+
+#btnFloatingExport .btn:hover {
+    transform: translateY(-1px);
+}
+
 .iconCard img {
     height: 50px;
 }

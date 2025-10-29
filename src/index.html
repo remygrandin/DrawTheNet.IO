@@ -292,6 +292,24 @@
         style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: white;">
     </div>
 
+    <!-- Floating Edit Button (shown in fullscreen mode) -->
+    <button type="button" class="btn btn-primary btn-sm" id="btnFloatingEdit" 
+        style="display: none; position: fixed; top: 20px; right: 20px; z-index: 10000; opacity: 0.3; transition: opacity 0.2s;"
+        title="Exit Fullscreen / Edit">
+        <iconify-icon inline icon="mdi:pencil"></iconify-icon>
+    </button>
+
+    <!-- Floating Export Buttons (shown in fullscreen mode) -->
+    <div class="btn-group btn-group-sm" id="btnFloatingExport" role="group"
+        style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 10000; opacity: 0.3; transition: opacity 0.2s;">
+        <button type="button" class="btn btn-primary" id="btnFloatingSavePNG" title="Export as PNG">
+            <iconify-icon inline icon="bi:filetype-png"></iconify-icon> PNG
+        </button>
+        <button type="button" class="btn btn-success" id="btnFloatingSaveSVG" title="Export as SVG">
+            <iconify-icon inline icon="bi:filetype-svg"></iconify-icon> SVG
+        </button>
+    </div>
+
     <div class="modal fade" id="modHelp" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -304,8 +322,8 @@
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-2">
-                    <iframe class="w-100" height="800px" src="./help.html"></iframe>
+                <div class="modal-body p-2" id="helpModalBody">
+                    <!-- Iframe will be loaded conditionally via JavaScript -->
                 </div>
             </div>
         </div>
@@ -594,6 +612,32 @@
                 $('#settingsAutoUpdate').prop('checked', params.autoupdate);
                 $('#settingsIncludeYamlInSvg').prop('checked', params.includeYamlInSvg);
                 $('#settingsEmbedFontsInSvg').prop('checked', params.embedFontsInSvg);
+            });
+
+            // =============================================
+            // =============== Help Modal ==================
+            // =============================================
+
+            // Only load help iframe if not already in an iframe
+            $('#modHelp').on('show.bs.modal', function () {
+                const isInIframe = window.self !== window.top;
+                const helpModalBody = document.getElementById('helpModalBody');
+                
+                // Only load the iframe once and only if not already in an iframe
+                if (!isInIframe && helpModalBody.children.length === 0) {
+                    helpModalBody.innerHTML = '<iframe class="w-100" height="800px" src="./help.html"></iframe>';
+                } else if (isInIframe && helpModalBody.children.length === 0) {
+                    // If in iframe, provide a link to open help in new tab instead
+                    helpModalBody.innerHTML = `
+                        <div class="text-center p-5">
+                            <p class="mb-3">Help is not available in embedded mode.</p>
+                            <a href="./help.html" target="_blank" class="btn btn-primary">
+                                <iconify-icon inline icon="material-symbols:open-in-new"></iconify-icon>
+                                Open Help in New Tab
+                            </a>
+                        </div>
+                    `;
+                }
             });
 
             // =============================================
@@ -1001,13 +1045,33 @@
                 applyFullscreen(currentParams.fullscreen);
             });
 
+            $("#btnFloatingEdit").on("click", async function (event) {
+                event.preventDefault();
+                let currentParams = await LoadParams();
+                currentParams.fullscreen = false;
+                SetParams(currentParams);
+                applyFullscreen(currentParams.fullscreen);
+            });
+
             function applyFullscreen(isFullscreen) {
+                // Detect if page is loaded in an iframe
+                const isInIframe = window.self !== window.top;
+                
                 if (isFullscreen) {
                     // Hide UI elements
                     $("#topBar").hide();
                     $("#editorCol").hide();
                     $("#btnReduce").show();
                     $("#btnFullscreen").hide();
+                    
+                    // Only show floating buttons if NOT in an iframe
+                    if (!isInIframe) {
+                        $("#btnFloatingEdit").show();
+                        $("#btnFloatingExport").show();
+                    } else {
+                        $("#btnFloatingEdit").hide();
+                        $("#btnFloatingExport").hide();
+                    }
 
                     // Move preview content to fullscreen container
                     $("#previewCol").hide();
@@ -1015,11 +1079,20 @@
                     $("#fullscreenPreview").append(previewContent).show();
                 }
                 else {
+                    // When exiting fullscreen, reload the document from URL params into the editor
+                    LoadParams().then(currentParams => {
+                        if (currentParams.doc) {
+                            editor.setValue(currentParams.doc, -1);
+                        }
+                    });
+                    
                     // Show UI elements
                     $("#topBar").show();
                     $("#editorCol").show();
                     $("#btnReduce").hide();
                     $("#btnFullscreen").show();
+                    $("#btnFloatingEdit").hide();
+                    $("#btnFloatingExport").hide();
 
                     // Move preview content back to original container
                     let previewContent = $("#preview").detach();
@@ -1123,6 +1196,17 @@
                 saveAs(blob, title);
 
                 return;
+            });
+
+            // Floating export buttons (fullscreen mode)
+            $("#btnFloatingSavePNG").on("click", function (event) {
+                event.preventDefault();
+                $("#btnSavePNG").click();
+            });
+
+            $("#btnFloatingSaveSVG").on("click", function (event) {
+                event.preventDefault();
+                $("#btnSaveSVG").click();
             });
         });
     </script>
