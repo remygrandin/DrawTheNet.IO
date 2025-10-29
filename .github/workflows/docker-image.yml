@@ -39,9 +39,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./tools/
-          file: Dockerfile
+          file: ./tools/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           tags: |
             ${{ secrets.DOCKERHUBUSER }}/${{ secrets.DOCKERHUBPROJECTNAME }}:latest
             ${{ secrets.DOCKERHUBUSER }}/${{ secrets.DOCKERHUBPROJECTNAME }}:${{ steps.meta.outputs.SHORT_SHA }}
