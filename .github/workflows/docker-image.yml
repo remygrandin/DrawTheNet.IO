@@ -40,7 +40,6 @@ jobs:
           username: ${{ secrets.DOCKERHUBUSER }}
           password: ${{ secrets.DOCKERHUBPAT }}
 
-      # 3. Build et push de l'image
       - name: Build and push production image
         uses: docker/build-push-action@v6
         with:
