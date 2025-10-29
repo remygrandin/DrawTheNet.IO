@@ -1342,7 +1342,7 @@ icons:
                                 </td>
                                 <td>string</td>
                                 <td>
-                                    <pre><code class="language-yaml"></code></pre>
+                                    <pre><code class="language-yaml">"Iconify"</code></pre>
                                 </td>
                                 <td>
                                     The family of the icon.<br>
@@ -1352,6 +1352,7 @@ icons:
                                         <li>Azure</li>
                                         <li>Cisco</li>
                                         <li>D365</li>
+                                        <li>Fortinet</li>
                                         <li>GCP</li>
                                         <li>M365</li>
                                         <li>PowerPlatform</li>
@@ -1365,7 +1366,7 @@ icons:
                                 </td>
                                 <td>string</td>
                                 <td>
-                                    <pre><code class="language-yaml"></code></pre>
+                                    <pre><code class="language-yaml">"grommet-icons:document-missing"</code></pre>
                                 </td>
                                 <td>
                                     The icon image name.<br>
@@ -1476,11 +1477,77 @@ icons:
                             </tr>
                             <tr>
                                 <td>
+                                    <pre><code class="language-yaml">margin</code></pre>
+                                </td>
+                                <td>object</td>
+                                <td>
+                                    <pre><code class="language-yaml">{ top: 0.10, right: 0.05, bottom: 0.10, left: 0.05 }</code></pre>
+                                </td>
+                                <td>
+                                    The margin around the icon within its grid cell (as a ratio of the cell size).<br>
+                                    Composed of 4 properties :
+                                    <ul>
+                                        <li>
+                                            <code>top</code> : The margin on the top of the icon.
+                                        </li>
+                                        <li>
+                                            <code>right</code> : The margin on the right of the icon.
+                                        </li>
+                                        <li>
+                                            <code>bottom</code> : The margin on the bottom of the icon.
+                                        </li>
+                                        <li>
+                                            <code>left</code> : The margin on the left of the icon.
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">padding</code></pre>
+                                </td>
+                                <td>object</td>
+                                <td>
+                                    <pre><code class="language-yaml">{ top: 0.10, right: 0.05, bottom: 0.10, left: 0.05 }</code></pre>
+                                </td>
+                                <td>
+                                    The padding inside the icon bounding box (as a ratio of the cell size).<br>
+                                    Composed of 4 properties :
+                                    <ul>
+                                        <li>
+                                            <code>top</code> : The padding on the top of the icon.
+                                        </li>
+                                        <li>
+                                            <code>right</code> : The padding on the right of the icon.
+                                        </li>
+                                        <li>
+                                            <code>bottom</code> : The padding on the bottom of the icon.
+                                        </li>
+                                        <li>
+                                            <code>left</code> : The padding on the left of the icon.
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">textSizeRatio</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">0.1</code></pre>
+                                </td>
+                                <td>
+                                    The text size as a ratio of the grid cell height.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <pre><code class="language-yaml">textLocation</code></pre>
                                 </td>
                                 <td>string</td>
                                 <td>
-                                    <pre><code class="language-yaml">"bottomMiddle"</code></pre>
+                                    <pre><code class="language-yaml">"bottomCenter"</code></pre>
                                 </td>
                                 <td>
                                     Define the text location relative to the icon image.<br>
@@ -1493,7 +1560,7 @@ icons:
                                         <li><code>topLeft</code> : Position the text along the top, in the left
                                             corner.
                                         </li>
-                                        <li><code>topMiddle</code> : Position the text along the top, centered.</li>
+                                        <li><code>topCenter</code> : Position the text along the top, centered.</li>
                                         <li><code>topRight</code> : Position the text along the top, in the right
                                             corner.
                                         </li>
@@ -1501,7 +1568,7 @@ icons:
                                         <li><code>rightTop</code> : Position the text along the right side, in the
                                             top
                                             corner.</li>
-                                        <li><code>rightMiddle</code> : Position the text along the right side,
+                                        <li><code>rightCenter</code> : Position the text along the right side,
                                             centered.
                                         </li>
                                         <li><code>rightBottom</code> : Position the text along the right side, in
@@ -1512,7 +1579,7 @@ icons:
                                         <li><code>bottomLeft</code> : Position the text along the bottom, in the
                                             left
                                             corner.</li>
-                                        <li><code>bottomMiddle</code> : Position the text along the bottom,
+                                        <li><code>bottomCenter</code> : Position the text along the bottom,
                                             centered.
                                         </li>
                                         <li><code>bottomRight</code> : Position the text along the bottom, in the
@@ -1522,7 +1589,7 @@ icons:
                                         <li><code>leftTop</code> : Position the text along the left side, in the top
                                             corner.
                                         </li>
-                                        <li><code>leftMiddle</code> : Position the text along the left side,
+                                        <li><code>leftCenter</code> : Position the text along the left side,
                                             centered.
                                         </li>
                                         <li><code>leftBottom</code> : Position the text along the left side, in the
@@ -1672,6 +1739,36 @@ icons:
                                     See exemples in the Icons section of this Help file.
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">animated</code></pre>
+                                </td>
+                                <td>boolean</td>
+                                <td>
+                                    <pre><code class="language-yaml">false</code></pre>
+                                </td>
+                                <td>
+                                    If true, the icon border will be animated with a marching ants effect.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">animationSpeed</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml">"medium"</code></pre>
+                                </td>
+                                <td>
+                                    The speed of the animation when <code>animated</code> is true.<br>
+                                    Can be either:
+                                    <ul>
+                                        <li><code>slow</code> : Slow animation speed</li>
+                                        <li><code>medium</code> : Medium animation speed</li>
+                                        <li><code>fast</code> : Fast animation speed</li>
+                                    </ul>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -1737,11 +1834,50 @@ icons:
                             </tr>
                             <tr>
                                 <td>
+                                    <pre><code class="language-yaml">padding</code></pre>
+                                </td>
+                                <td>object</td>
+                                <td>
+                                    <pre><code class="language-yaml">{ top: 0.15, right: 0.15, bottom: 0.15, left: 0.15 }</code></pre>
+                                </td>
+                                <td>
+                                    The padding around group members (as a ratio of the cell size).<br>
+                                    Composed of 4 properties :
+                                    <ul>
+                                        <li>
+                                            <code>top</code> : The padding on the top of the group.
+                                        </li>
+                                        <li>
+                                            <code>right</code> : The padding on the right of the group.
+                                        </li>
+                                        <li>
+                                            <code>bottom</code> : The padding on the bottom of the group.
+                                        </li>
+                                        <li>
+                                            <code>left</code> : The padding on the left of the group.
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">textSizeRatio</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">0.2</code></pre>
+                                </td>
+                                <td>
+                                    The text size as a ratio of the grid cell height.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <pre><code class="language-yaml">textLocation</code></pre>
                                 </td>
                                 <td>string</td>
                                 <td>
-                                    <pre><code class="language-yaml">"bottomMiddle"</code></pre>
+                                    <pre><code class="language-yaml">"topCenter"</code></pre>
                                 </td>
                                 <td>
                                     Define the text location relative to the group box.<br>
@@ -1754,7 +1890,7 @@ icons:
                                         <li><code>topLeft</code> : Position the text along the top, in the left
                                             corner.
                                         </li>
-                                        <li><code>topMiddle</code> : Position the text along the top, centered.</li>
+                                        <li><code>topCenter</code> : Position the text along the top, centered.</li>
                                         <li><code>topRight</code> : Position the text along the top, in the right
                                             corner.
                                         </li>
@@ -1762,7 +1898,7 @@ icons:
                                         <li><code>rightTop</code> : Position the text along the right side, in the
                                             top
                                             corner.</li>
-                                        <li><code>rightMiddle</code> : Position the text along the right side,
+                                        <li><code>rightCenter</code> : Position the text along the right side,
                                             centered.
                                         </li>
                                         <li><code>rightBottom</code> : Position the text along the right side, in
@@ -1773,7 +1909,7 @@ icons:
                                         <li><code>bottomLeft</code> : Position the text along the bottom, in the
                                             left
                                             corner.</li>
-                                        <li><code>bottomMiddle</code> : Position the text along the bottom,
+                                        <li><code>bottomCenter</code> : Position the text along the bottom,
                                             centered.
                                         </li>
                                         <li><code>bottomRight</code> : Position the text along the bottom, in the
@@ -1783,7 +1919,7 @@ icons:
                                         <li><code>leftTop</code> : Position the text along the left side, in the top
                                             corner.
                                         </li>
-                                        <li><code>leftMiddle</code> : Position the text along the left side,
+                                        <li><code>leftCenter</code> : Position the text along the left side,
                                             centered.
                                         </li>
                                         <li><code>leftBottom</code> : Position the text along the left side, in the
@@ -2210,6 +2346,72 @@ icons:
                             </tr>
                             <tr>
                                 <td>
+                                    <pre><code class="language-yaml">margin</code></pre>
+                                </td>
+                                <td>object</td>
+                                <td>
+                                    <pre><code class="language-yaml">{ top: 0.10, right: 0.05, bottom: 0.10, left: 0.05 }</code></pre>
+                                </td>
+                                <td>
+                                    The margin around the note within its grid cell (as a ratio of the cell size).<br>
+                                    Composed of 4 properties :
+                                    <ul>
+                                        <li>
+                                            <code>top</code> : The margin on the top of the note.
+                                        </li>
+                                        <li>
+                                            <code>right</code> : The margin on the right of the note.
+                                        </li>
+                                        <li>
+                                            <code>bottom</code> : The margin on the bottom of the note.
+                                        </li>
+                                        <li>
+                                            <code>left</code> : The margin on the left of the note.
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">padding</code></pre>
+                                </td>
+                                <td>object</td>
+                                <td>
+                                    <pre><code class="language-yaml">{ top: 0.10, right: 0.05, bottom: 0.10, left: 0.05 }</code></pre>
+                                </td>
+                                <td>
+                                    The padding inside the note bounding box (as a ratio of the cell size).<br>
+                                    Composed of 4 properties :
+                                    <ul>
+                                        <li>
+                                            <code>top</code> : The padding on the top of the note.
+                                        </li>
+                                        <li>
+                                            <code>right</code> : The padding on the right of the note.
+                                        </li>
+                                        <li>
+                                            <code>bottom</code> : The padding on the bottom of the note.
+                                        </li>
+                                        <li>
+                                            <code>left</code> : The padding on the left of the note.
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">textSizeRatio</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">0.12</code></pre>
+                                </td>
+                                <td>
+                                    The text size as a ratio of the grid cell height.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <pre><code class="language-yaml">color</code></pre>
                                 </td>
                                 <td>string</td>
@@ -2383,34 +2585,91 @@ icons:
                                 </td>
                                 <td>string</td>
                                 <td>
-                                    <pre><code class="language-yaml">"curveLinear"</code></pre>
+                                    <pre><code class="language-yaml">"Linear"</code></pre>
                                 </td>
                                 <td>
                                     If defined, must be one of :
                                     <ul>
                                         <li>
-                                            <strong>curveLinear</strong> : Draws a line directly connecting the
+                                            <strong>Linear</strong> : Draws a line directly connecting the
                                             endpoints.
                                         </li>
                                         <li>
-                                            <strong>curveStep</strong> : Draws a line consisting of alternating
+                                            <strong>Step</strong> : Draws a line consisting of alternating
                                             horizontal
                                             and vertical lines.
                                             The y-value changes at the midpoint of each pair of adjacent x-values.
                                         </li>
                                         <li>
-                                            <strong>curveStepAfter</strong> : Draws a line consisting of alternating
+                                            <strong>StepAfter</strong> : Draws a line consisting of alternating
                                             horizontal and vertical lines.
                                             The y-value changes after the x-value.
                                         </li>
                                         <li>
-                                            <strong>curveStepBefore</strong> : Draws a line consisting of
+                                            <strong>StepBefore</strong> : Draws a line consisting of
                                             alternating
                                             horizontal and vertical lines.
                                             The y-value changes before the x-value.
                                         </li>
                                     </ul>
                                     See the connections secttion of this help page for examples.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">curveOffset</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">0</code></pre>
+                                </td>
+                                <td>
+                                    Offset for the curve position (used for parallel connections).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">textSizeRatio</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">0.1</code></pre>
+                                </td>
+                                <td>
+                                    The endpoint label text size as a ratio of the grid cell height.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">endpLabelOffsetRatio</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">1</code></pre>
+                                </td>
+                                <td>
+                                    The distance from the endpoint where the label is placed (as a ratio).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">margin</code></pre>
+                                </td>
+                                <td>object</td>
+                                <td>
+                                    <pre><code class="language-yaml">{ endp1: 0.08, endp2: 0.08 }</code></pre>
+                                </td>
+                                <td>
+                                    The margin/gap between the connection line and the endpoint nodes.<br>
+                                    Composed of 2 properties :
+                                    <ul>
+                                        <li>
+                                            <code>endp1</code> : The margin at the first endpoint.
+                                        </li>
+                                        <li>
+                                            <code>endp2</code> : The margin at the second endpoint.
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>
@@ -2497,6 +2756,48 @@ icons:
                                     of
                                     the
                                     gap (in px).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">strokeWidth</code></pre>
+                                </td>
+                                <td>number</td>
+                                <td>
+                                    <pre><code class="language-yaml">1</code></pre>
+                                </td>
+                                <td>
+                                    The width of the connection line in pixels.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">animated</code></pre>
+                                </td>
+                                <td>boolean</td>
+                                <td>
+                                    <pre><code class="language-yaml">false</code></pre>
+                                </td>
+                                <td>
+                                    If true, the connection line will be animated with a marching ants effect.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">animationSpeed</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml">"medium"</code></pre>
+                                </td>
+                                <td>
+                                    The speed of the animation when <code>animated</code> is true.<br>
+                                    Can be either:
+                                    <ul>
+                                        <li><code>slow</code> : Slow animation speed</li>
+                                        <li><code>medium</code> : Medium animation speed</li>
+                                        <li><code>fast</code> : Fast animation speed</li>
+                                    </ul>
                                 </td>
                             </tr>
                         </tbody>
