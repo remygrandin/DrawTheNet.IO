@@ -1,5 +1,5 @@
 param(
-    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "GenContactSheets", "CopySrc", "AllLowercase", "CopyDist", "EndCleanup")
+    [PSObject[]] $steps = @("InitCleanup", "DownloadIcons", "GenContactSheets", "CopySrc", "SetBuildDate", "AllLowercase", "CopyDist", "EndCleanup")
 )
 
 $startTime = Get-Date
@@ -962,6 +962,34 @@ function CopySrcDev {
     Copy-Item -Path "$srcPath/*" -Destination $distPath -Recurse -Force
 }
 
+function SetBuildDate {
+    Write-Output "====== Setting build date ======"
+    $buildDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss UTC"
+    
+    # Set build date in build path (for production builds)
+    $indexPathBuild = Join-Path $buildPath "index.html"
+    if (Test-Path $indexPathBuild) {
+        $content = Get-Content -Path $indexPathBuild -Raw
+        $content = $content -replace "%%BUILD_DATE%%", $buildDate
+        $content | Set-Content -Path $indexPathBuild -NoNewline -Force
+        Write-Output "Build date set in build path to: $buildDate"
+    }   
+}
+
+function SetBuildDateDev {
+    Write-Output "====== Setting build date for dev ======"
+    $buildDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss UTC"
+
+    # Set build date in dist path (for dev builds)
+    $indexPathDist = Join-Path $distPath "index.html"
+    if (Test-Path $indexPathDist) {
+        $content = Get-Content -Path $indexPathDist -Raw
+        $content = $content -replace "%%BUILD_DATE%%", $buildDate
+        $content | Set-Content -Path $indexPathDist -NoNewline -Force
+        Write-Output "Build date set in dist path to: $buildDate"
+    }
+}
+
 function CopyDist {
     Write-Output "====== Copying dist content ======"
     Copy-Item -Path "$buildPath/" -Destination $distRootPath -Recurse -Force
@@ -1078,6 +1106,11 @@ if ($steps -contains "CopySrc") {
 
 if ($steps -contains "CopySrcDev") {
     CopySrcDev
+    SetBuildDateDev
+}
+
+if ($steps -contains "SetBuildDate") {
+    SetBuildDate
 }
 
 if ($steps -contains "GenContactSheets") {
