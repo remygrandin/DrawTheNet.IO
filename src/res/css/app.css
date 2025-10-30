@@ -139,6 +139,7 @@ main>.container-fluid {
     font-family: "Roboto Mono", monospace !important;
 }
 
+/* Border/Connection animation styling */
 
 .connection-animated {
     animation-name: connectionAnimation;

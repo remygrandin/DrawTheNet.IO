@@ -126,7 +126,7 @@ export function Render(containerSelector, doc, keepZoom) {
         watermarkContainer.append("text")
             .attr("text-anchor", "middle")
             .append("a")
-            .attr("xlink:href", "https://drawthenet.io")
+            .attr("xlink:href", "https://DrawTheNet.IO")
             .attr("class", "watermark")
             .attr("target", "_blank")
             .text("Created with DrawTheNet.IO");

@@ -4,7 +4,7 @@
 
 DrawTheNet.IO draws network diagrams dynamically from a text file describing the placement, layout and icons.
 
-## See in live :  https://drawthenet.io
+## See in live :  https://DrawTheNet.IO
 
 Given a yaml file describing the hierarchy of the network and it's connections, a resulting diagram will be created. 
 

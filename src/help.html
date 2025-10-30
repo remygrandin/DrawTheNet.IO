@@ -46,6 +46,11 @@
         .img-height {
             height: 350px;
         }
+
+        .doc-iframe {
+            height: 400px;
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -415,40 +420,48 @@ myOthericon: { iicon: AP, iconFamily: Cisco, color: #ffff00 }
                 </p>
                 <h3 class="mt-2">Grid</h3>
                 <p>
-                    You can define the grid density with the help of the row and column header. They wil define how many
-                    of
-                    each is availalble as coordinates for your nodes.<br>
-                    Note that modifying the amount of columns/rows won't change the size of the diagram, it will only
-                    change
-                    the amount of available coordinates.<br>
+                    You can define the grid density with the help of the row and column properties. They will define how
+                    many of each is available as coordinates for your nodes. The nodes will be centered on the grid coordinates.<br>
+                    Note that modifying the amount of columns/rows won't change the size of the diagram as it will by
+                    default adapt to the available space, it will only change the amount of available coordinates.<br>
                 </p>
                 <h4 class="mt-2">Example:</h4>
                 <div class="row">
                     <div class="col border p-3">
                         <h4>Small 5x5 grid</h4>
-                        <pre><code class="yaml">diagram:
+                        <pre><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
   columns: 5
   rows: 5
   gridLines: true
-  watermark: false
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
                         <div class="text-center">
-                            <img src="./res/help/diagram-smallgrid.png" class="img-height border">
+                            <iframe
+                                src="./index.html#fullscreen=true&autosave=true&autoupdate=true&includeYamlInSvg=true&embedFontsInSvg=true&doc=CYewxgrgtgpgdgFwFwFgBQACDB3AhgmAJyl0IGskMAzXAGwGcZ0EBLBWmVTDABxHrYsQcSnGFM0wFrgDmhXFC5YwIWtDj1KAVnRZCIbJow7uclsAAyLODCMJCECSxUalGALIBPAEogIBQkoAbwAPSgAmABoMTwjo52EAMQUWWliMMBZ6FXiXSn1-IgBfIA"
+                                frameborder="0" class="doc-iframe"></iframe>
                         </div>
                     </div>
 
                     <div class="col border p-3">
                         <h4>Larger 5x15 grid</h4>
-                        <pre><code class="yaml">diagram:
-  columns: 5
-  rows: 15
-  gridLines: true
+                        <pre><code class="yaml">document:
   watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 10
+  gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
                         <div class="text-center">
-                            <img src="./res/help/diagram-largegrid.png" class="img-height border">
+                            <iframe
+                                src="./index.html#fullscreen=true&autosave=true&autoupdate=true&includeYamlInSvg=true&embedFontsInSvg=true&doc=CYewxgrgtgpgdgFwFwFgBQACDB3AhgmAJyl0IGskMAzXAGwGcZ0EBLBWmVTDABxHrYsQcSnGFM0wFrgDmhXFC5YwIWtDj1KAVnRZCIbJowBGAAy6MclsAAyLODCMJCECVjwFipCtTqN0LCoaShgAsgCeAEogEJ6UAN4AHpQATAA0GOGpGYHCAGIKLLRZGGAs9Co5QZT6sUQAvkA"
+                                frameborder="0" class="doc-iframe"></iframe>
                         </div>
                     </div>
                 </div>
@@ -458,7 +471,7 @@ icons:
                     You can define the aspect ratio of the diagram with the <code>aspectRatio</code> property.<br>
                     The aspect ratio is defined as a string composed as : <br>
                     <code>"width:height"</code><br>
-                    By default, the grid is a square, so the aspect ratio is <code>"1:1"</code>.<br>
+                    By default, the grid is adapting to it's container size.<br>
                     If you want to define a landscape diagram, you can set the aspect ratio to <code>"2:1"</code> for
                     example.<br>
 
@@ -466,16 +479,21 @@ icons:
                 <h4 class="mt-2">Example:</h4>
                 <div class="row">
                     <div class="col border p-3">
-                        <h4>1:1 (Default) Aspect Ratio</h4>
-                        <pre><code class="yaml">diagram:
-  columns: 5
-  rows: 5
-  gridLines: true
+                        <h4>AutoFit (Default) Aspect Ratio</h4>
+                        <pre><code class="yaml">document:
   watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 10
+  gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
                         <div class="text-center">
-                            <img src="./res/help/diagram-smallgrid.png" class="img-height border">
+                            <iframe
+                                src="./index.html#fullscreen=true&autosave=true&autoupdate=true&includeYamlInSvg=true&embedFontsInSvg=true&doc=CYewxgrgtgpgdgFwFwFgBQACDB3AhgmAJyl0IGskMAzXAGwGcZ0EBLBWmVTDABxHrYsQcSnGFM0wFrgDmhXFC5YwIWtDj1KAVnRZCIbJow7uclsAAyLODCMJCECSxUalGALIBPAEogIBQkoAbwAPSgAmABoMTwjo52EAMQUWWliMMBZ6FXiXSn1-IgBfIA"
+                                frameborder="0" class="doc-iframe"></iframe>
                         </div>
                     </div>
 
@@ -1268,7 +1286,8 @@ icons:
                                 <td>
                                     The title logo URL.<br>
                                     Can either be a URI or a base64 encoded image data URI.<br>
-                                    If <code>logoIcon</code> is specified, it will take precedence over <code>logoUrl</code>.
+                                    If <code>logoIcon</code> is specified, it will take precedence over
+                                    <code>logoUrl</code>.
                                 </td>
                             </tr>
                             <tr>

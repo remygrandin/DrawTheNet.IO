@@ -9,7 +9,7 @@ const documentDefaults = {
     fill: "white",
     watermark: true,
     renderRatio: 3,
-    fileTitlePrefix: "drawthenet.io",
+    fileTitlePrefix: "DrawTheNet.IO",
     schemasVersion: 1
 }
 
@@ -17,7 +17,7 @@ const diagramDefaults = {
     columns: 10,
     rows: 10,
     invertY: false,
-    gridLines: true,    
+    gridLines: false,    
     margin: {
         top: 10,
         right: 10,
