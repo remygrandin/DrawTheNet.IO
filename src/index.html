@@ -276,8 +276,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7 h-100" id="previewCol">
+                <div class="col-md-7 h-100" id="previewCol" style="position: relative;">
                     <div class="h-100" id="preview"></div>
+                    <!-- Reset Zoom Button (in preview area) -->
+                    <button type="button" class="btn btn-info btn-sm" id="btnResetZoom"
+                        style="position: absolute; bottom: 20px; left: 20px; z-index: 100; opacity: 0.3; transition: opacity 0.2s;"
+                        title="Reset Zoom">
+                        <iconify-icon inline icon="mdi:magnify-expand"></iconify-icon>
+                    </button>
                 </div>
             </div>
 
@@ -287,6 +293,7 @@
     <!-- Fullscreen Preview Container -->
     <div id="fullscreenPreview"
         style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: white;">
+        <!-- Reset zoom button will be moved here in fullscreen mode -->
     </div>
 
     <!-- Floating Edit Button (shown in fullscreen mode) -->
@@ -1185,7 +1192,16 @@
                     // Move preview content to fullscreen container
                     $("#previewCol").hide();
                     let previewContent = $("#preview").detach();
-                    $("#fullscreenPreview").append(previewContent).show();
+                    let resetZoomBtn = $("#btnResetZoom").detach();
+                    $("#fullscreenPreview").append(previewContent).append(resetZoomBtn).show();
+                    
+                    // Update button style for fullscreen (fixed positioning)
+                    $("#btnResetZoom").css({
+                        "position": "fixed",
+                        "bottom": "20px",
+                        "left": "20px",
+                        "z-index": "10000"
+                    });
                 }
                 else {
                     // When exiting fullscreen, reload the document from URL params into the editor
@@ -1205,8 +1221,17 @@
 
                     // Move preview content back to original container
                     let previewContent = $("#preview").detach();
-                    $("#previewCol").append(previewContent).show();
+                    let resetZoomBtn = $("#btnResetZoom").detach();
+                    $("#previewCol").append(previewContent).append(resetZoomBtn).show();
                     $("#fullscreenPreview").hide();
+                    
+                    // Restore button style for normal mode (absolute positioning)
+                    $("#btnResetZoom").css({
+                        "position": "absolute",
+                        "bottom": "20px",
+                        "left": "20px",
+                        "z-index": "100"
+                    });
                 }
 
                 Render(0, false);
@@ -1316,6 +1341,25 @@
             $("#btnFloatingSaveSVG").on("click", function (event) {
                 event.preventDefault();
                 $("#btnSaveSVG").click();
+            });
+
+            // Reset Zoom button
+            $("#btnResetZoom").on("click", function (event) {
+                event.preventDefault();
+                
+                // Get the SVG element
+                let svg = d3.select("#preview svg");
+                if (svg.node() == null) return;
+                
+                // Get the zoom behavior from the svg
+                let zoom = d3.zoom().on("zoom", function (e) {
+                    d3.select("#preview .zoom").attr("transform", e.transform);
+                });
+                
+                // Reset to identity transform
+                svg.transition()
+                    .duration(300)
+                    .call(zoom.transform, d3.zoomIdentity);
             });
         });
     </script>

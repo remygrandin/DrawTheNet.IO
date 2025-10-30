@@ -17,6 +17,11 @@ main>.container-fluid {
     height: 0 !important;
 }
 
+/* Editor border */
+#editorCol {
+    border-right: 1px solid #dee2e6;
+}
+
 /* Floating Edit Button in Fullscreen */
 #btnFloatingEdit {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,6 +50,18 @@ main>.container-fluid {
 }
 
 #btnFloatingExport .btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Floating Reset Zoom Button */
+#btnResetZoom {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+#btnResetZoom:hover {
+    opacity: 1 !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
 }
 
