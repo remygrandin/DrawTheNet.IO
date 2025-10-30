@@ -14,7 +14,7 @@ Given a yaml file describing the hierarchy of the network and it's connections, 
 
 Complex network diagrams typically involve specific placement of icons, connections and labels using a tool like Visio or OmniGraffle, using a mouse, and constantly zooming in and out for single pixel placement. 
 
-The goal behind drawthenet.io is to be able to describe the diagram in a text file and have it rendered in SVG in the browser.
+The goal behind DrawTheNet.IO is to be able to describe the diagram in a text file and have it rendered in SVG in the browser.
 
 Also, being able to store a diagram as text makes it easy to version control and share.
 
@@ -24,7 +24,7 @@ Go to https://drawthenet.io and start creating diagrams.
 
 # More Info
 
-You can find a detailed help guide, including a full list of available properties integrated into the app by using the ? button in the top left corner of it, or [here](https://drawthenet.io/help.html)
+You can find a detailed help guide, including a full list of available properties integrated into the app by using the ? button in the top left corner of it, or [here](https://DrawTheNet.IO/help.html)
 
 # Vendors Icons
 The follwing vendors are available by default:
@@ -94,6 +94,7 @@ Please do.
 # Versioning
 
 1.0 Initial release.
+
 2.0 Updated frameworks & added new saves and icons features.
 
 # Authors

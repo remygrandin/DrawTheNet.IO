@@ -14,32 +14,37 @@
     <title>DrawTheNet.IO - Help</title>
 
     <!-- JQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css"
+        integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.bundle.min.js"
+        integrity="sha512-HvOjJrdwNpDbkGJIG2ZNqDlVqMo77qbs4Me4cah0HoDrfhrbA+8SBlZn1KrvAQw7cILLPFJvdwIgphzQmMm+Pw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Iconify -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
 
     <!-- Highlight.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"
-        integrity="sha512-bgHRAiTjGrzHzLyKOnpFvaEpGzJet3z4tZnXGjpsCcqOnAH6VGUx9frc5bcIhKTVLEiCO6vEhNAgx5jtLUYrfA=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+        integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/atelier-cave-light.min.css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/atelier-cave-light.min.css"
         integrity="sha512-mb7hVnqouaHmHLJYLhdY+kUld4843IHJuRbVbhLXD41EJreUz0AeYU9t0XhwDFtnRVRvnLkbT/Xbjl1sajvpFQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"
-        integrity="sha512-axd5V66bnXpNVQzm1c7u1M614TVRXXtouyWCE+eMYl8ALK8ePJEs96Xtx7VVrPBc0UraCn63U1+ARFI3ofW+aA=="
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"
+        integrity="sha512-aq+AjYOhd705Zbk/vy3dBiAvfw0kMikUV2FBy4wUek4jZC2/YvwPK5fw9Ov5cJ/nwRveyiEtz5eezB25fg4U1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- LZ-String -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"
+        integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
@@ -50,6 +55,36 @@
         .doc-iframe {
             height: 400px;
             width: 100%;
+            border: none;
+        }
+
+        .previewBlock {
+            position: relative;
+        }
+
+        .previewBlock .code-toggle-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            z-index: 10;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .previewBlock .code-toggle-btn:hover {
+            opacity: 1;
+        }
+
+        .previewBlock .fullCode {
+            display: none;
+        }
+
+        .previewBlock.show-full .shortCode {
+            display: none;
+        }
+
+        .previewBlock.show-full .fullCode {
+            display: block;
         }
     </style>
 </head>
@@ -421,7 +456,8 @@ myOthericon: { iicon: AP, iconFamily: Cisco, color: #ffff00 }
                 <h3 class="mt-2">Grid</h3>
                 <p>
                     You can define the grid density with the help of the row and column properties. They will define how
-                    many of each is available as coordinates for your nodes. The nodes will be centered on the grid coordinates.<br>
+                    many of each is available as coordinates for your nodes. The nodes will be centered on the grid
+                    coordinates.<br>
                     Note that modifying the amount of columns/rows won't change the size of the diagram as it will by
                     default adapt to the available space, it will only change the amount of available coordinates.<br>
                 </p>
@@ -429,7 +465,12 @@ myOthericon: { iicon: AP, iconFamily: Cisco, color: #ffff00 }
                 <div class="row">
                     <div class="col border p-3">
                         <h4>Small 5x5 grid</h4>
-                        <pre><code class="yaml">document:
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  columns: 5
+  rows: 5
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
   watermark: false
 title:
   position: none
@@ -439,16 +480,17 @@ diagram:
   gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        <div class="text-center">
-                            <iframe
-                                src="./index.html#fullscreen=true&autosave=true&autoupdate=true&includeYamlInSvg=true&embedFontsInSvg=true&doc=CYewxgrgtgpgdgFwFwFgBQACDB3AhgmAJyl0IGskMAzXAGwGcZ0EBLBWmVTDABxHrYsQcSnGFM0wFrgDmhXFC5YwIWtDj1KAVnRZCIbJow7uclsAAyLODCMJCECSxUalGALIBPAEogIBQkoAbwAPSgAmABoMTwjo52EAMQUWWliMMBZ6FXiXSn1-IgBfIA"
-                                frameborder="0" class="doc-iframe"></iframe>
                         </div>
                     </div>
 
                     <div class="col border p-3">
-                        <h4>Larger 5x15 grid</h4>
-                        <pre><code class="yaml">document:
+                        <h4>Larger 5x10 grid</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  columns: 5
+  rows: 10
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
   watermark: false
 title:
   position: none
@@ -458,10 +500,6 @@ diagram:
   gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        <div class="text-center">
-                            <iframe
-                                src="./index.html#fullscreen=true&autosave=true&autoupdate=true&includeYamlInSvg=true&embedFontsInSvg=true&doc=CYewxgrgtgpgdgFwFwFgBQACDB3AhgmAJyl0IGskMAzXAGwGcZ0EBLBWmVTDABxHrYsQcSnGFM0wFrgDmhXFC5YwIWtDj1KAVnRZCIbJowBGAAy6MclsAAyLODCMJCECVjwFipCtTqN0LCoaShgAsgCeAEogEJ6UAN4AHpQATAA0GOGpGYHCAGIKLLRZGGAs9Co5QZT6sUQAvkA"
-                                frameborder="0" class="doc-iframe"></iframe>
                         </div>
                     </div>
                 </div>
@@ -2945,6 +2983,36 @@ icons:
     </div>
     <script>
         $(function () {
+            // Add on the fly the code previews
+
+            $(".previewBlock").each(function () {
+                let el = $(this)
+
+                let fullCode = el.find(".fullCode code").html();
+
+                let fullCodeCompressed = LZString.compressToEncodedURIComponent(fullCode);
+
+                el.append('<iframe src="./index.html#fullscreen=true&autosave=false&autoupdate=true&includeYamlInSvg=false&embedFontsInSvg=false&doc=' + fullCodeCompressed + '" class="doc-iframe"></iframe>');
+
+                // Add toggle button for code blocks
+                el.prepend('<button class="btn btn-sm btn-secondary code-toggle-btn" title="Toggle between specific/full code"><iconify-icon inline icon="streamline:braces-circle-solid"></iconify-icon></button>');
+            });
+
+            // Handle toggle button clicks
+            $(document).on('click', '.code-toggle-btn', function (e) {
+                e.preventDefault();
+                $(this).closest('.previewBlock').toggleClass('show-full');
+
+                // Update icon
+                let icon = $(this).find('iconify-icon');
+                if ($(this).closest('.previewBlock').hasClass('show-full')) {
+                    icon.attr('icon', 'streamline-color:braces-circle-flat');
+                } else {
+                    icon.attr('icon', 'streamline:braces-circle-solid');
+                }
+            });
+
+
             hljs.highlightAll();
         });
     </script>
