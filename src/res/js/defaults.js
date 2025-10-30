@@ -78,7 +78,7 @@ const iconDefaults = {
     fill: "white",
     stroke: "black",
     color: "black",
-    strokeDashArray: "0,0",
+    strokeDashArray: null,
     animated: false,
     animationSpeed: "medium"
 }
@@ -95,7 +95,7 @@ const groupDefaults = {
     stroke: "black",
     color: "black",
     textLocation: "topCenter",
-    strokeDashArray: "0,0",
+    strokeDashArray: null,
     animated: false,
     animationSpeed: "medium"
 }
@@ -104,7 +104,7 @@ const connectionDefaults = {
     textSizeRatio: 0.1,
     color: "black",
     stroke: "black",
-    strokeDashArray: "0,0",
+    strokeDashArray: null,
     strokeWidth: 1,
     curve: "Linear",
     curveOffset: 0,

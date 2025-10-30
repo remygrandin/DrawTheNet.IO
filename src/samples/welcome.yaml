@@ -100,7 +100,7 @@ connections:
   - {endpoints: [cms, vendors],  curve: StepReversed}
 groups:
   doc:
-    members: [docPC, docWAF, docServer]
+    members: [ docPC, docWAF, docServer]
     padding:
       left: 0.05
       right: 0.05
@@ -153,4 +153,4 @@ notes:
     x: 2
     yAlign: center
     text: |
-      You can find more examples in the **Samples** menu above and a full documentation with the **?** button in the top right corner. Don't hesitate to hit us on [Github](https://github.com/remygrandin/drawthenet.io) :-)
+      You can find more examples n the **Samples** menu above and a full documentation with the **User Guide** button in the top right corner. Don't hesitate to hit us on [Github](https://github.com/remygrandin/DrawTheNet.io) :-)
