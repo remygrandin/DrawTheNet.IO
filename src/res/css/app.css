@@ -225,6 +225,48 @@ main>.container-fluid {
     }
 }
 
+.group-border-animated {
+    animation-name: groupBorderAnimation;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    will-change: stroke-dashoffset;
+    transform: translateZ(0); /* Force hardware acceleration */
+}
+
+.group-border-animated-slow, .group-border-animated-slow-reversed {
+    animation-duration: 8s;
+}
+
+.group-border-animated-medium, .group-border-animated-medium-reversed {
+    animation-duration: 4s;
+}
+
+.group-border-animated-fast, .group-border-animated-fast-reversed {
+    animation-duration: 2s;
+}
+
+.group-border-animated-slow-reversed {
+    animation-direction: reverse;
+}
+
+.group-border-animated-medium-reversed {
+    animation-direction: reverse;
+}
+
+.group-border-animated-fast-reversed {
+    animation-direction: reverse;
+}
+
+@keyframes groupBorderAnimation {
+    from {
+        stroke-dashoffset: 120;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
 /* Select2 custom styling */
 .select2-container {
     width: 100% !important;

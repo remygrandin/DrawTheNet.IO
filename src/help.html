@@ -121,7 +121,7 @@
 
                 <p>
                     I needed a simple way to draw network diagrams for my documentation.
-                    I found some existing tools on the web but I didn't like the way to store the diagrams.<br>
+                    I found some existing tools on the web but I didn't like their way to store the diagrams.<br>
                     I wanted something more simple and more "code" like. You can easily store your diagram source in a
                     git repository, or any documentation system. You can even use the generated URL to jump on the
                     editor quickly.
@@ -1267,7 +1267,35 @@ icons:
                                 </td>
                                 <td>
                                     The title logo URL.<br>
-                                    Can either be a URI or a base64 encoded image data URI.
+                                    Can either be a URI or a base64 encoded image data URI.<br>
+                                    If <code>logoIcon</code> is specified, it will take precedence over <code>logoUrl</code>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">logoIcon</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml">null</code></pre>
+                                </td>
+                                <td>
+                                    The icon name to use as the logo instead of <code>logoUrl</code>.<br>
+                                    If specified, this will take precedence over <code>logoUrl</code>.<br>
+                                    If set to null or "none", <code>logoUrl</code> will be used instead.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">logoIconFamily</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml">"Iconify"</code></pre>
+                                </td>
+                                <td>
+                                    The icon family for <code>logoIcon</code>.<br>
+                                    Only used when <code>logoIcon</code> is specified.
                                 </td>
                             </tr>
                             <tr>
@@ -1778,15 +1806,15 @@ icons:
                 </section>
                 <hr>
                 <section>
-                    <h3 id="icons">
-                        <iconify-icon inline icon="clarity:picture-line"></iconify-icon>
+                    <h3 id="groups">
+                        <iconify-icon inline icon="material-symbols:groups"></iconify-icon>
                         groups
                     </h3>
-                    <p>Define the icons / nodes.</p>
+                    <p>Define the groups of icons.</p>
                     <h4>Type: <small>Object or Array</small></h4>
                     <p>
-                        Contain Icon objects. If defined as Object, keys can be used in groups and connection to
-                        reference this node.<br>
+                        Contain Group objects. If defined as Object, keys can be used in connections to
+                        reference this group.<br>
                         If defined as an Array, the position/index of the items will be used as a key.
                     </p>
 
@@ -1799,9 +1827,9 @@ icons:
                 </section>
                 <hr>
                 <section>
-                    <h3 id="groups">
+                    <h3 id="group">
                         <iconify-icon inline icon="material-symbols:groups"></iconify-icon>
-                        groups
+                        group
                     </h3>
                     <p>
                         Note that the key/name of the item is used as the group text by default.<br>
@@ -2035,6 +2063,19 @@ icons:
                             </tr>
                             <tr>
                                 <td>
+                                    <pre><code class="language-yaml">text</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml">the object key in groups</code></pre>
+                                </td>
+                                <td>
+                                    The group's text label.<br>
+                                    By default the object key is used as text. Set this property to override it.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <pre><code class="language-yaml">strokeDashArray</code></pre>
                                 </td>
                                 <td>string</td>
@@ -2043,10 +2084,38 @@ icons:
                                 </td>
                                 <td>
                                     Allow to set a dotted lines instead of a solid one.<br>
-                                    The fist number is the length of the dash (in px), the second one is the length
-                                    of
-                                    the
-                                    gap (in px).
+                                    The first number is the length of the dash (in px), the second one is the length
+                                    of the gap (in px).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">animated</code></pre>
+                                </td>
+                                <td>boolean</td>
+                                <td>
+                                    <pre><code class="language-yaml">false</code></pre>
+                                </td>
+                                <td>
+                                    If true, the group border will be animated with a marching ants effect.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">animationSpeed</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml">"medium"</code></pre>
+                                </td>
+                                <td>
+                                    The speed of the animation when <code>animated</code> is true.<br>
+                                    Can be either:
+                                    <ul>
+                                        <li><code>slow</code> : Slow animation speed</li>
+                                        <li><code>medium</code> : Medium animation speed</li>
+                                        <li><code>fast</code> : Fast animation speed</li>
+                                    </ul>
                                 </td>
                             </tr>
                         </tbody>
@@ -2061,6 +2130,24 @@ icons:
                     <h3 id="notes">
                         <iconify-icon inline icon="ph:note"></iconify-icon>
                         notes
+                    </h3>
+                    <p>Define the notes in the diagram.</p>
+                    <h4>Type: <small>Object or Array</small></h4>
+                    <p>
+                        Contain Note objects. If defined as Object, keys can be used in connections to
+                        reference this note.<br>
+                        If defined as an Array, the position/index of the items will be used as a key.
+                    </p>
+
+                    <h4 class="text-end"><a href="#nav-help"><iconify-icon inline icon="mdi:arrow-top"></iconify-icon>
+                            Back
+                            to the top</a></h4>
+                </section>
+                <hr>
+                <section>
+                    <h3 id="note">
+                        <iconify-icon inline icon="ph:note"></iconify-icon>
+                        note
                     </h3>
                     <p>
                         Notes contain simple text or markdown.
@@ -2547,9 +2634,24 @@ icons:
                         <iconify-icon inline icon="icon-park-outline:connection"></iconify-icon>
                         connections
                     </h3>
+                    <p>Define the connections between elements.</p>
+                    <h4>Type: <small>Array</small></h4>
                     <p>
-                        Connections are an array of individual connections.<br>
-                        The order is insignificant because connections will always be drawn from left to right.
+                        Contain Connection objects in an array.
+                    </p>
+
+                    <h4 class="text-end"><a href="#nav-help"><iconify-icon inline icon="mdi:arrow-top"></iconify-icon>
+                            Back
+                            to the top</a></h4>
+                </section>
+                <hr>
+                <section>
+                    <h3 id="connection">
+                        <iconify-icon inline icon="icon-park-outline:connection"></iconify-icon>
+                        connection
+                    </h3>
+                    <p>
+                        Connections are individual connection objects between icons, groups, or notes.<br>
                     </p>
                     <p>Properties:</p>
                     <table class="table table-striped table-bordered">
@@ -2798,6 +2900,18 @@ icons:
                                         <li><code>medium</code> : Medium animation speed</li>
                                         <li><code>fast</code> : Fast animation speed</li>
                                     </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <pre><code class="language-yaml">text</code></pre>
+                                </td>
+                                <td>string</td>
+                                <td>
+                                    <pre><code class="language-yaml"></code></pre>
+                                </td>
+                                <td>
+                                    Optional label text to display at the midpoint of the connection line.
                                 </td>
                             </tr>
                         </tbody>

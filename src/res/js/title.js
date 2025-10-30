@@ -1,3 +1,7 @@
+import { HashCode } from './common.js';
+
+let iconCache = {};
+
 export function RenderTitle(container, doc, dataBag) {
     if (doc.title.heightPercentage <= 0 || doc.title.position == null || doc.title.position == "none") {
         dataBag.TitleRendered = false;
@@ -80,10 +84,66 @@ export function RenderTitle(container, doc, dataBag) {
         .attr('height', dataBag.TitlePaddedHeight)
         .attr("fill", logoFill);
 
-    logoContainer.append("svg:image")
-        .attr('width', dataBag.TitlePaddedHeight)
-        .attr('height', dataBag.TitlePaddedHeight)
-        .attr("xlink:href", doc.title.logoUrl)
+    // Check if logoIcon is specified, otherwise fall back to logoUrl
+    if (doc.title.logoIcon != null && doc.title.logoIcon != "none") {
+        let icon = doc.title.logoIcon.toLowerCase();
+        let family = (doc.title.logoIconFamily || "Iconify").toLowerCase();
+
+        let url = "./res/icons/" + family + "/" + icon + ".svg";
+
+        if (family == "iconify") {
+            url = `https://api.iconify.design/${icon.replace(":", "/")}.svg`;
+        }
+
+        let urlHash = HashCode(url);
+
+        let iconImage = logoContainer.append("g");
+
+        let iconProcessor = function (text) {
+            iconCache[urlHash] = text;
+
+            let parser = new DOMParser();
+            let svg = parser.parseFromString(text, "image/svg+xml").documentElement;
+
+            svg.setAttribute("width", dataBag.TitlePaddedHeight);
+            svg.setAttribute("height", dataBag.TitlePaddedHeight);
+
+            let scripts = svg.querySelectorAll("script");
+            if (scripts != null && scripts.length > 0) {
+                scripts.forEach(script => {
+                    script.remove();
+                });
+            }
+
+            iconImage._groups[0][0].innerHTML = svg.outerHTML;
+        };
+
+        if (!(urlHash in iconCache)) {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        console.error(`Failed to fetch icon from ${url}: ${response.status} ${response.statusText}`);
+                        return;
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    if (text) {
+                        iconProcessor(text);
+                    }
+                });
+        }
+        else {
+            iconProcessor(iconCache[urlHash]);
+        }
+    }
+    else {
+        // Fall back to logoUrl
+        logoContainer.append("svg:image")
+            .attr('width', dataBag.TitlePaddedHeight)
+            .attr('height', dataBag.TitlePaddedHeight)
+            .attr("xlink:href", doc.title.logoUrl)
+    }
 
     // Left Part : Title text
     paddedContainer.append("text")

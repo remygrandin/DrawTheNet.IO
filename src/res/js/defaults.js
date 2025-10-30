@@ -51,7 +51,9 @@ const titleDefaults = {
     },
     
     logoUrl: "./res/logo.svg",
-    logoFill: null,    
+    logoFill: null,
+    logoIcon: null,
+    logoIconFamily: "Iconify",
 }
 
 const iconDefaults = {
@@ -93,6 +95,9 @@ const groupDefaults = {
     stroke: "black",
     color: "black",
     textLocation: "topCenter",
+    strokeDashArray: "0,0",
+    animated: false,
+    animationSpeed: "medium"
 }
 
 const connectionDefaults = {

@@ -16,6 +16,7 @@
         "Mouseover": "mouseover.yaml",
         "Notes": "notes.yaml",
         "URLs": "urls.yaml",
-        "Coffee colors": "coffee.yaml"
+        "Coffee colors": "coffee.yaml",
+        "Logo Icon Example": "logoIcon_example.yaml"
     }
 }

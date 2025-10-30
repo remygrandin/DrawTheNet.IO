@@ -69,7 +69,15 @@ export function RenderGroups(container, doc, dataBag) {
         let fillData = ExtractColorAndOpacity(doc.groups[key].fill);
         let strokeData = ExtractColorAndOpacity(doc.groups[key].stroke);
 
+        // Build class string for group border
+        let borderClass = "group-border";
+        if (doc.groups[key].animated) {
+            borderClass += " group-border-animated";
+            borderClass += ` group-border-animated-${doc.groups[key].animationSpeed.toLowerCase()}`;
+        }
+
         let groupRect = groupContainer.append("rect")
+            .attr("class", borderClass)
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", computed.wScaled)
@@ -79,7 +87,8 @@ export function RenderGroups(container, doc, dataBag) {
             .attr("fill", fillData.color)
             .attr("fill-opacity", fillData.opacity)
             .attr("stroke", strokeData.color)
-            .attr("stroke-opacity", strokeData.opacity);
+            .attr("stroke-opacity", strokeData.opacity)
+            .attr("stroke-dasharray", doc.groups[key].strokeDashArray);
 
         let fontSize = doc.groups[key].textSizeRatio * Math.min(dataBag.Scaler.X.UnitStepAbs, dataBag.Scaler.Y.UnitStepAbs) / 2
 

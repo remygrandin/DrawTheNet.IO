@@ -1,0 +1,48 @@
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+
+title:
+  text: "Example with Icon Logo"
+  subText: "Using logoIcon property"
+  author: "Demo User"
+  company: "Example Corp"
+  date: "2025-10-30"
+  version: "1.0"
+  heightPercentage: 8
+  logoIcon: "logos:github-icon"
+  logoIconFamily: "Iconify"
+  logoFill: "white"
+  color: "black"
+  stroke: "black"
+  border: "box"
+
+icons:
+  Server1:
+    x: 1
+    y: 1
+    icon: "mdi:server"
+    text: "Server"
+    fill: "#e3f2fd"
+    stroke: "#1976d2"
+  
+  Database1:
+    x: 3
+    y: 1
+    icon: "mdi:database"
+    text: "Database"
+    fill: "#f3e5f5"
+    stroke: "#7b1fa2"
+  
+  User1:
+    x: 2
+    y: 3
+    icon: "mdi:account"
+    text: "User"
+    fill: "#e8f5e9"
+    stroke: "#388e3c"
+
+connections:
+  - { endp1: "Server1", endp2: "Database1", text: "Query" }
+  - { endp1: "User1", endp2: "Server1", text: "Request" }

@@ -1,8 +1,10 @@
 #1:48
-diagram:
+document:
   fill: "#3d3935"
+  aspectRatio: "35:48"
+diagram:
   columns: 5
-  rows: 5
+  rows: 7
   gridLines: false
   invertY: true
 title:
@@ -32,12 +34,12 @@ servers: &servers
   fill: "#58585B"
   icon: "machinesazurearc"
 icons:
-  chddc1crt001: {<<: *cisco, x: 0, y: 4, icon: "router"}
-  chddc1crt004: {<<: *defaults, x: 2, y: 3, iconFamily: "M365", icon: "gateway_symbol"}
-  chddc1sfw005: {<<: *defaults, x: 2, y: 2, icon: "firewalls"}
-  chddc1slb005: {<<: *defaults, x: 3, y: 1, icon: "load-balancers"}
-  chddc1srt001: {<<: *defaults, x: 3, y: 2,  iconFamily: "M365", icon: "gateway"}
-  firewall: {<<: *cisco, x: 4, y: 4, icon: "firewall"}
+  chddc1crt001: {<<: *cisco, x: 0, y: 5.5, icon: "router"}
+  chddc1crt004: {<<: *defaults, x: 2, y: 4, iconFamily: "Azure",  icon: "Front-Door-and-CDN-Profiles"}
+  chddc1sfw005: {<<: *defaults, x: 2, y: 3, icon: "firewalls"}
+  chddc1slb005: {<<: *defaults, x: 3, y: 2, icon: "load-balancers"}
+  chddc1srt001: {<<: *defaults, x: 4, y: 3,  iconFamily: "Azure", icon: "Application-Gateways"}
+  firewall: {<<: *cisco, x: 4, y: 5.5, icon: "firewall"}
   lx12300: {<<: *servers, x: 2, y: 0}
   lx12301: {<<: *servers, x: 3, y: 0}
   lx12302: {<<: *servers, x: 4, y: 0}
@@ -53,7 +55,7 @@ connections:
   - { <<: *connection, curve: stepBefore, endpoints: ["chddc1crt001:eth5", "chddc1crt004:eth6"] }
   - { <<: *connection, endpoints: ["chddc1crt004", "chddc1sfw005"] }
   - { <<: *connection, endpoints: ["chddc1sfw005:XXXXXX", "chddc1srt001:YYYYY"] }
-  - { <<: *connection, endpoints: ["chddc1srt001", "chddc1slb005:443"] }
+  - { <<: *connection, endpoints: ["chddc1slb005:443", "chddc1srt001"] }
   - { <<: *connection, endpoints: ["chddc1srt001", "lx12302"] }
   - { <<: *connection, endpoints: ["chddc1slb005:SNAT", "lx12300:80"] }
   - { <<: *connection, endpoints: ["chddc1slb005:SNAT", "lx12301:80"] }
