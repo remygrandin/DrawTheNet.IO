@@ -51,3 +51,24 @@ jobs:
             ${{ secrets.DOCKERHUBUSER }}/${{ secrets.DOCKERHUBPROJECTNAME }}:latest
             ${{ secrets.DOCKERHUBUSER }}/${{ secrets.DOCKERHUBPROJECTNAME }}:${{ steps.meta.outputs.SHORT_SHA }}
           cache-from: type=local,src=/tmp/.buildx-cache
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Extract built image artifacts
+        uses: shrink/actions-docker-extract@v3
+        id: extract
+        with:
+          image: ${{ secrets.DOCKERHUBUSER }}/${{ secrets.DOCKERHUBPROJECTNAME }}:latest
+          path: /opt/drawthenet.io/.
+          destination: dist
+
+      - name: Zip dist folder
+        run: zip -r drawthenet.io.zip dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: drawthenet.io-${{ steps.date.outputs.date }}-dist-${{ steps.meta.outputs.SHORT_SHA }}
+          path: drawthenet.io.zip
