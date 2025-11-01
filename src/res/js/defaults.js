@@ -10,7 +10,8 @@ const documentDefaults = {
     watermark: true,
     renderRatio: 3,
     fileTitlePrefix: "DrawTheNet.IO",
-    schemasVersion: 1
+    schemasVersion: 1,
+    aspectRatio: "auto"
 }
 
 const diagramDefaults = {    
@@ -18,7 +19,7 @@ const diagramDefaults = {
     rows: 10,
     invertY: false,
     gridLines: false,    
-    margin: {
+    padding: {
         top: 10,
         right: 10,
         bottom: 10,

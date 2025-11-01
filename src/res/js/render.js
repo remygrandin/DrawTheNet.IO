@@ -6,6 +6,7 @@ import { RenderIcons } from './icons.js'
 import { RenderConnections } from './connections.js'
 import { RenderGroups } from './groups.js'
 import { RenderNotes } from './notes.js'
+import { ExtractColorAndOpacity } from './common.js'
 
 export function Render(containerSelector, doc, keepZoom) {
     ApplyDefaults(doc);
@@ -23,7 +24,7 @@ export function Render(containerSelector, doc, keepZoom) {
 
     let dataBag = {};
 
-    if (doc.document.aspectRatio == null) {
+    if (doc.document.aspectRatio == null || doc.document.aspectRatio == "none" || doc.document.aspectRatio == "auto") {
         dataBag.AvailableHeight = containerBox.height - doc.document.margin.top - doc.document.margin.bottom;
         dataBag.AvailableWidth = containerBox.width - doc.document.margin.left - doc.document.margin.right;
         dataBag.HCenterOffset = 0;
@@ -57,8 +58,13 @@ export function Render(containerSelector, doc, keepZoom) {
         .append("svg")
         .attr("class", "render")
         .attr("width", containerBox.width)
-        .attr("height", containerBox.height)
-        .style("background-color", doc.document.fill);
+        .attr("height", containerBox.height);
+
+    let { color: bgColor, opacity: bgOpacity } = ExtractColorAndOpacity(doc.document.fill);
+    mainContainer.style("background-color", bgColor);
+    if (bgOpacity !== null) {
+        mainContainer.style("opacity", bgOpacity);
+    }
 
     let zoomContainer = mainContainer.append("g")
         .attr("class", "zoom");
@@ -87,12 +93,12 @@ export function Render(containerSelector, doc, keepZoom) {
     RenderTitle(documentContainer, doc, dataBag);
 
     if (dataBag.TitleRendered) {
-        dataBag.DiagramHeight = dataBag.AvailableHeight - dataBag.TitleHeight - doc.diagram.margin.top - doc.diagram.margin.bottom;
-        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.margin.left - doc.diagram.margin.right;
+        dataBag.DiagramHeight = dataBag.AvailableHeight - dataBag.TitleHeight - doc.diagram.padding.top - doc.diagram.padding.bottom;
+        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.padding.left - doc.diagram.padding.right;
     }
     else {
-        dataBag.DiagramHeight = dataBag.AvailableHeight - doc.diagram.margin.top - doc.diagram.margin.bottom;
-        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.margin.left - doc.diagram.margin.right;
+        dataBag.DiagramHeight = dataBag.AvailableHeight - doc.diagram.padding.top - doc.diagram.padding.bottom;
+        dataBag.DiagramWidth = dataBag.AvailableWidth - doc.diagram.padding.left - doc.diagram.padding.right;
     }
 
     dataBag.Scaler = {}
@@ -106,10 +112,10 @@ export function Render(containerSelector, doc, keepZoom) {
 
     let diagramContainer = documentContainer.append("g");
     if (doc.title.position == "top") {
-        diagramContainer.attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top + dataBag.TitleHeight})`);
+        diagramContainer.attr("transform", `translate(${doc.diagram.padding.left}, ${doc.diagram.padding.top + dataBag.TitleHeight})`);
     }
     else {
-        diagramContainer.attr("transform", `translate(${doc.diagram.margin.left}, ${doc.diagram.margin.top})`);
+        diagramContainer.attr("transform", `translate(${doc.diagram.padding.left}, ${doc.diagram.padding.top})`);
     }
 
 

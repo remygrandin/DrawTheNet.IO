@@ -1,4 +1,4 @@
-import { HashCode } from './common.js';
+import { HashCode, ExtractColorAndOpacity } from './common.js';
 
 let iconCache = {};
 
@@ -27,10 +27,18 @@ export function RenderTitle(container, doc, dataBag) {
         fill = doc.document.fill
     }
 
+    let { color: fillColor, opacity: fillOpacity } = ExtractColorAndOpacity(fill);
+    let { color: strokeColor, opacity: strokeOpacity } = ExtractColorAndOpacity(doc.title.stroke);
+
     if (doc.title.border == "bar") {
-        let line = titleContainer.append("line")
-            .attr("fill", fill)
-            .attr("stroke", doc.title.stroke)
+        let line = titleContainer.append("line");
+
+        if (strokeColor !== "none" && strokeColor !== "transparent") {
+            line.attr("stroke", strokeColor);
+            if (strokeOpacity !== null) {
+                line.attr("stroke-opacity", strokeOpacity);
+            }
+        }
 
         if (doc.title.position == "top") {
             line.attr("x1", 0)
@@ -46,11 +54,23 @@ export function RenderTitle(container, doc, dataBag) {
         }
     }
     else if (doc.title.border == "box") {
-        titleContainer.append("rect")
-            .attr("fill", fill)
-            .attr("stroke", doc.title.stroke)
+        let rect = titleContainer.append("rect")
             .attr('width', dataBag.AvailableWidth)
             .attr('height', dataBag.TitleHeight);
+        
+        if (strokeColor !== "none" && strokeColor !== "transparent") {
+            rect.attr("stroke", strokeColor);
+            if (strokeOpacity !== null) {
+                rect.attr("stroke-opacity", strokeOpacity);
+            }
+        }
+        
+        if (fillColor !== "none" && fillColor !== "transparent") {
+            rect.attr("fill", fillColor);
+            if (fillOpacity !== null) {
+                rect.attr("fill-opacity", fillOpacity);
+            }
+        }
     }
     else {
         throw `Invalid title border: ${doc.title.border}`
@@ -79,10 +99,19 @@ export function RenderTitle(container, doc, dataBag) {
     if ([null, "none", "transparent", ""].includes(doc.title.logoFill)) {
         logoFill = doc.document.fill;
     }
-    logoContainer.append("rect")
+    
+    let { color: logoFillColor, opacity: logoFillOpacity } = ExtractColorAndOpacity(logoFill);
+    
+    let logoRect = logoContainer.append("rect")
         .attr('width', dataBag.TitlePaddedHeight)
-        .attr('height', dataBag.TitlePaddedHeight)
-        .attr("fill", logoFill);
+        .attr('height', dataBag.TitlePaddedHeight);
+    
+    if (logoFillColor !== "none" && logoFillColor !== "transparent") {
+        logoRect.attr("fill", logoFillColor);
+        if (logoFillOpacity !== null) {
+            logoRect.attr("fill-opacity", logoFillOpacity);
+        }
+    }
 
     // Check if logoIcon is specified, otherwise fall back to logoUrl
     if (doc.title.logoIcon != null && doc.title.logoIcon != "none") {

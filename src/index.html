@@ -117,6 +117,11 @@
         integrity="sha512-Rzhxh2sskKwa+96nRopp/hvGexBzEPG6mnFI6uRy059FZfksJJFYmqDFn050KUDhivXLsT6SvoaEf5iSp2SHjg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Google Palette -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/google-palette/1.1.1/palette.min.js"
+        integrity="sha512-QVlsdAh4LnoshYICl5ZKM6c5Jei4hIQDPO0/qLbOxTG69sFulGva++89OEDu0O9kX/8Q0xet+OOPrNA2XEsTWQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -438,7 +443,7 @@
         </div>
     </div>
 
-        <!-- Library Modal -->
+    <!-- Library Modal -->
     <div class="modal fade" id="modLibrary" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -1353,7 +1358,7 @@
                         container.jstree('destroy');
                     }
                 } catch (e) {
-                    
+
                 }
 
                 // Initialize jsTree
@@ -1448,12 +1453,12 @@
             // Rename document button
             $("#btnRenameDocument").on('click', async function () {
                 if (!selectedDocumentId) return;
-                
+
                 const doc = await getDocument(selectedDocumentId);
                 if (!doc) return;
-                
+
                 const newName = prompt('Enter a new name for this document:', doc.name);
-                
+
                 if (newName && newName.trim() !== '' && newName.trim() !== doc.name) {
                     // Update the document with new name
                     doc.name = newName.trim();
@@ -1462,11 +1467,11 @@
                     const store = tx.objectStore('documents');
                     await store.put(doc);
                     await tx.done;
-                    
+
                     // Refresh the list and preview
                     await refreshLibraryList();
                     $("#libraryDocName").text(doc.name);
-                    
+
                     $.toast({
                         heading: 'Document renamed',
                         text: `Renamed to: ${newName.trim()}`,

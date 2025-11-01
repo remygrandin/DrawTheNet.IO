@@ -168,6 +168,16 @@ export function HashCode(str) {
 }
 
 export function ExtractColorAndOpacity(colorStr) {
+    // Check if palettesColors is initialized, initialize if not
+    if (Object.keys(palettesColors).length === 0) {
+        GenPalettesColors();
+    }
+    
+    // If the color is in palettesColors, replace it with its mapped value
+    if (colorStr in palettesColors) {
+        colorStr = palettesColors[colorStr];
+    }
+    
     if (colorStr.startsWith("rgba(")) {
         let match = colorStr.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
         if (match) {
@@ -180,6 +190,33 @@ export function ExtractColorAndOpacity(colorStr) {
             let h = match[1], s = match[2], l = match[3], a = match[4];
             return { color: `hsl(${h},${s}%,${l}%)`, opacity: parseFloat(a) };
         }
+    } else if (colorStr.startsWith("#") && colorStr.length === 9) {
+        let color = colorStr.slice(0, 7);
+        let alpha = parseInt(colorStr.slice(7, 9), 16) / 255;
+        return { color: color, opacity: alpha };
     }
-    return { color: colorStr, opacity: null };
+    else {
+        return { color: colorStr, opacity: null };
+    }
 }
+
+
+let palettes = ["mpn65", "tol", "tol-dv", "tol-sq", "tol-rainbow", "cb-Blues", "cb-BuGn", "cb-BuPu", "cb-GnBu", "cb-Greens", "cb-Greys", "cb-OrRd", "cb-Oranges", "cb-PuBu", "cb-PuBuGn", "cb-PuRd", "cb-Purples", "cb-RdPu", "cb-Reds", "cb-YlGn", "cb-YlGnBu", "cb-YlOrBr", "cb-YlOrRd", "cb-BrBG", "cb-PRGn", "cb-PiYG", "cb-PuOr", "cb-RdBu", "cb-RdGy", "cb-RdYlBu", "cb-RdYlGn", "cb-Spectral", "cb-Accent", "cb-Dark2", "cb-Paired", "cb-Pastel1", "cb-Pastel2", "cb-Set1", "cb-Set2", "cb-Set3", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan", "Grayscale", "sol-base", "sol-accent"];
+let palettesColors = {};
+
+function GenPalettesColors() {
+    palettesColors = {};
+
+    // Generate palettes using google-palette
+
+    palettes.forEach(paletteName => {
+        let colors = palette(paletteName, 8);
+        if (colors && colors.length > 0) {
+            colors = colors.map(hex => `#${hex}`);
+            for (let i = 0; i < colors.length; i++) {
+                palettesColors[`${paletteName}_${i}`] = colors[i];
+            }
+        }
+    });
+}
+

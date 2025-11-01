@@ -105,6 +105,10 @@
                     data-bs-target="#nav-help-general" type="button" role="tab">
                     General
                 </button>
+                <button class="nav-link" id="nav-help-document-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-help-document" type="button" role="tab">
+                    Document
+                </button>
                 <button class="nav-link" id="nav-help-diagram-tab" data-bs-toggle="tab"
                     data-bs-target="#nav-help-diagram" type="button" role="tab">
                     Diagram
@@ -148,6 +152,7 @@
                     <li><strong>About</strong> : This section</li>
                     <li><strong>Interface</strong> : How to use the interface</li>
                     <li><strong>General</strong> : General information about the diagram document structure</li>
+                    <li><strong>Document</strong> : How to configure the document-level settings</li>
                     <li><strong>Diagram</strong> : How to configure the global diagram settings</li>
                     <li><strong>Title</strong> : How to configure the title infos & logo</li>
                     <li><strong>Icons</strong> : How to configure an icon/node</li>
@@ -178,85 +183,32 @@
             <div class="tab-pane fade" id="nav-help-interface" role="tabpanel" tabindex="1">
                 <h2 class="mt-2">Interface</h2>
                 <div class="row mb-2">
-                    <div class="col-6">
+                    <div class="col-8">
                         <img src="./res/help/interface.png" class="w-100">
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <p>
-                            The interface is divided in 3 parts:
+                            The interface is divided in 4 parts:
                         </p>
                         <ul>
                             <li>
-                                <strong>Menu</strong> (Top) : buttons to save, exports, etc...
+                                <strong>Top Menu</strong> (Top) : Buttons to access the settings, document library,
+                                samples, contact sheets, etc...
                             </li>
                             <li>
-                                <strong>Editor</strong> (left side) : where you can write your yaml code
+                                <strong>Sidebar</strong> (left side) : Control buttons and icon explorer.
                             </li>
                             <li>
-                                <strong>Render</strong> (right side) : where you can see the result of your code
+                                <strong>Editor</strong> (middle) : Where you can write your yaml code.
+                            </li>
+                            <li>
+                                <strong>Render</strong> (right side) : The result render of created from the code
+                                definition.
                             </li>
                         </ul>
-                        <h3>Menu</h3>
+                        <h3>Top Menu Bar</h3>
+                        <p>The menu bar at the top provides access to main application functions:</p>
                         <div class="row">
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn btn-primary btn-sm" type="button">
-                                    <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
-                                    Export YAML code
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                <span class="align-middle">
-                                    Download the current document as an YAML file.
-                                </span>
-                            </div>
-
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn btn-info btn-sm" type="button">
-                                    <iconify-icon inline icon="material-symbols:save"></iconify-icon>
-                                    Save
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                Save localy (in local storage) and in the url (encoded as base64).
-                                </span>
-                            </div>
-
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn bg-info-subtle btn-sm" type="button">
-                                    Auto-Save
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                <span class="align-middle">
-                                    Trigger a save on each render. (Default <strong>ON</strong>)
-                                </span>
-                            </div>
-
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn btn-success btn-sm" type="button">
-                                    <iconify-icon inline
-                                        icon="material-symbols:screen-search-desktop-outline-rounded"></iconify-icon>
-                                    Icon Explorer
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                <span class="align-middle">
-                                    Popup the icon explorer (see bellow).
-                                </span>
-                            </div>
-
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn btn-light btn-sm" type="button">
-                                    Samples
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                <span class="align-middle">
-                                    Load one of the provided samples.
-                                </span>
-                            </div>
-
-                            <hr>
                             <div class="col-4 mb-2 text-end">
                                 <button class="btn btn-info btn-sm" type="button">
                                     <iconify-icon inline icon="bi:arrows-fullscreen"></iconify-icon>
@@ -265,9 +217,76 @@
                             </div>
                             <div class="col-8">
                                 <span class="align-middle">
-                                    Toggle the diagram to fullscreen mode.
+                                    Toggle the diagram to fullscreen mode (hides the editor).
                                 </span>
                             </div>
+
+                            <div class="col-4 mb-2 text-end">
+                                <button class="btn btn-danger btn-sm" type="button">
+                                    <iconify-icon inline icon="ion:library-sharp"></iconify-icon>
+                                    Library
+                                </button>
+                            </div>
+                            <div class="col-8">
+                                <span class="align-middle">
+                                    Open the document library to load and manage saved diagrams.
+                                </span>
+                            </div>
+
+                            <div class="col-4 mb-2 text-end">
+                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button">
+                                    <iconify-icon inline icon="mdi:grid"></iconify-icon>
+                                    Contact Sheets
+                                </button>
+                            </div>
+                            <div class="col-8">
+                                <span class="align-middle">
+                                    View complete icon sets displayed on a single diagram.
+                                </span>
+                            </div>
+
+                            <div class="col-4 mb-2 text-end">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button">
+                                    <iconify-icon inline icon="mdi:file-document-multiple"></iconify-icon>
+                                    Samples
+                                </button>
+                            </div>
+                            <div class="col-8">
+                                <span class="align-middle">
+                                    Load one of the provided sample diagrams.
+                                </span>
+                            </div>
+
+                            <div class="col-4 mb-2 text-end">
+                                <button class="btn btn-success btn-sm" type="button">
+                                    <iconify-icon inline icon="oi:book"></iconify-icon>
+                                    User Guide
+                                </button>
+                            </div>
+                            <div class="col-8">
+                                <span class="align-middle">
+                                    Open this help guide.
+                                </span>
+                            </div>
+
+                            <div class="col-4 mb-2 text-end">
+                                <button class="btn btn-info btn-sm" type="button">
+                                    <iconify-icon inline icon="mdi:cog"></iconify-icon>
+                                    Settings
+                                </button>
+                            </div>
+                            <div class="col-8">
+                                <span class="align-middle">
+                                    Configure application settings (auto-save, auto-update, export options).
+                                </span>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <h3>Editor Sidebar Controls</h3>
+                        <p>The left sidebar contains editor-specific controls and tools:</p>
+                        <div class="row">
                             <div class="col-4 mb-2 text-end">
                                 <button class="btn btn-success btn-sm" type="button">
                                     <iconify-icon inline icon="zondicons:reload"></iconify-icon>
@@ -276,53 +295,49 @@
                             </div>
                             <div class="col-8">
                                 <span class="align-middle">
-                                    Render the document.
-                                </span>
-                            </div>
-
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn bg-success-subtle btn-sm" type="button">
-                                    Auto-Update
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                <span class="align-middle">
-                                    Trigger a render after a few seconds of inactivity. (Default <strong>ON</strong>)
-                                </span>
-                            </div>
-
-                            <div class="col-4 mb-2 text-end">
-                                <button class="btn btn-warning btn-sm" type="button">
-                                    <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
-                                    Export SVG
-                                </button>
-                            </div>
-                            <div class="col-8">
-                                <span class="align-middle">
-                                    Download the current render as a SVG file.
+                                    Manually render the diagram from the current code.
                                 </span>
                             </div>
 
                             <div class="col-4 mb-2 text-end">
                                 <button class="btn btn-primary btn-sm" type="button">
-                                    <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
-                                    Export PNG
+                                    <iconify-icon inline icon="material-symbols:save"></iconify-icon>
+                                    Save to Library
                                 </button>
                             </div>
                             <div class="col-8">
                                 <span class="align-middle">
-                                    Download the current render as a PNG file.
+                                    Save the current diagram to your local library with a custom name.
                                 </span>
                             </div>
 
                             <div class="col-4 mb-2 text-end">
-                                <button class="btn btn-light btn-sm px-3" type="button">
-                                    ?
+                                <button class="btn btn-outline-primary btn-sm" type="button">
+                                    <iconify-icon inline icon="bi:filetype-yml"></iconify-icon>
+                                    Save Code
                                 </button>
                             </div>
                             <div class="col-8">
                                 <span class="align-middle">
-                                    Open this help
+                                    Download the current diagram code as a YAML file.
+                                </span>
+                            </div>
+
+                            <div class="col-4 mb-2 text-end">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button class="btn btn-primary" type="button">
+                                        <iconify-icon inline icon="bi:filetype-png"></iconify-icon>
+                                        PNG
+                                    </button>
+                                    <button class="btn btn-success" type="button">
+                                        <iconify-icon inline icon="bi:filetype-svg"></iconify-icon>
+                                        SVG
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <span class="align-middle">
+                                    Export the rendered diagram as a PNG or SVG file.
                                 </span>
                             </div>
                         </div>
@@ -344,20 +359,21 @@
 
                 <hr>
                 <h3>Render</h3>
-                This space will contain the render of your document.<br>
-                You can drag the diagram by clicking and dragging the mouse.<br>
-                You can also use the mouse wheel to zoom in and out.<br>
-                If your render fail, you will have a notification of the error in the top right corner<br>
-                <img src="./res/help/render-error.png"><br>
-
-
-
+                <div class="row mb-2">
+                    <div class="col-8">
+                        This space will contain the render of your document.<br>
+                        You can drag the diagram by clicking and dragging the mouse.<br>
+                        You can also use the mouse wheel to zoom in and out.<br>
+                        If your render fail du to an error in your document code, you will have a notification of the
+                        error in the top right corner
+                    </div>
+                    <div class="col-4">
+                        <img src="./res/help/render-error.png"><br>
+                    </div>
+                </div>
                 <hr>
                 <h4>Icon Explorer</h4>
-                You can open the icon explorer by clicking on the <button class="btn btn-success btn-sm" type="button">
-                    <iconify-icon inline icon="material-symbols:screen-search-desktop-outline-rounded"></iconify-icon>
-                    Icon Explorer
-                </button> button in the top bar.<br>
+                In the left sidebar you have access to the icon explorer.<br>
                 Use the search input in the center to find the icon you need.<br>
                 <img src="./res/help/icon-explorer.png"><br><br>
                 Each icons is represented by a tile.<br><br>
@@ -447,7 +463,243 @@ myOthericon: { iicon: AP, iconFamily: Cisco, color: #ffff00 }
                 </div>
                 </p>
             </div>
-            <div class="tab-pane fade" id="nav-help-diagram" role="tabpanel" tabindex="3">
+            <div class="tab-pane fade" id="nav-help-document" role="tabpanel" tabindex="3">
+                <h2 class="mt-2">Document</h2>
+
+                <p>
+                    The document section is used to define document-level settings that affect the overall appearance
+                    and behavior of your diagram.<br>
+                </p>
+
+                <h3 class="mt-2">Aspect Ratio</h3>
+                <p>
+                    By default, the grid is adapting to its container size.<br>
+                    If you need it, you can define the aspect ratio of the diagram with the <code>aspectRatio</code>
+                    property.<br>
+                    The aspect ratio is defined as a string composed as: <code>"width:height"</code><br>
+                    For example, if you want a square diagram, you can set the aspect ratio to <code>"1:1"</code>.<br>
+                    If you want to define a portrait diagram, you can set the aspect ratio to <code>"1:2"</code> for
+                    example.<br>
+                    Default value is <code>"auto"</code> which adapts to the container size.
+                </p>
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>AutoFit Aspect Ratio (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  aspectRatio: "auto"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  aspectRatio: "auto"
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>1:2 Aspect Ratio</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  aspectRatio: "1:2"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  aspectRatio: "1:2"
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Margin</h3>
+                The document margin defines the space around the entire diagram (including the title area if
+                present).<br>
+                Margins are specified in pixels and can be configured for each side independently.<br>
+                Default to 5px on each side.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Standard Margin (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  margin:
+    top: 5
+    right: 5
+    bottom: 5
+    left: 5
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  margin:
+    top: 5
+    right: 5
+    bottom: 5
+    left: 5
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Heavy Margin (50px)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  margin:
+    top: 50
+    right: 50
+    bottom: 50
+    left: 50
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  margin:
+    top: 50
+    right: 50
+    bottom: 50
+    left: 50
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Background Fill</h3>
+                Customize the background color of the entire document using the <code>fill</code> property.<br>
+                This can be any valid SVG color (color name, hex code, or RGB).<br>
+                Default value is <code>"white"</code>.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>White Background (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  fill: "white"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  fill: "white"
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Light Gray Background</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  fill: "#f0f0f0"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  fill: "#f0f0f0"
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Watermark</h3>
+                Control the visibility of the "Made with DrawTheNet.IO" watermark using the <code>watermark</code>
+                property.<br>
+                Set to <code>true</code> (default) to show the watermark, or <code>false</code> to hide it.<br>
+                💗 Please consider keeping the watermark enabled to help promote the project! 💗
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Watermark Shown (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  watermark: true
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: true
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Watermark Hidden</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">document:
+  watermark: false
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Render Ratio</h3>
+                The render ratio defines the upscaling ratio for PNG exports.<br>
+                Higher values produce larger, higher-resolution images but also heavier files.<br>
+                Higher value will also increase the rendering time. Values above 25 might not render at all.<br>
+                Default value is <code>3</code>.
+
+
+                <h3 class="mt-2">File Title Prefix</h3>
+                The file title prefix is added to exported filenames (code, SVG, PNG, etc.).<br>
+                This helps organize your exported diagrams with a consistent naming convention.<br>
+                Default value is <code>"drawthenet.io"</code>.
+                
+                <h3 class="mt-2">Schema Version</h3>
+                The <code>schemasVersion</code> property is reserved for future use and maintains compatibility
+                with different versions of the diagram format.<br>
+                Default value is <code>1</code>.
+            </div>
+            <div class="tab-pane fade" id="nav-help-diagram" role="tabpanel" tabindex="4">
                 <h2 class="mt-2">Diagram</h2>
 
                 <p>
@@ -455,39 +707,20 @@ myOthericon: { iicon: AP, iconFamily: Cisco, color: #ffff00 }
                 </p>
                 <h3 class="mt-2">Grid</h3>
                 <p>
-                    You can define the grid density with the help of the row and column properties. They will define how
+                    You define the grid density with the help of the row and column properties. They will define how
                     many of each is available as coordinates for your nodes. The nodes will be centered on the grid
                     coordinates.<br>
                     Note that modifying the amount of columns/rows won't change the size of the diagram as it will by
                     default adapt to the available space, it will only change the amount of available coordinates.<br>
+                    There is no default value, both properties must be defined.<br>
                 </p>
                 <h4 class="mt-2">Example:</h4>
                 <div class="row">
                     <div class="col border p-3">
-                        <h4>Small 5x5 grid</h4>
+                        <h4>10x10 grid (Default)</h4>
                         <div class="previewBlock">
                             <pre class="shortCode"><code class="yaml">diagram:
-  columns: 5
-  rows: 5
-</code></pre>
-                            <pre class="fullCode"><code class="yaml">document:
-  watermark: false
-title:
-  position: none
-diagram:
-  columns: 5
-  rows: 5
-  gridLines: true
-icons:
-  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        </div>
-                    </div>
-
-                    <div class="col border p-3">
-                        <h4>Larger 5x10 grid</h4>
-                        <div class="previewBlock">
-                            <pre class="shortCode"><code class="yaml">diagram:
-  columns: 5
+  columns: 10
   rows: 10
 </code></pre>
                             <pre class="fullCode"><code class="yaml">document:
@@ -495,30 +728,22 @@ icons:
 title:
   position: none
 diagram:
-  columns: 5
+  columns: 10
   rows: 10
   gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
                         </div>
                     </div>
-                </div>
-                <h3 class="mt-2">Aspect Ratio</h3>
 
-                <p>
-                    You can define the aspect ratio of the diagram with the <code>aspectRatio</code> property.<br>
-                    The aspect ratio is defined as a string composed as : <br>
-                    <code>"width:height"</code><br>
-                    By default, the grid is adapting to it's container size.<br>
-                    If you want to define a landscape diagram, you can set the aspect ratio to <code>"2:1"</code> for
-                    example.<br>
-
-                </p>
-                <h4 class="mt-2">Example:</h4>
-                <div class="row">
                     <div class="col border p-3">
-                        <h4>AutoFit (Default) Aspect Ratio</h4>
-                        <pre><code class="yaml">document:
+                        <h4>5x10 grid</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  columns: 5
+  rows: 10
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
   watermark: false
 title:
   position: none
@@ -528,122 +753,717 @@ diagram:
   gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        <div class="text-center">
-                            <iframe
-                                src="./index.html#fullscreen=true&autosave=true&autoupdate=true&includeYamlInSvg=true&embedFontsInSvg=true&doc=CYewxgrgtgpgdgFwFwFgBQACDB3AhgmAJyl0IGskMAzXAGwGcZ0EBLBWmVTDABxHrYsQcSnGFM0wFrgDmhXFC5YwIWtDj1KAVnRZCIbJow7uclsAAyLODCMJCECSxUalGALIBPAEogIBQkoAbwAPSgAmABoMTwjo52EAMQUWWliMMBZ6FXiXSn1-IgBfIA"
-                                frameborder="0" class="doc-iframe"></iframe>
-                        </div>
-                    </div>
-
-                    <div class="col border p-3">
-                        <h4>2:1 Aspect Ratio</h4>
-                        <pre><code class="yaml">diagram:
-  columns: 5
-  rows: 5
-  aspectRatio: "2:1"
-  gridLines: true
-  watermark: false
-icons:
-  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        <div class="text-center">
-                            <img src="./res/help/diagram-landscape.png" class="img-height border">
                         </div>
                     </div>
                 </div>
 
                 <h3 class="mt-2">Grid Lines</h3>
+                To help you position nodes, you can show grid lines on the diagram.<br>
                 You can toggle the grid lines visibility by setting the <code>gridLines</code> property.<br>
+                By default, the grid lines are hidden.<br>
                 <h4 class="mt-2">Example:</h4>
                 <div class="row">
                     <div class="col border p-3">
-                        <h4>(Default) Grid lines shown</h4>
-                        <pre><code class="yaml">diagram:
+                        <h4>Grid lines hidden (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  gridLines: false
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
   columns: 5
   rows: 5
-  gridLines: true
-  watermark: false
+  gridLines: false
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        <div class="text-center">
-                            <img src="./res/help/diagram-smallgrid.png" class="img-height border">
                         </div>
                     </div>
 
                     <div class="col border p-3">
-                        <h4> Grid lines hidden </h4>
-                        <pre><code class="yaml">diagram:
+                        <h4> Grid lines shown</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  gridLines: true
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
   columns: 5
   rows: 5
-  gridLines: false
-  watermark: false
+  gridLines: true
 icons:
   MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
-                        <div class="text-center">
-                            <img src="./res/help/diagram-nogridlines.png" class="img-height border">
                         </div>
                     </div>
                 </div>
-                <h3 class="mt-2">Background</h3>
 
-                <p>
-                    The background of the diagram is white by default. To override this, you can set the
-                    <code>fill</code> property.<br>
-                </p>
-                <h3 class="mt-2">Watermark</h3>
+                <h3 class="mt-2">Invert Y Axis</h3>
+                The grid origin is defined at the top-left corner of the diagram by default.<br>
+                You can invert the Y axis so that the origin is at the bottom-left corner by setting the
+                <code>invertYAxis</code> property to <code>true</code>.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Standard Y Axis (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  invertY: false
+icons:
+  MyRouter: {x: 2, y: 1, iconFamily: cisco, icon: router}
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  invertY: false
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 1, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
 
-                <p>
-                    By default a small watermark is applied at the bottom right of your diagram as a clickable link with
-                    "Made with DrawTheNet.IO" as text.<br>
-                    This is to help spread the project to futur viewer of the diagram.<br>
-                    You can disable this watermark by setting the <code>watermark</code> property to <code>false</code>
-                    but please conside keeping it on to help the project.<br>
-                </p>
+                    <div class="col border p-3">
+                        <h4>Inverted Y Axis</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  invertY: true
+icons:
+  MyRouter: {x: 2, y: 1, iconFamily: cisco, icon: router}
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  invertY: true
+  gridLines: true
+icons:
+  MyRouter: {x: 2, y: 1, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Margin</h3>
+                The diagram margin, applied to the diagram only, defines the nodes render area excluding the title area
+                (if present).<br>
+                Default to 10px on each side.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Standard Margin (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  margin:
+    top: 10
+    right: 10
+    bottom: 10
+    left: 10
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+  margin:
+    top: 10
+    right: 10
+    bottom: 10
+    left: 10
+icons:
+  MyRouter: {x: 2, y: 1, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Heavy Margin (100px)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  margin:
+    top: 100
+    right: 100
+    bottom: 100
+    left: 100
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 5
+  rows: 5
+  gridLines: true
+  margin:
+    top: 100
+    right: 100
+    bottom: 100
+    left: 100
+icons:
+  MyRouter: {x: 2, y: 1, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="tab-pane fade" id="nav-help-title" role="tabpanel" tabindex="4">
+            <div class="tab-pane fade" id="nav-help-title" role="tabpanel" tabindex="5">
                 <h2 class="mt-2">Title</h2>
 
                 <p>
-                    The title is a zone place bellow your nodes. It convey general informations about the diagram, its
-                    production date, the author, ...<br>
+                    The title is an optional zone placed below (or above) your diagram nodes render area. It conveys general information about the diagram, its
+                    production date, the author, and more.<br>
                 </p>
-                <img src="./res/help/title.png">
+                <img src="./res/help/title.png" class="my-3">
 
-                <h3 class="mt-2">Type</h3>
-                <p>
-                    You can show the title with either a top bar ot a full box around it.<br>
-                    By default, the title is not shown. This is equivalent to setting the <code>type</code> property to
-                    <code>null</code> or <code>none</code>.<br>
-                    To show it with a full box, set the <code>type</code> property to <code>box</code>.<br>
-                    For a lighter looking diagram, you can set the <code>type</code> property to <code>bar</code> to
-                    only show a bar above it.<br>
+                <h3 class="mt-2">Position</h3>
+                The title can be positioned at the bottom or top of the diagram, or hidden entirely.<br>
+                Use the <code>position</code> property to control its placement.<br>
+                Default value is <code>"bottom"</code>.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Bottom Position (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  position: bottom
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Bottom Position Title"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
 
-                </p>
-                <h3 class="mt-2">Logo</h3>
-                <p>
-                    On the leftmost part you can find the title log. It default to the DrawTheNet.IO logo but you can
-                    change it by setting the <code>logoUrl</code> property.<br>
-                    The background behind the logo can be changed by setting the <code>logoFill</code> property. If not
-                    set, it will default to the diagram <code>fill</code> color property.<br>
-                    Note that only svg logo can be transparent as of today.
-                </p>
-                <h3 class="mt-2">Title & Sub-title</h3>
-                <p>
-                    The title and sub-title are the main texts of the title. They are set by the <code>text</code> and
-                    <code>subText</code> properties respectively. They default to being empty.<br>
-                </p>
-                <h3 class="mt-2">Infos</h3>
-                <p>
-                    On the right side, you can find various info about the diagram.<br>
-                    The author is set by the <code>author</code> property. If unspecified, it will display as "Unknown".
-                    You can hide it by setting it to <code>null</code>.<br>
-                    The company is set by the <code>company</code> property. If unspecified, it will not be shown.<br>
-                    The date is set by the <code>date</code> property. If unspecified, it will display as the current
-                    date in the locale of your browser. You can hide it by setting it to <code>null</code>.<br>
-                    The version is set by the <code>version</code> property. If unspecified, it will display as "1". You
-                    can hide it by setting it to <code>null</code>.<br>
-                </p>
+                    <div class="col border p-3">
+                        <h4>Top Position</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  position: top
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: top
+  text: "Top Position Title"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Border Style</h3>
+                You can show the title with either a bar separator or a full box around it.<br>
+                Use the <code>border</code> property to control the border style.<br>
+                Default value is <code>"bar"</code>.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Bar Border (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  border: bar
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  border: bar
+  text: "Bar Title Separator"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Box Border</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  border: box
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  border: box
+  text: "Box Title Separator"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Title & Sub-title Text</h3>
+                The title and sub-title are the main texts of the title area.<br>
+                Set them with the <code>text</code> and <code>subText</code> properties respectively.<br>
+                Default values: <code>text</code> is <code>"Diagram title"</code>, <code>subText</code> is <code>null</code> (not shown).
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Title Only</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Production Network"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Production Network"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Title with Sub-title</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Production Network"
+  subText: "Main Data Center"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Production Network"
+  subText: "Main Data Center"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Author & Company</h3>
+                On the right side of the title, you can display the author and company information.<br>
+                Set them with the <code>author</code> and <code>company</code> properties.<br> If the value is null the entry will not be shown.<br>
+                Default values for author is "Unknown", for company is <code>null</code> (not shown).
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Author Only</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  author: "John Doe"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Company</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  company: "ACME Corp"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  company: "ACME Corp"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Date & Version</h3>
+                Display the date and version information on the right side of the title.<br>
+                Set them with the <code>date</code> and <code>version</code> properties.<br>
+                Default values: <code>date</code> is the current date (YYYY-MM-DD), <code>version</code> is <code>"1"</code>.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Default Date & Version</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+
+                                
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Custom Date & Version</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  date: "2025/01/02"
+  version: "2.0"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+  date: "2025/01/02"
+  version: "2.0"
+  heightPercentage: 20
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Logo URL</h3>
+                On the leftmost part you can find the title logo. It defaults to the DrawTheNet.IO logo but you can
+                change it by setting the <code>logoUrl</code> property.<br>
+                Can be a URI or a base64 encoded image data URI.<br>
+                Note that only SVG logos can be transparent.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Default Logo</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Network Diagram"
+  author: "John Doe"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Custom Logo URL</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Network Diagram"
+  author: "John Doe"
+  logoUrl: "https://example.com/logo.svg"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+  logoUrl: "https://example.com/logo.svg"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Logo Icon</h3>
+                Instead of using a logo URL, you can use an icon from the available icon families.<br>
+                Set the <code>logoIcon</code> property to use an icon, and <code>logoIconFamily</code> to specify which icon family.<br>
+                If <code>logoIcon</code> is specified, it takes precedence over <code>logoUrl</code>.<br>
+                Default values: <code>logoIcon</code> is <code>null</code>, <code>logoIconFamily</code> is <code>"Iconify"</code>.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>URL Logo (Default)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Network Diagram"
+  author: "John Doe"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Icon as Logo</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Network Diagram"
+  author: "John Doe"
+  logoIcon: "router"
+  logoIconFamily: "Cisco"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+  logoIcon: "router"
+  logoIconFamily: "Cisco"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Colors & Fill</h3>
+                Customize the title appearance with colors for text, border, logo background, and title area fill.<br>
+                Use <code>color</code> for text color, <code>stroke</code> for border color, <code>logoFill</code> for logo background, and <code>fill</code> for title area background.<br>
+                All values can be any valid SVG color.<br>
+                Default values: <code>color</code> and <code>stroke</code> are <code>"black"</code>, <code>fill</code> and <code>logoFill</code> use document fill color.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Default Colors</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Network Diagram"
+  author: "John Doe"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Custom Colors</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  text: "Network Diagram"
+  author: "John Doe"
+  color: "#ffffff"
+  stroke: "#0066cc"
+  fill: "#003366"
+  logoFill: "#0066cc"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  border: box
+  text: "Network Diagram"
+  author: "John Doe"
+  color: "#ffffff"
+  stroke: "#0066cc"
+  fill: "#003366"
+  logoFill: "#0066cc"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Height Percentage</h3>
+                Control the height of the title area as a percentage of the overall document height.<br>
+                Set with the <code>heightPercentage</code> property.<br>
+                Default value is <code>6</code> (6% of document height).
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Default Height (6%)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  heightPercentage: 6
+  text: "Network Diagram"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  heightPercentage: 6
+  text: "Network Diagram"
+  author: "John Doe"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Larger Height (10%)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  heightPercentage: 10
+  text: "Network Diagram"
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  heightPercentage: 10
+  text: "Network Diagram"
+  subText: "Main Data Center"
+  author: "John Doe"
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Padding</h3>
+                The title padding defines the internal spacing within the title area.<br>
+                Set with the <code>padding</code> property containing <code>top</code>, <code>right</code>, <code>bottom</code>, and <code>left</code> values.<br>
+                Default value is <code>10</code>px on each side.
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Default Padding (10px)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  padding:
+    top: 10
+    right: 10
+    bottom: 10
+    left: 10
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  text: "Network Diagram"
+  author: "John Doe"
+  padding:
+    top: 10
+    right: 10
+    bottom: 10
+    left: 10
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="col border p-3">
+                        <h4>Large Padding (30px)</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">title:
+  padding:
+    top: 30
+    right: 30
+    bottom: 30
+    left: 30
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: bottom
+  border: box
+  text: "Network Diagram"
+  author: "John Doe"
+  padding:
+    top: 30
+    right: 30
+    bottom: 30
+    left: 30
+diagram:
+  columns: 5
+  rows: 5
+icons:
+  MyRouter: {x: 2, y: 2, iconFamily: cisco, icon: router}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="tab-pane fade" id="nav-help-icons" role="tabpanel" tabindex="5">
+            <div class="tab-pane fade" id="nav-help-icons" role="tabpanel" tabindex="6">
                 <h2 class="mt-2">Icons</h2>
                 <p>
                     Icons are at the core of DrawTheNet.IO. They are the main way to represent nodes your network.<br>
@@ -733,22 +1553,22 @@ icons:
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-help-groups" role="tabpanel" tabindex="6">
+            <div class="tab-pane fade" id="nav-help-groups" role="tabpanel" tabindex="7">
                 <h2 class="mt-2">Groups</h2>
 
 
             </div>
-            <div class="tab-pane fade" id="nav-help-notes" role="tabpanel" tabindex="7">
+            <div class="tab-pane fade" id="nav-help-notes" role="tabpanel" tabindex="8">
                 <h2 class="mt-2">Notes</h2>
 
 
             </div>
-            <div class="tab-pane fade" id="nav-help-connections" role="tabpanel" tabindex="8">
+            <div class="tab-pane fade" id="nav-help-connections" role="tabpanel" tabindex="9">
                 <h2 class="mt-2">Connections</h2>
 
 
             </div>
-            <div class="tab-pane fade" id="nav-help-ref" role="tabpanel" tabindex="9">
+            <div class="tab-pane fade" id="nav-help-ref" role="tabpanel" tabindex="10">
                 <h2 class="mt-2">Reference</h2>
                 <p>
                     This section is a reference of all available object properties for a valid document.<br>
@@ -3012,6 +3832,38 @@ icons:
                 }
             });
 
+            // Tab persistence in URL
+            // Listen to tab changes and update URL hash
+            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                const tabId = $(e.target).attr('id');
+                if (tabId) {
+                    // Extract the tab name from the id (e.g., "nav-help-about-tab" -> "about")
+                    const tabName = tabId.replace('nav-help-', '').replace('-tab', '');
+                    history.pushState(null, null, '#tab=' + tabName);
+                }
+            });
+
+            // On page load, check if there's a tab in the URL hash and activate it
+            function activateTabFromUrl() {
+                const hash = window.location.hash;
+                if (hash && hash.startsWith('#tab=')) {
+                    const tabName = hash.replace('#tab=', '');
+                    const tabButton = $('#nav-help-' + tabName + '-tab');
+                    if (tabButton.length) {
+                        // Use Bootstrap's Tab API to show the tab
+                        const tab = new bootstrap.Tab(tabButton[0]);
+                        tab.show();
+                    }
+                }
+            }
+
+            // Activate tab on initial load
+            activateTabFromUrl();
+
+            // Handle browser back/forward buttons
+            $(window).on('hashchange', function () {
+                activateTabFromUrl();
+            });
 
             hljs.highlightAll();
         });

@@ -396,3 +396,9 @@ main>.container-fluid {
 #libraryDocumentList .jstree-themeicon {
     display: none !important;
 }
+
+/* Help modal custom width */
+#modHelp .modal-dialog {
+    max-width: 80vw !important;
+    min-width: var(--bs-modal-width);
+}
