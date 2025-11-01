@@ -29,11 +29,12 @@ icons:
     metadata:
       serial number: 12345
       platform: ASR 1002X
-  date:
+  datetime:
     <<: *cisco
     text: "use key"
     metadata:
-      url: "http://{{ key }}.jsontest.com" # results in GET http://date.jsontest.com
+      # results of GET https://aisenseapi.com/services/v1/datetime
+      url: "https://aisenseapi.com/services/v1/{{ key }}" 
   router3:
     <<: *cisco
     text: "use other key"
@@ -44,7 +45,7 @@ icons:
     <<: *cisco
     text: "merge"
     metadata:
-      url: "http://headers.jsontest.com"
+      url: "https://jsonplaceholder.typicode.com/todos/1"
       serial number: 12345
       platform: ASR 1002X
   router5:
