@@ -877,6 +877,14 @@
                         }
 
                         lastDocument = doc;
+                        
+                        // Update page title with diagram title (after defaults are applied)
+                        if (doc.title && doc.title.text) {
+                            document.title = `${doc.title.text} - DrawTheNet.IO`;
+                        }
+                        else {
+                            document.title = `DrawTheNet.IO`;
+                        }
                     } catch (e) {
                         console.error(e);
                         errorToast = $.toast({
