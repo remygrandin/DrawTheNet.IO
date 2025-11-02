@@ -455,8 +455,17 @@
                     <h1 class="modal-title fs-5">
                         <iconify-icon inline icon="ion:library-sharp"></iconify-icon> Document Library
                     </h1>
+                    <div class="btn-group btn-group-sm me-2">
+                        <button type="button" class="btn btn-outline-primary" id="btnExportLibrary" title="Export entire library to JSON">
+                            <iconify-icon inline icon="mdi:database-export"></iconify-icon> Export
+                        </button>
+                        <button type="button" class="btn btn-outline-success" id="btnImportLibrary" title="Import library from JSON">
+                            <iconify-icon inline icon="mdi:database-import"></iconify-icon> Import
+                        </button>
+                    </div>
                     <button type="button" class="btn-close me-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <input type="file" id="fileImportLibrary" accept=".json" style="display: none;" />
                 <div class="modal-body p-0">
                     <div class="container-fluid h-100">
                         <div class="row" style="min-height: 600px;">
@@ -521,7 +530,7 @@
     <script type="module">
         import { Render as Renderer } from './res/js/render.js';
         import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
-        import { initDB, saveDocument, getDocument, getAllDocuments, deleteDocument, clearAutoSaves, saveOrUpdateAutoSave, getLatestAutoSaveContent } from './res/js/db.js';
+        import { initDB, saveDocument, getDocument, getAllDocuments, deleteDocument, clearAutoSaves, saveOrUpdateAutoSave, getLatestAutoSaveContent, exportLibrary, importLibrary } from './res/js/db.js';
 
         $(async function () {
             // Initialize IndexedDB
@@ -1661,6 +1670,132 @@
                             loader: true
                         });
                     }
+                }
+            });
+
+            // Export Library button
+            $("#btnExportLibrary").on('click', async function () {
+                try {
+                    const exportData = await exportLibrary();
+                    
+                    const jsonString = JSON.stringify(exportData, null, 2);
+                    const blob = new Blob([jsonString], { type: 'application/json' });
+                    const timestamp = luxon.DateTime.now().toFormat("yyyy-MM-dd_HH-mm-ss");
+                    const filename = `DrawTheNet-Library-${timestamp}.json`;
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                    
+                    $.toast({
+                        heading: 'Library exported',
+                        text: `Exported ${exportData.documentCount} documents to ${filename}`,
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 3000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                } catch (error) {
+                    console.error('Export error:', error);
+                    $.toast({
+                        heading: 'Export failed',
+                        text: error.message || 'An error occurred while exporting the library',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                }
+            });
+
+            // Import Library button
+            $("#btnImportLibrary").on('click', function () {
+                $("#fileImportLibrary").click();
+            });
+
+            // Handle file import
+            $("#fileImportLibrary").on('change', async function (event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                try {
+                    const reader = new FileReader();
+                    
+                    reader.onload = async function (e) {
+                        try {
+                            const importData = JSON.parse(e.target.result);
+                            
+                            // Ask user if they want to replace existing data or merge
+                            const replaceExisting = confirm(
+                                `Import ${importData.documentCount || importData.documents.length} documents?\n\n` +
+                                'Click OK to MERGE with existing library\n' +
+                                'Click Cancel to abort import'
+                            );
+                            
+                            if (replaceExisting === null) {
+                                return; // User cancelled
+                            }
+                            
+                            const result = await importLibrary(importData, false); // Always merge for safety
+                            
+                            await refreshLibraryList();
+                            
+                            // Build detailed message
+                            let message = `Imported ${result.imported} new documents.`;
+                            if (result.updated > 0) {
+                                message += ` Updated ${result.updated} with newer versions.`;
+                            }
+                            if (result.skipped > 0) {
+                                message += ` Skipped ${result.skipped} older/duplicate documents.`;
+                            }
+                            
+                            $.toast({
+                                heading: 'Library imported',
+                                text: message,
+                                icon: 'success',
+                                showHideTransition: 'slide',
+                                allowToastClose: true,
+                                hideAfter: 5000,
+                                position: 'bottom-right',
+                                loader: true
+                            });
+                        } catch (error) {
+                            console.error('Import error:', error);
+                            $.toast({
+                                heading: 'Import failed',
+                                text: error.message || 'Invalid file format or corrupted data',
+                                icon: 'error',
+                                showHideTransition: 'slide',
+                                allowToastClose: true,
+                                hideAfter: 5000,
+                                position: 'bottom-right',
+                                loader: true
+                            });
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                } catch (error) {
+                    console.error('File read error:', error);
+                    $.toast({
+                        heading: 'File read failed',
+                        text: 'Unable to read the selected file',
+                        icon: 'error',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 5000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                } finally {
+                    // Reset file input
+                    event.target.value = '';
                 }
             });
 
