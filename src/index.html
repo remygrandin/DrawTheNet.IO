@@ -133,6 +133,15 @@
 </head>
 
 <body class="d-flex flex-column h-100">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #212529; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem; margin-bottom: 1.5rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h2 class="text-light mb-2">Loading DrawTheNet.IO</h2>
+        <p class="text-muted">Please wait while we prepare your workspace...</p>
+    </div>
+
     <header id="topBar">
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -202,16 +211,21 @@
                                         <iconify-icon inline icon="zondicons:reload"></iconify-icon> Update
                                     </button>
 
-                                    <button class="btn btn-primary" type="button" id="btnSaveToLibrary">
-                                        <iconify-icon inline icon="material-symbols:save"></iconify-icon> Save to Library
-                                    </button>
-
                                     <div class="btn-group" role="group">
+                                        <button class="btn btn-primary" type="button" id="btnSaveToLibrary">
+                                            <iconify-icon inline icon="material-symbols:save"></iconify-icon> Save to Library
+                                        </button>
                                         <button class="btn btn-warning" type="button" id="btnSaveToURL" title="Save to URL">
                                             <iconify-icon inline icon="material-symbols:link"></iconify-icon> Save to URL
                                         </button>
+                                    </div>
+
+                                    <div class="btn-group" role="group">
                                         <button class="btn btn-secondary" type="button" id="btnCopyShareLink" title="Copy Share Link to Clipboard">
-                                            <iconify-icon inline icon="material-symbols:content-copy"></iconify-icon> Copy Share Link
+                                            <iconify-icon inline icon="material-symbols:content-copy"></iconify-icon> Share Link
+                                        </button>
+                                        <button class="btn btn-info" type="button" id="btnCopyFullscreenLink" title="Copy Fullscreen Link to Clipboard">
+                                            <iconify-icon inline icon="material-symbols:fullscreen"></iconify-icon> Fullscreen Link
                                         </button>
                                     </div>
                                 </div>
@@ -862,6 +876,7 @@
             let debounceRenderTimer;
             let lastDocument = null;
             let errorToast = null;
+            let isFirstRender = true;
 
             function Render(maxDelay = 2000, keepZoom = true) {
                 clearTimeout(debounceRenderTimer);
@@ -898,6 +913,21 @@
                         else {
                             document.title = `DrawTheNet.IO`;
                         }
+
+                        // Hide loading screen after first successful render
+                        if (isFirstRender) {
+                            isFirstRender = false;
+                            setTimeout(() => {
+                                const loadingScreen = document.getElementById('loadingScreen');
+                                if (loadingScreen) {
+                                    loadingScreen.style.opacity = '0';
+                                    loadingScreen.style.transition = 'opacity 0.5s ease-out';
+                                    setTimeout(() => {
+                                        loadingScreen.style.display = 'none';
+                                    }, 500);
+                                }
+                            }, 100);
+                        }
                     } catch (e) {
                         console.error(e);
                         errorToast = $.toast({
@@ -911,6 +941,21 @@
                             position: 'top-right',
                             loader: true
                         });
+
+                        // Hide loading screen even on error during first render
+                        if (isFirstRender) {
+                            isFirstRender = false;
+                            setTimeout(() => {
+                                const loadingScreen = document.getElementById('loadingScreen');
+                                if (loadingScreen) {
+                                    loadingScreen.style.opacity = '0';
+                                    loadingScreen.style.transition = 'opacity 0.5s ease-out';
+                                    setTimeout(() => {
+                                        loadingScreen.style.display = 'none';
+                                    }, 500);
+                                }
+                            }, 100);
+                        }
                         return;
                     }
                     finally {
@@ -1651,6 +1696,74 @@
                         $.toast({
                             heading: 'Share link copied',
                             text: 'The share link has been copied to clipboard (plain text)',
+                            icon: 'success',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 2000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    } catch (err2) {
+                        $.toast({
+                            heading: 'Copy failed',
+                            text: 'Unable to copy to clipboard. Please allow clipboard permissions.',
+                            icon: 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 3000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    }
+                }
+            });
+
+            // Copy Fullscreen Link button
+            $("#btnCopyFullscreenLink").on('click', async function () {
+                const content = editor.session.getValue();
+                
+                // Get current params and ensure fullscreen is true
+                let currentParams = await LoadParams();
+                currentParams.fullscreen = true;
+                currentParams.doc = content;
+                
+                // Generate URL with fullscreen=true
+                const paramString = genParamString(currentParams);
+                const newUrl = `${window.location.origin}${window.location.pathname}#${paramString}`;
+                
+                // Copy to clipboard with HTML format for better link compatibility
+                try {
+                    // Get diagram title for the link text
+                    let diagramTitle = lastDocument && lastDocument.title && lastDocument.title.text ? lastDocument.title.text : 'Diagram';
+                    
+                    const htmlFragment = `<a href="${newUrl}">${diagramTitle} (Fullscreen)</a>`;
+                    
+                    // Create the clipboard data with both HTML and plain text formats
+                    const clipboardItem = new ClipboardItem({
+                        'text/html': new Blob([htmlFragment], { type: 'text/html' }),
+                        'text/plain': new Blob([newUrl], { type: 'text/plain' })
+                    });
+                    
+                    await navigator.clipboard.write([clipboardItem]);
+                    
+                    $.toast({
+                        heading: 'Fullscreen link copied',
+                        text: 'The fullscreen link has been copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                } catch (err) {
+                    // Fallback: try simple text copy
+                    try {
+                        await navigator.clipboard.writeText(newUrl);
+                        
+                        $.toast({
+                            heading: 'Fullscreen link copied',
+                            text: 'The fullscreen link has been copied to clipboard (plain text)',
                             icon: 'success',
                             showHideTransition: 'slide',
                             allowToastClose: true,
