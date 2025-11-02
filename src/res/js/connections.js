@@ -294,17 +294,98 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     label1XOffset *= rootConnection.endpLabelOffsetRatio;
     label2XOffset *= rootConnection.endpLabelOffsetRatio;
 
+    // Determine if the path would cause text to be upside down
+    // Check the angle from endpoint 1 to endpoint 2
+    let pathAngle = endp1Angle;
+    
+    // Normalize angle to -180 to 180 range
+    while (pathAngle > 180) pathAngle -= 360;
+    while (pathAngle < -180) pathAngle += 360;
+    
+    // If angle is between 90 and 270 degrees (going right to left), text will be upside down
+    let isUpsideDown = pathAngle > 90 || pathAngle < -90;
+    
+    // Create a reversed path for upside-down cases
+    if (isUpsideDown) {
+        let reversedPathD = "";
+        
+        if (curveType == "linear") {
+            reversedPathD += `M ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        }
+        else if (curveType == "curved") {
+            let vectX = (enp2.nodeComputed.xScaled - enp1.nodeComputed.xScaled) / 2;
+            let vectY = (enp2.nodeComputed.yScaled - enp1.nodeComputed.yScaled) / 2;
+            
+            let midX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
+            let midY = (enp1.nodeComputed.yScaled + enp2.nodeComputed.yScaled) / 2;
+
+            let baseFactor = 0.5;
+
+            vectX *= baseFactor;
+            vectY *= baseFactor;
+
+            vectX += vectX * rootConnection.curveOffset;
+            vectY += vectY * rootConnection.curveOffset;
+
+            let controlX = midX + vectY;
+            let controlY = midY - vectX;
+
+            reversedPathD += `M ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `Q ${controlX}, ${controlY} ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        }
+        else if (curveType == "step") {
+            let midpointX = (enp1.nodeComputed.xScaled + enp2.nodeComputed.xScaled) / 2;
+            midpointX += dataBag.Scaler.X.UnitStepAbs * rootConnection.curveOffset;
+
+            reversedPathD += `M ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${midpointX}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${midpointX}, ${enp1.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        }
+        else if (curveType == "stepreversed") {
+            let midpointY = (enp1.nodeComputed.yScaled + enp2.nodeComputed.yScaled) / 2;
+            midpointY += dataBag.Scaler.Y.UnitStepAbs * rootConnection.curveOffset;
+
+            reversedPathD += `M ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp2.nodeComputed.xScaled}, ${midpointY} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${midpointY} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        }
+        else if (curveType == "stepbefore") {
+            reversedPathD += `M ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        }
+        else if (curveType == "stepafter") {
+            reversedPathD += `M ${enp2.nodeComputed.xScaled}, ${enp2.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp2.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+            reversedPathD += `L ${enp1.nodeComputed.xScaled}, ${enp1.nodeComputed.yScaled} `;
+        }
+        
+        // Create a reversed path for text
+        let reversedPath = connectionContainer.append("path")
+            .attr("id", `path-${pathId}-reversed`)
+            .attr("d", reversedPathD)
+            .attr("fill", "none")
+            .attr("stroke", "none");
+    }
+    
+    // Choose which path to use for text based on orientation
+    let textPathId = isUpsideDown ? `path-${pathId}-reversed` : `path-${pathId}`;
+
     let enp1Label = connectionContainer.append("text")
         .attr("class", "connection-label")
         .attr("font-size", `${fontSize}px`)
         .attr("fill", textColor)
         .attr("fill-opacity", textOpacity || 1)
-        .attr("dx", `${label1XOffset}`)
-        .attr("dy", `${fontSize / 3 * -1}`);
+        .attr("dx", isUpsideDown ? `${label2XOffset * -1}` : `${label1XOffset}`)
+        .attr("dy", isUpsideDown ? `${fontSize}` : `${fontSize / 3 * -1}`);
 
     enp1Label.append("textPath")
-        .style("text-anchor", "start")
-        .attr("xlink:href", `#path-${pathId}`)
+        .style("text-anchor", isUpsideDown ? "end" : "start")
+        .attr("startOffset", isUpsideDown ? "100%" : "0%")
+        .attr("xlink:href", `#${textPathId}`)
         .text(enp1.portLabel);
 
     let enp2Label = connectionContainer.append("text")
@@ -312,13 +393,13 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
         .attr("font-size", `${fontSize}px`)
         .attr("fill", textColor)
         .attr("fill-opacity", textOpacity || 1)
-        .attr("dx", `${label2XOffset * -1}`)
-        .attr("dy", `${fontSize}`);
+        .attr("dx", isUpsideDown ? `${label1XOffset}` : `${label2XOffset * -1}`)
+        .attr("dy", isUpsideDown ? `${fontSize / 3 * -1}` : `${fontSize}`);
 
     enp2Label.append("textPath")
-        .style("text-anchor", "end")
-        .attr("startOffset", "100%")
-        .attr("xlink:href", `#path-${pathId}`)
+        .style("text-anchor", isUpsideDown ? "start" : "end")
+        .attr("startOffset", isUpsideDown ? "0%" : "100%")
+        .attr("xlink:href", `#${textPathId}`)
         .text(enp2.portLabel);
 
     let conLabel = connectionContainer.append("text")
@@ -331,7 +412,7 @@ function drawConnection(container, rootConnection, enp1, enp2, pathId, dataBag) 
     conLabel.append("textPath")
         .style("text-anchor", "middle")
         .attr("startOffset", "50%")
-        .attr("xlink:href", `#path-${pathId}`)
+        .attr("xlink:href", `#${textPathId}`)
         .text(rootConnection.text);
 }
 
