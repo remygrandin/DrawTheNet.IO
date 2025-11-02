@@ -185,6 +185,15 @@ export async function saveOrUpdateAutoSave(content, timestampString = null) {
     const allDocs = await getAllDocuments();
     const autoSaves = allDocs.filter(doc => doc.isAutoSave === true);
     
+    // Check if an autosave with the exact same content already exists
+    const matchingAutoSave = autoSaves.find(doc => doc.content === content && doc.isAutoSave === true);
+    
+    if (matchingAutoSave) {
+        // Update only the title and timestamp of the existing autosave
+        const name = timestampString ? `AutoSave ${timestampString}` : `AutoSave ${new Date().toISOString()}`;
+        return updateDocument(matchingAutoSave.id, name, content);
+    }
+    
     // Sort by timestamp (oldest first)
     autoSaves.sort((a, b) => a.timestamp - b.timestamp);
     

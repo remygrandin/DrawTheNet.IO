@@ -203,9 +203,17 @@
                                     </button>
 
                                     <button class="btn btn-primary" type="button" id="btnSaveToLibrary">
-                                        <iconify-icon inline icon="material-symbols:save"></iconify-icon> Save to
-                                        Library
+                                        <iconify-icon inline icon="material-symbols:save"></iconify-icon> Save to Library
                                     </button>
+
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-warning" type="button" id="btnSaveToURL" title="Save to URL">
+                                            <iconify-icon inline icon="material-symbols:link"></iconify-icon> Save to URL
+                                        </button>
+                                        <button class="btn btn-secondary" type="button" id="btnCopyShareLink" title="Copy Share Link to Clipboard">
+                                            <iconify-icon inline icon="material-symbols:content-copy"></iconify-icon> Copy Share Link
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <hr class="my-3">
@@ -1553,6 +1561,106 @@
                         position: 'bottom-right',
                         loader: true
                     });
+                }
+            });
+
+            // Save to URL button
+            $("#btnSaveToURL").on('click', async function () {
+                const content = editor.session.getValue();
+                const compressed = LZString.compressToEncodedURIComponent(content);
+                
+                // Get current URL parameters
+                let currentParams = await LoadParams();
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Update the doc parameter
+                urlParams.set('doc', compressed);
+                
+                // Construct the new URL
+                const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}${window.location.hash}`;
+                
+                // Update URL in address bar
+                window.history.pushState({}, '', newUrl);
+                
+                $.toast({
+                    heading: 'URL updated',
+                    text: 'The URL has been updated with your document',
+                    icon: 'success',
+                    showHideTransition: 'slide',
+                    allowToastClose: true,
+                    hideAfter: 2000,
+                    position: 'bottom-right',
+                    loader: true
+                });
+            });
+
+            // Copy Share Link button
+            $("#btnCopyShareLink").on('click', async function () {
+                const content = editor.session.getValue();
+                const compressed = LZString.compressToEncodedURIComponent(content);
+                
+                // Get current URL parameters
+                let currentParams = await LoadParams();
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Update the doc parameter
+                urlParams.set('doc', compressed);
+                
+                // Construct the new URL
+                const newUrl = `${window.location.origin}${window.location.pathname}?${urlParams.toString()}${window.location.hash}`;
+                
+                // Copy to clipboard with HTML format for better link compatibility
+                try {
+                    // Get diagram title for the link text
+                    let diagramTitle = lastDocument && lastDocument.title && lastDocument.title.text ? lastDocument.title.text : 'Diagram';
+                    
+                    const htmlFragment = `<a href="${newUrl}">${diagramTitle}</a>`;
+                    
+                    // Create the clipboard data with both HTML and plain text formats
+                    const clipboardItem = new ClipboardItem({
+                        'text/html': new Blob([htmlFragment], { type: 'text/html' }),
+                        'text/plain': new Blob([newUrl], { type: 'text/plain' })
+                    });
+                    
+                    await navigator.clipboard.write([clipboardItem]);
+                    
+                    $.toast({
+                        heading: 'Share link copied',
+                        text: 'The share link has been copied to clipboard',
+                        icon: 'success',
+                        showHideTransition: 'slide',
+                        allowToastClose: true,
+                        hideAfter: 2000,
+                        position: 'bottom-right',
+                        loader: true
+                    });
+                } catch (err) {
+                    // Fallback: try simple text copy
+                    try {
+                        await navigator.clipboard.writeText(newUrl);
+                        
+                        $.toast({
+                            heading: 'Share link copied',
+                            text: 'The share link has been copied to clipboard (plain text)',
+                            icon: 'success',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 2000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    } catch (err2) {
+                        $.toast({
+                            heading: 'Copy failed',
+                            text: 'Unable to copy to clipboard. Please allow clipboard permissions.',
+                            icon: 'error',
+                            showHideTransition: 'slide',
+                            allowToastClose: true,
+                            hideAfter: 3000,
+                            position: 'bottom-right',
+                            loader: true
+                        });
+                    }
                 }
             });
 
