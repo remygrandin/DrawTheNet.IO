@@ -67,6 +67,15 @@ export function RenderIcons(container, doc, dataBag) {
             .attr("id", "icon-" + key)
             .attr("transform", `translate(${computed.xScaled}, ${computed.yScaled})`);
 
+        // If URL exists, wrap everything in a link element
+        let contentContainer = iconContainer;
+        if ("url" in doc.icons[key]) {
+            contentContainer = iconContainer.append("a")
+                .attr("xlink:href", doc.icons[key].url)
+                .attr("target", "_blank")
+                .style("cursor", "pointer");
+        }
+
         let fill = doc.icons[key].fill;
         let stroke = doc.icons[key].stroke;
 
@@ -80,7 +89,7 @@ export function RenderIcons(container, doc, dataBag) {
             borderClass += ` icon-border-animated-${doc.icons[key].animationSpeed.toLowerCase()}`;
         }
 
-        iconContainer.append("rect")
+        contentContainer.append("rect")
             .attr("class", borderClass)
             .attr("x", computed.x1Marged)
             .attr("y", computed.y1Marged)
@@ -100,7 +109,7 @@ export function RenderIcons(container, doc, dataBag) {
 
         let { color: textColor, opacity: textOpacity } = ExtractColorAndOpacity(doc.icons[key].color);
 
-        let iconText = iconContainer.append("text")
+        let iconText = contentContainer.append("text")
             .attr("class", "icon-label")
             .attr("fill", textColor)
             .attr("fill-opacity", textOpacity)
@@ -111,16 +120,12 @@ export function RenderIcons(container, doc, dataBag) {
             textContent = doc.icons[key].text;
         }
 
-        if (!("url" in doc.icons[key])) {
-            iconText.text(textContent);
+        // Add underline style if URL exists
+        if ("url" in doc.icons[key]) {
+            iconText.style("text-decoration", "underline");
         }
-        else {
-            iconText.append("a")
-                .attr("xlink:href", doc.icons[key].url)
-                .attr("target", "_blank")
-                .attr("class", "link")
-                .text(textContent);
-        }
+        
+        iconText.text(textContent);
 
         if ("metadata" in doc.icons[key]) {
             iconContainer.attr("class", iconContainer.attr("class") + " metadata")
@@ -278,7 +283,7 @@ export function RenderIcons(container, doc, dataBag) {
 
             let urlHash = HashCode(url);
 
-            let iconImage = iconContainer.append("g")
+            let iconImage = contentContainer.append("g")
                 .attr("transform", `translate(${iconSize / 2 * -1 + computed.iconImageXOffset / 2}, ${iconSize / 2 * -1 + computed.iconImageYOffset / 2})`);
 
             let iconProcessor = function (text) {
