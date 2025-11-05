@@ -19,7 +19,23 @@ export async function ExportSVG(el, scaleFactor, embedFontAndStyle, yamlCode = n
     
     clone.getElementsByClassName("zoom")[0].removeAttribute("transform");
 
-    clone.getElementsByClassName("document")[0].setAttribute("transform", `${clone.getElementsByClassName("document")[0].getAttribute("transform")} scale(${scaleFactor})`);
+    // Get the current transform and parse the translate values
+    let documentElement = clone.getElementsByClassName("document")[0];
+    let currentTransform = documentElement.getAttribute("transform");
+    
+    // Extract translate values from the transform (e.g., "translate(10, 20)")
+    let translateMatch = currentTransform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+    
+    if (translateMatch) {
+        let translateX = parseFloat(translateMatch[1]);
+        let translateY = parseFloat(translateMatch[2]);
+        
+        // Scale the translate values and apply scale to the entire transform
+        documentElement.setAttribute("transform", `translate(${translateX * scaleFactor}, ${translateY * scaleFactor}) scale(${scaleFactor})`);
+    } else {
+        // Fallback if no translate found (shouldn't happen, but just in case)
+        documentElement.setAttribute("transform", `${currentTransform} scale(${scaleFactor})`);
+    }
 
     if (embedFontAndStyle) {
         let defs = document.createElement("defs");
