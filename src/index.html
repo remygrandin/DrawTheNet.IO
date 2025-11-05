@@ -994,12 +994,14 @@
             let lastAutoSaveContent = await getLatestAutoSaveContent();
 
             // Auto Update on change
-            editor.session.on('change', async function (delta) {
+            const editorChangeHandler = async function (delta) {
                 let currentParams = await LoadParams();
                 if (currentParams.autoupdate) {
                     Render();
                 }
-            });
+            };
+            
+            editor.session.on('change', editorChangeHandler);
 
             // Auto-save to IndexedDB every minute if there are changes
             setInterval(async () => {
@@ -1929,7 +1931,7 @@
                 let currentParams = await LoadParams();
                 currentParams.fullscreen = !currentParams.fullscreen;
                 SetParams(currentParams);
-                applyFullscreen(currentParams.fullscreen);
+                await applyFullscreen(currentParams.fullscreen);
             });
 
             $("#btnFloatingEdit").on("click", async function (event) {
@@ -1937,10 +1939,10 @@
                 let currentParams = await LoadParams();
                 currentParams.fullscreen = false;
                 SetParams(currentParams);
-                applyFullscreen(currentParams.fullscreen);
+                await applyFullscreen(currentParams.fullscreen);
             });
 
-            function applyFullscreen(isFullscreen) {
+            async function applyFullscreen(isFullscreen) {
                 // Detect if page is loaded in an iframe
                 const isInIframe = window.self !== window.top;
 
@@ -1975,14 +1977,7 @@
                     });
                 }
                 else {
-                    // When exiting fullscreen, reload the document from URL params into the editor
-                    LoadParams().then(currentParams => {
-                        if (currentParams.doc) {
-                            editor.setValue(currentParams.doc, -1);
-                        }
-                    });
-
-                    // Show UI elements
+                    // Show UI elements first
                     $("#topBar").show();
                     $("#editorCol").show();
                     $("#btnReduce").hide();
@@ -2003,8 +1998,27 @@
                         "left": "20px",
                         "z-index": "100"
                     });
+
+                    // When exiting fullscreen, reload the document from URL params into the editor
+                    // Temporarily remove change handler to prevent debounced render
+                    const currentParams = await LoadParams();
+                    if (currentParams.doc) {
+                        // Clear any pending debounced renders
+                        clearTimeout(debounceRenderTimer);
+                        
+                        // Temporarily remove the change event handler
+                        editor.session.off('change', editorChangeHandler);
+                        
+                        // Set the editor value
+                        editor.setValue(currentParams.doc, -1);
+                        
+                        // Re-attach the change event handler
+                        editor.session.on('change', editorChangeHandler);
+                    }
                 }
 
+                // Render immediately without debounce
+                clearTimeout(debounceRenderTimer);
                 Render(0, false);
             }
 
