@@ -178,6 +178,31 @@ export async function getLatestAutoSaveContent() {
     });
 }
 
+export async function getLatestDocument() {
+    if (!db) await initDB();
+    
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        
+        const request = objectStore.getAll();
+        
+        request.onsuccess = () => {
+            const allDocs = request.result;
+            
+            if (allDocs.length > 0) {
+                // Sort by timestamp descending and return the most recent
+                allDocs.sort((a, b) => b.timestamp - a.timestamp);
+                resolve(allDocs[0]);
+            } else {
+                resolve(null);
+            }
+        };
+        
+        request.onerror = () => reject(request.error);
+    });
+}
+
 export async function saveOrUpdateAutoSave(content, timestampString = null) {
     if (!db) await initDB();
 

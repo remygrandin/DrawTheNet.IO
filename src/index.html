@@ -544,7 +544,7 @@
     <script type="module">
         import { Render as Renderer } from './res/js/render.js';
         import { ExportPNG, ExportSVG, LoadFonts } from './res/js/exporters.js';
-        import { initDB, saveDocument, getDocument, getAllDocuments, deleteDocument, clearAutoSaves, saveOrUpdateAutoSave, getLatestAutoSaveContent, exportLibrary, importLibrary } from './res/js/db.js';
+        import { initDB, saveDocument, getDocument, getAllDocuments, deleteDocument, clearAutoSaves, saveOrUpdateAutoSave, getLatestAutoSaveContent, getLatestDocument, exportLibrary, importLibrary } from './res/js/db.js';
 
         $(async function () {
             // Initialize IndexedDB
@@ -584,7 +584,15 @@
                 let returnObj = parseParamString(window.location.hash.substring(1));
 
                 if (returnObj.doc == null || returnObj.doc == "") {
-                    returnObj.doc = await fetch("./samples/welcome.yaml").then(r => r.text());
+                    // Try to load the latest document (autosave or manual save)
+                    const latestDoc = await getLatestDocument();
+                    
+                    if (latestDoc && latestDoc.content) {
+                        returnObj.doc = latestDoc.content;
+                    } else {
+                        // If no saved documents exist, load the welcome.yaml
+                        returnObj.doc = await fetch("./samples/welcome.yaml").then(r => r.text());
+                    }
                 }
 
                 return returnObj;
