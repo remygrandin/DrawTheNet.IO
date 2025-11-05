@@ -1736,7 +1736,7 @@
                     // Get diagram title for the link text
                     let diagramTitle = lastDocument && lastDocument.title && lastDocument.title.text ? lastDocument.title.text : 'Diagram';
                     
-                    const htmlFragment = `<a href="${newUrl}">${diagramTitle} (Fullscreen)</a>`;
+                    const htmlFragment = `<a href="${newUrl}">${diagramTitle}</a>`;
                     
                     // Create the clipboard data with both HTML and plain text formats
                     const clipboardItem = new ClipboardItem({
