@@ -480,6 +480,99 @@
                     </div>
                 </div>
                 </p>
+
+                <hr>
+                <h3 class="mt-2">Defining Nodes & Placement</h3>
+                <p>
+                    The core of your diagram consists of <strong>Icons</strong> and <strong>Notes</strong>. These are defined in their respective sections (<code>icons</code> and <code>notes</code>).
+                </p>
+                
+                <h4 class="mt-2">The Grid System</h4>
+                <p>
+                    DrawTheNet.IO uses a grid system to position elements. The size of this grid is defined in the <code>diagram</code> section using <code>columns</code> and <code>rows</code>.
+                </p>
+                <ul>
+                    <li><strong>x</strong>: Horizontal position. Starts at <strong>0</strong> (left edge) and goes up to <strong>columns - 1</strong> (right edge).</li>
+                    <li><strong>y</strong>: Vertical position. Starts at <strong>0</strong> (top edge) and goes up to <strong>rows - 1</strong> (bottom edge).</li>
+                </ul>
+                <p>
+                    By default, the center of the icon or note is placed at the specified coordinate.
+                </p>
+
+                <h4 class="mt-2">Decimal Positioning</h4>
+                <p>
+                    You are not restricted to integer values! You can use decimal numbers to place elements precisely where you want them.
+                </p>
+                <p>
+                    For example, if you have a grid with 5 columns:
+                </p>
+                <ul>
+                    <li><code>x: 0</code> places the element at the center of the first column.</li>
+                    <li><code>x: 2.5</code> places the element exactly between the 3rd (index 2) and 4th (index 3) column.</li>
+                </ul>
+
+                <h4 class="mt-2">Example:</h4>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Grid Placement</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">diagram:
+  columns: 4
+  rows: 3
+
+icons:
+  NodeA: 
+    x: 0
+    y: 0
+    icon: router
+  NodeB: 
+    x: 1.5
+    y: 0
+    icon: switch
+  NodeC: 
+    x: 3
+    y: 2
+    icon: server
+</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 4
+  rows: 3
+  gridLines: true
+
+icons:
+  NodeA: 
+    x: 0
+    y: 0
+    icon: router
+    iconFamily: cisco
+    textLocation: bottomCenter
+  NodeB: 
+    x: 1.5
+    y: 0
+    icon: switch
+    iconFamily: cisco
+    textLocation: bottomCenter
+  NodeC: 
+    x: 3
+    y: 2
+    icon: server
+    iconFamily: cisco
+    textLocation: bottomCenter
+</code></pre>
+                        </div>
+                        <p class="mt-2">
+                            <small>
+                                <strong>NodeA</strong> is at (0,0) - Top Left.<br>
+                                <strong>NodeB</strong> is at (1.5, 0) - Between column 1 and 2, Top row.<br>
+                                <strong>NodeC</strong> is at (3, 2) - Bottom Right (since rows=3, max index is 2).
+                            </small>
+                        </p>
+                    </div>
+                </div>
             </div>
             <div class="tab-pane fade" id="nav-help-document" role="tabpanel" tabindex="3">
                 <h2 class="mt-2">Document</h2>
