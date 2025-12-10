@@ -64,7 +64,7 @@ group: &group
   padding:
     top: 0.1
     right: 0.1
-    bottom: 0.1
+    bottom: 0.17
     left: 0.1
 groups:
  outer: { <<: *group, stroke: none, text: "", fill: "#00a1f1", textLocation: "bottomCenter", members: [inner, Center] }

@@ -13,8 +13,8 @@ defs:
 
   internet: &internet
     <<: *icon
-    iconFamily: "M365"
-    icon: "globe_internet"
+    iconFamily: "Meraki"
+    icon: "internet"
   gateway: &gateway
     <<: *icon
     iconFamily: "azure"

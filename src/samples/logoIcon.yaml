@@ -1,7 +1,7 @@
 diagram:
   columns: 5
   rows: 5
-  gridLines: true
+  gridLines: false
 
 title:
   text: "Example with Icon Logo"
@@ -44,5 +44,5 @@ icons:
     stroke: "#388e3c"
 
 connections:
-  - { endp1: "Server1", endp2: "Database1", text: "Query" }
-  - { endp1: "User1", endp2: "Server1", text: "Request" }
+  - { endpoints: ["Server1",  "Database1"], text: "Query" }
+  - { endpoints: ["User1", "Server1"], text: "Request" }

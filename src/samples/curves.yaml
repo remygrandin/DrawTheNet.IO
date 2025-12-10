@@ -4,24 +4,21 @@ diagram:
   rows: 6
   gridLines: false
 title:
-  type: "none"
+  position: "none"
 defs:
   azure: &azure
     color: "black"
     fill: "darkgrey"
     iconFamily: "M365"
-    iconFill: "white"
-    iconStroke: "none"
-    stroke: "none"
   rack1: &rack1
     <<: *azure
-    icon: "mainframe"
+    icon: "Mail-Alert_Dark-Blue_Microsoft-Blue"
     x: "-2"
     y: "+1"
     text: Server 1
   rack2: &rack2
     <<: *azure
-    icon: "mainframe-blue"
+    icon: "Mail-Read_Light-Blue_Microsoft-Blue"
     x: "+2"
     y: "+1"
     text: Server 2
@@ -31,7 +28,7 @@ defs:
       right: 0.025
       bottom: 0.05
       left: 0.025
-    textSizeRatio: 0.4
+    textSizeRatio: 0.3
     textLocation: topRight
 icons:
   linear1: {<<: *rack1, y: 0, x: 0}

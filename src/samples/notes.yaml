@@ -5,10 +5,8 @@ diagram:
   rows: 7
   invertY: true
 title:
-  color: "white"
   fill: none
   logoFill: none
-  stroke: "white"
   text: "Notes"
   type: "bar"
 refs:

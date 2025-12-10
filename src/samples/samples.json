@@ -6,7 +6,6 @@
         "Super Spine": "superspine.yaml"
     },
     "Functions Demo": {
-        "Icons": "icons.yaml",
         "Groups": "groups.yaml",
         "Group Connections": "group_connections.yaml",
         "Text Locations": "text_locations.yaml",
@@ -17,6 +16,6 @@
         "Notes": "notes.yaml",
         "URLs": "urls.yaml",
         "Coffee colors": "coffee.yaml",
-        "Logo Icon Example": "logoIcon_example.yaml"
+        "Logo Icon": "logoIcon_example.yaml"
     }
 }

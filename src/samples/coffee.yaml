@@ -50,7 +50,7 @@ title:
   author: null
   version: null
   date: null
-  text: "Starbucks Color Palette"
+  text: "Coffee Color Palette"
   type: "bar"
 
 noteDefaults: &noteDefaults
