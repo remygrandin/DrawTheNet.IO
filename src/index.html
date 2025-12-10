@@ -629,21 +629,24 @@
 
             // Autocompletion keywords and values based on the YAML schema
             let completerKeywords = {
-                "diagram": ["columns", "rows", "width", "height", "meta", "title", "icons", "groups", "connections", "notes"],
-                "meta": ["title", "author", "company", "date", "version", "filename", "description"],
+                "root": ["document", "diagram", "title", "icons", "groups", "connections", "notes"],
+                "document": ["aspectRatio", "margin", "fill", "watermark", "renderRatio", "fileTitlePrefix", "schemasVersion"],
+                "diagram": ["columns", "rows", "invertY", "gridLines", "padding"],
                 "title": ["border", "position", "text", "subText", "author", "company", "date", "version", "color", "stroke", "fill", "heightPercentage", "padding", "logoUrl", "logoIcon", "logoIconFamily", "logoFill"],
-                "icons": ["iconFamily", "icon", "text", "x", "y", "w", "h", "margin", "padding", "textSizeRatio", "textLocation", "url", "color", "fill", "stroke", "strokeDashArray", "iconFill", "iconStroke", "iconStrokeWidth", "preserveWhite", "metadata", "animated", "animationSpeed"],
+                "icons": ["iconFamily", "icon", "text", "x", "y", "w", "h", "margin", "padding", "textSizeRatio", "textLocation", "url", "color", "fill", "stroke", "strokeDashArray", "iconFill", "iconStroke", "preserveWhite", "metadata", "animated", "animationSpeed"],
                 "groups": ["members", "padding", "textSizeRatio", "textLocation", "color", "fill", "stroke", "strokeDashArray", "text", "animated", "animationSpeed"],
                 "connections": ["endpoints", "curve", "curveOffset", "textSizeRatio", "endpLabelOffsetRatio", "margin", "color", "stroke", "strokeDashArray", "strokeWidth", "animated", "animationSpeed", "text"],
-                "notes": ["x", "y", "xAlign", "yAlign", "alignItems", "flexDirection", "justifyContent", "w", "h", "margin", "padding", "textSizeRatio", "color", "fill", "stroke", "strokeDashArray", "text"]
+                "notes": ["x", "y", "xAlign", "yAlign", "alignItems", "flexDirection", "justifyContent", "w", "h", "margin", "padding", "textSizeRatio", "color", "fill", "stroke", "strokeDashArray", "text", "textAlign"],
+                "margin": ["top", "bottom", "left", "right"],
+                "padding": ["top", "bottom", "left", "right"]
             };
 
             let completerValues = {
                 "iconFamily": ["Iconify", "AWS", "Azure", "M365", "D365", "PowerPlatform", "GCP", "Cisco", "Fortinet", "Meraki"],
                 "logoIconFamily": ["Iconify", "AWS", "Azure", "M365", "D365", "PowerPlatform", "GCP", "Cisco", "Fortinet", "Meraki"],
-                "textLocation": ["center", "topLeft", "topCenter", "topRight", "rightTop", "rightCenter", "rightBottom", "bottomLeft", "bottomCenter", "bottomRight", "leftTop", "leftCenter", "leftBottom"],
+                "textLocation": ["center", "topLeft", "topCenter", "topRight", "rightTop", "rightMiddle", "rightBottom", "bottomLeft", "bottomCenter", "bottomRight", "leftTop", "leftMiddle", "leftBottom"],
                 "position": ["top", "bottom", "none"],
-                "border": ["bar", "none"],
+                "border": ["bar", "box"],
                 "curve": ["linear", "curved", "step", "stepReversed", "stepBefore", "stepAfter"],
                 "xAlign": ["left", "center", "right"],
                 "yAlign": ["top", "center", "bottom"],
