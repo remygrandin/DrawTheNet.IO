@@ -511,30 +511,45 @@
                     <li><code>x: 2.5</code> places the element exactly between the 3rd (index 2) and 4th (index 3) column.</li>
                 </ul>
 
-                <h4 class="mt-2">Example:</h4>
+                <h4 class="mt-2">Alternate Coordinate Input</h4>
+                <p>
+                    In addition to absolute coordinates, you can use relative positioning strings for <code>x</code> and <code>y</code> values.
+                </p>
+                <ul>
+                    <li>
+                        <strong>Relative to Previous Node</strong>: Use a string with a signed number (e.g., <code>"+1"</code>, <code>"-0.5"</code>). This calculates the position relative to the node defined immediately before the current one in the YAML file.
+                    </li>
+                    <li>
+                        <strong>Reference Another Node</strong>: Use the format <code>"@nodename"</code> to use the coordinate value of another specific node.
+                    </li>
+                    <li>
+                        <strong>Reference with Offset</strong>: Combine a reference and an offset using <code>"@nodename:+offset"</code>. For example, <code>"@server1:+2"</code> means "take server1's position and add 2".
+                    </li>
+                </ul>
+
+                <h4 class="mt-2">Example: Relative Positioning</h4>
                 <div class="row">
                     <div class="col border p-3">
-                        <h4>Grid Placement</h4>
                         <div class="previewBlock">
-                            <pre class="shortCode"><code class="yaml">diagram:
-  columns: 4
-  rows: 3
-
-icons:
+                            <pre class="shortCode"><code class="yaml">icons:
   NodeA: 
     x: 0
     y: 0
     icon: router
   NodeB: 
-    x: 1.5
+    x: "+2"       # 2 units right of NodeA (previous node)
     y: 0
     icon: switch
   NodeC: 
-    x: 3
-    y: 2
+    x: "@NodeA"   # Same x as NodeA
+    y: "+2"       # 2 units below NodeB (previous node)
     icon: server
+  NodeD:
+    x: "@NodeB:+1" # NodeB's x + 1
+    y: "@NodeC"    # Same y as NodeC
+    icon: firewall
 </code></pre>
-                            <pre class="fullCode"><code class="yaml">document:
+<pre class="fullCode"><code class="yaml">document:
   watermark: false
 title:
   position: none
@@ -551,26 +566,29 @@ icons:
     iconFamily: cisco
     textLocation: bottomCenter
   NodeB: 
-    x: 1.5
+    x: "+2"       # 2 units right of NodeA (previous node)
     y: 0
-    icon: switch
-    iconFamily: cisco
+    icon: "Multiswitch_device"
+    iconFamily: "cisco"
     textLocation: bottomCenter
   NodeC: 
-    x: 3
-    y: 2
-    icon: server
-    iconFamily: cisco
+    x: "@NodeA"   # Same x as NodeA
+    y: "+2"       # 2 units below NodeB (previous node)
+    icon: "Server-Farm"
+    iconFamily: Azure
     textLocation: bottomCenter
+
+  NodeD:
+    x: "@NodeB:+1" # NodeB's x + 1
+    y: "@NodeC"    # Same y as NodeC
+    icon: "Firewall"
+    iconFamily: "Fortinet"
+    textLocation: bottomCenter
+
+
 </code></pre>
                         </div>
-                        <p class="mt-2">
-                            <small>
-                                <strong>NodeA</strong> is at (0,0) - Top Left.<br>
-                                <strong>NodeB</strong> is at (1.5, 0) - Between column 1 and 2, Top row.<br>
-                                <strong>NodeC</strong> is at (3, 2) - Bottom Right (since rows=3, max index is 2).
-                            </small>
-                        </p>
+
                     </div>
                 </div>
             </div>
@@ -1585,7 +1603,6 @@ icons:
                     Icons are the core elements of your diagram. They represent devices, services, or any other entity you want to visualize.<br>
                     You define them in the <code>icons</code> section of your YAML file.
                 </p>
-                <img src="./res/help/icons.png" class="my-3">
 
                 <h3 class="mt-2">Defining an Icon</h3>
                 Each icon is defined by a unique key (the icon ID) and a set of properties.<br>
@@ -2096,35 +2113,19 @@ notes:
                     They are defined in the <code>connections</code> section of your YAML file.
                 </p>
 
-                <h3 class="mt-2">Endpoints</h3>
+                <h3 class="mt-2">Endpoints & Labels</h3>
                 <p>
-                    The most critical property of a connection is <code>endpoints</code>.<br>
-                    This property is an array of two strings, specifying the start and end points of the connection.<br>
-                    The format for an endpoint is <code>"nodeName:portLabel"</code>.<br>
-                    The <code>portLabel</code> is optional; if provided, it will be displayed near the connection endpoint.
+                    The <code>endpoints</code> property is an array of two strings defining the start and end of the connection.
                 </p>
+                <ul>
+                    <li><strong>Basic</strong>: <code>["nodeA", "nodeB"]</code> connects nodeA to nodeB.</li>
+                    <li><strong>With Labels</strong>: You can append <code>:text</code> to a node name to display a label at that end of the connection. <br>
+                    Format: <code>"nodeName:LabelText"</code>. <br>
+                    Example: <code>["router1:Gi0/0", "switch1:Gi1/0/1"]</code>.
+                    </li>
+                </ul>
+
                 <div class="row">
-                    <div class="col border p-3">
-                        <h4>Basic Connection</h4>
-                        <div class="previewBlock">
-                            <pre class="shortCode"><code class="yaml">connections:
-  link1:
-    endpoints: ["router1", "switch1"]</code></pre>
-                            <pre class="fullCode"><code class="yaml">document:
-  watermark: false
-title:
-  position: none
-diagram:
-  columns: 4
-  rows: 4
-icons:
-  router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
-connections:
-  link1:
-    endpoints: ["router1", "switch1"]</code></pre>
-                        </div>
-                    </div>
                     <div class="col border p-3">
                         <h4>Connection with Port Labels</h4>
                         <div class="previewBlock">
@@ -2140,10 +2141,47 @@ diagram:
   rows: 4
 icons:
   router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
+  switch1: {x: 3, y: 2, icon: router, iconFamily: cisco}
 connections:
   link1:
     endpoints: ["router1:Gi0/0", "switch1:Gi1/0/1"]</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-2">Group Connections</h3>
+                <p>
+                    If one of the endpoints is a <strong>Group</strong> name, the connection will be expanded to create individual connections between the other endpoint and <strong>all members</strong> of that group.
+                </p>
+                <div class="row">
+                    <div class="col border p-3">
+                        <h4>Group Connection Example</h4>
+                        <div class="previewBlock">
+                            <pre class="shortCode"><code class="yaml">groups:
+  myGroup:
+    members: [nodeA, nodeB, nodeC]
+
+connections:
+  - endpoints: ["server", "myGroup"]
+    text: "Link to Group"</code></pre>
+                            <pre class="fullCode"><code class="yaml">document:
+  watermark: false
+title:
+  position: none
+diagram:
+  columns: 4
+  rows: 4
+icons:
+  server: {x: 0, y: 1, icon: router, iconFamily: cisco}
+  nodeA: {x: 3, y: 0, icon: router, iconFamily: cisco}
+  nodeB: {x: 3, y: 1, icon: router, iconFamily: cisco}
+  nodeC: {x: 3, y: 2, icon: router, iconFamily: cisco}
+groups:
+  myGroup:
+    members: [nodeA, nodeB, nodeC]
+connections:
+  - endpoints: ["server", "myGroup"]
+    text: "Link to Group"</code></pre>
                         </div>
                     </div>
                 </div>
@@ -2178,7 +2216,7 @@ diagram:
   rows: 4
 icons:
   router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
+  switch1: {x: 3, y: 2, icon: router, iconFamily: cisco}
 connections:
   link1:
     endpoints: ["router1", "switch1"]
@@ -2220,7 +2258,7 @@ diagram:
   rows: 4
 icons:
   router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
+  switch1: {x: 3, y: 2, icon: router, iconFamily: cisco}
 connections:
   link1:
     endpoints: ["router1", "switch1"]
@@ -2243,7 +2281,7 @@ diagram:
   rows: 4
 icons:
   router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
+  switch1: {x: 3, y: 2, icon: router, iconFamily: cisco}
 connections:
   link1:
     endpoints: ["router1", "switch1"]
@@ -2279,7 +2317,7 @@ diagram:
   rows: 4
 icons:
   router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
+  switch1: {x: 3, y: 2, icon: router, iconFamily: cisco}
 connections:
   link1:
     endpoints: ["router1", "switch1"]
@@ -2312,7 +2350,7 @@ diagram:
   rows: 4
 icons:
   router1: {x: 1, y: 2, icon: router, iconFamily: cisco}
-  switch1: {x: 3, y: 2, icon: switch, iconFamily: cisco}
+  switch1: {x: 3, y: 2, icon: router, iconFamily: cisco}
 connections:
   link1:
     endpoints: ["router1", "switch1"]
