@@ -3,7 +3,7 @@ diagram:
   rows: 6
   columns: 6
   gridLines: false
-  margin:
+  padding:
     top: 20
     right: 80
     bottom: 20
@@ -57,6 +57,6 @@ notes:
     xAlign: left,
     yAlign: top,
     text: "`Groups`\n\n
-    You can define a group composed of any number of nodes (icons, notes, other groups). The title can be place inside the group border in any way you wish.\n\n
+    You can define a group composed of any number of nodes (icons, notes, other groups). \n\nThe group title can be place inside the group border in any way you wish.
     "
   }

@@ -344,6 +344,16 @@ export function RenderIcons(container, doc, dataBag) {
                     }
                 }
 
+                if ("iconStrokeWidth" in doc.icons[key]) {
+                    let iconStrokeWidth = doc.icons[key].iconStrokeWidth;
+                    let strokes = svg.querySelectorAll("[stroke], [stroke-width]");
+                    if (strokes != null && strokes.length > 0) {
+                        strokes.forEach(stroke => {
+                            stroke.setAttribute("stroke-width", iconStrokeWidth);
+                        });
+                    }
+                }
+
                 iconImage._groups[0][0].innerHTML = svg.outerHTML;
             };
 
