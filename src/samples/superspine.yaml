@@ -39,7 +39,7 @@ styles:
   connectionDefaults: &connectionDefaults { color: *coreblack7, stroke: *coreblack7 }
   noteCode: &noteCode { yAlign: center, alignItems: stretch, justifyContent: center, fill: none, stroke: none, color: *coreblack7 }
   noteStyle1: &noteStyle1 { yAlign: center, xAlign: center, color: *antiFlashWhite, fill: *accent7463, stroke: none }
-  titleDefaults: &titleDefaults {  color: *coreblack7, heightPercentage: 6, logoFill: none, company: "Starbucks Coffee Company", logoUrl: "https://www.starbucks.com/static/images/global/logo.svg", stroke: *core412, type: "bar" }
+  titleDefaults: &titleDefaults {  color: *coreblack7, heightPercentage: 6, logoFill: none, company: "Some Coffee Company", stroke: *core412, type: "bar" }
   groupDefaults: &groupDefaults { color: *coreblack7, fill: *accent552, stroke: *coreblack7 }
   groupHidden: &groupHidden { color: none, fill: none, stroke: none }
 diagram:
@@ -50,15 +50,19 @@ diagram:
   gridLines: false
   gridPaddingInner: .25
   groupPadding: .75
+  invertY: true
+  
 title:
   <<: *titleDefaults
   subText: "From current to future"
   text: "Chandler DC Super Spine"
+  logoIcon: "Switching"
+  logoIconFamily: "Fortinet"
 
-current: &current { stroke: *coreblack7, color: *coreblack7, iconFill: lightslategray, iconStroke: white, iconStrokeWidth: .25, iconFamily: "cisco", fill: white, preserveWhite: "true"}
-new: &new { stroke: *coreblack7, color: *coreblack7, iconFill: *accent7463, iconStroke: *accent552, iconStrokeWidth: .25, iconFamily: "cisco", fill: white, preserveWhite: "true"}
+current: &current { stroke: *coreblack7, color: *coreblack7, iconFill: lightslategray, iconStroke: white, iconFamily: "cisco", fill: white, preserveWhite: "true"}
+new: &new { stroke: *coreblack7, color: *coreblack7, iconFill: *accent7463, iconStroke: *accent552, iconFamily: "cisco", fill: white, preserveWhite: "true"}
 need: &need { <<: *new, strokeDashArray: [3,3]}
-decom: &decom { stroke: *coreblack7, color: *coreblack7, iconFill: white, iconStroke: lightslategray, iconStrokeWidth: .25, iconFamily: "cisco", fill: white, preserveWhite: "true"}
+decom: &decom { stroke: *coreblack7, color: *coreblack7, iconFill: white, iconStroke: lightslategray, iconFamily: "cisco", fill: white, preserveWhite: "true"}
 
 crt001: &crt001 { <<: *current, text: "chddc1crt001", icon: "router", x: "+1" }
 crt002: &crt002 { <<: *current, text: "chddc1crt002", icon: "router", x: "+1" }
@@ -225,5 +229,5 @@ noteEnd: &noteEnd |
   #Procure
   1. 20 additional Arista 7280s
 notes:
-  - { <<: *noteStyle1, x: 15, y: 11, w: 3, h: 2, text: *noteCurrent }
-  - { <<: *noteStyle1, x: 15, y: 5, w: 3, h: 2, text: *noteEnd }
+  - { <<: *noteStyle1, x: 15.5, y: 11, w: 3, h: 2, text: *noteCurrent }
+  - { <<: *noteStyle1, x: 15.5, y: 5, w: 3, h: 2, text: *noteEnd }
