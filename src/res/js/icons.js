@@ -302,7 +302,7 @@ export function RenderIcons(container, doc, dataBag) {
                     });
                 }
 
-                let preserveWhite = "preserveWhite" in doc.icons[key] ? doc.icons[key].preserveWhite : false;
+                let preserveWhite = doc.icons[key].preserveWhite;
 
                 if ("iconFill" in doc.icons[key]) {
                     let { color: iconFillColor, opacity: iconFillOpacity } = ExtractColorAndOpacity(doc.icons[key].iconFill);

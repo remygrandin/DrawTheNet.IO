@@ -81,7 +81,8 @@ const iconDefaults = {
     color: "black",
     strokeDashArray: null,
     animated: false,
-    animationSpeed: "medium"
+    animationSpeed: "medium",
+    preserveWhite: false
 }
 
 const groupDefaults = {
