@@ -639,8 +639,8 @@
             };
 
             let completerValues = {
-                "iconFamily": ["AWS", "Azure", "Cisco", "D365", "Fortinet", "GCP", "M365", "PowerPlatform", "Iconify"],
-                "logoIconFamily": ["AWS", "Azure", "Cisco", "D365", "Fortinet", "GCP", "M365", "PowerPlatform", "Iconify"],
+                "iconFamily": ["Iconify", "AWS", "Azure", "M365", "D365", "PowerPlatform", "GCP", "Cisco", "Fortinet", "Meraki"],
+                "logoIconFamily": ["Iconify", "AWS", "Azure", "M365", "D365", "PowerPlatform", "GCP", "Cisco", "Fortinet", "Meraki"],
                 "textLocation": ["center", "topLeft", "topCenter", "topRight", "rightTop", "rightCenter", "rightBottom", "bottomLeft", "bottomCenter", "bottomRight", "leftTop", "leftCenter", "leftBottom"],
                 "position": ["top", "bottom", "none"],
                 "border": ["bar", "none"],
@@ -648,8 +648,7 @@
                 "xAlign": ["left", "center", "right"],
                 "yAlign": ["top", "center", "bottom"],
                 "flexDirection": ["row", "column"],
-                "animationSpeed": ["slow", "medium", "fast"],
-                "iconFamily": ["Iconify", "AWS", "Azure", "Cisco", "GCP", "K8S", "M365"]
+                "animationSpeed": ["slow", "medium", "fast"]
             };
 
             let completer = {
@@ -667,7 +666,7 @@
                     let completions = [];
 
                     // Check if we're after a colon (suggesting a value)
-                    let colonMatch = linePrefix.match(/(\w+):\s*$/);
+                    let colonMatch = linePrefix.match(/(\w+):\s+.*$/);
                     if (colonMatch) {
                         let propertyName = colonMatch[1];
 
@@ -724,13 +723,13 @@
                     } else if (context === "title") {
                         keywords = completerKeywords.title;
                     } else if (context === "icon" || context === "icons") {
-                        keywords = completerKeywords.icon;
+                        keywords = completerKeywords.icons;
                     } else if (context === "group" || context === "groups") {
-                        keywords = completerKeywords.group;
+                        keywords = completerKeywords.groups;
                     } else if (context === "connection" || context === "connections") {
-                        keywords = completerKeywords.connection;
+                        keywords = completerKeywords.connections;
                     } else if (context === "note" || context === "notes") {
-                        keywords = completerKeywords.note;
+                        keywords = completerKeywords.notes;
                     } else if (context === "margin") {
                         keywords = completerKeywords.margin;
                     } else if (context === "padding") {
