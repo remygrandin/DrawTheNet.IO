@@ -45,7 +45,7 @@ icons:
   lx12302: {<<: *servers, x: 4, y: 0}
 notes:
   firewallComment: { x: 0, y: 2, h: 2, xAlign: center, yAlign: center, stroke: "darkblue", fill: "darkblue", color: "white",
-    text: "#NOTE:\n\nThis is a redundant HA pair. More text could go here to completely fill up this box." }
+    text: "#NOTE:\n\nThis is a redundant HA pair." }
 connection: &connection
   color: "white"
   stroke: "white"

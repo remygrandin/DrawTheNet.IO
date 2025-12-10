@@ -76,7 +76,7 @@ icons:
   gpsSat001: {<<: *cisco, x: 9, y: 20, textLocation: topMiddle, icon: "space_router" }
   gpsSat002: {<<: *cisco, x: "+1", textLocation: topMiddle, icon: "space_router"  }
 
-  Enterprise MPLS 1: {<<: *cloud, x: 6, y: 13, w: 3, h: 3, textLocation: center, icon: "cloud" }
+  Enterprise MPLS 1: {<<: *cloud, x: 6, y: 12, w: 3, h: 3, textLocation: center, icon: "cloud" }
   Enterprise MPLS 2: {<<: *cloud, x: "+4", w: 3, h: 3, textLocation: center, icon: "cloud" }
 
   loc1wrt001: {<<: *wwrt001, x: 6, y: 14}
@@ -353,46 +353,46 @@ zone: &zone { <<: *group, fill: "#DDDDDD", strokeDashArray: [3,3] }
 hiddenGroup: &hiddenGroup
   - { color: "none", stroke: "none", fill: "none" }
 groups:
-  allNTP: { <<: *hiddenGroup, name: "", members: [loc1ntp001, loc2ntp001, loc3ntp001, loc4ntp001, loc4ntp002, loc4ntp003, loc4ntp004, loc5ntp001, loc5ntp002, loc5ntp003, loc5ntp004, loc6ntp001, loc6ntp002, loc7ntp001, loc7ntp002] }
-  key: { <<: *group, name: "Key", textLocation: topLeft, fill: none, members: [Stratum 1 NTP, Stratum 2 NTP, NTP Client] }
-  antennas: { <<: *hiddenGroup, name: "", members: [loc1wan001, loc2wan001, loc3wan001] }
+  allNTP: { <<: *hiddenGroup, text: "", members: [loc1ntp001, loc2ntp001, loc3ntp001, loc4ntp001, loc4ntp002, loc4ntp003, loc4ntp004, loc5ntp001, loc5ntp002, loc5ntp003, loc5ntp004, loc6ntp001, loc6ntp002, loc7ntp001, loc7ntp002] }
+  key: { <<: *group, text: "", textLocation: topLeft, fill: none, members: [Stratum 1 NTP, Stratum 2 NTP, NTP Client] }
+  antennas: { <<: *hiddenGroup, text: "", members: [loc1wan001, loc2wan001, loc3wan001] }
   gpsSat: { <<: *hiddenGroup, name: "", members: [gpsSat001, gpsSat002] }
-  loc1: { <<: *group, name: "Location 1", members: [loc1rt, loc1wsw001, loc1ntp001, loc1wan001] }
-  loc1rt: { <<: *group, name: "",stroke: none, members: [loc1wrt001, loc1wrt002, loc1wrt003, loc1wrt004] }
-  loc2: { <<: *group, name: "Location 2", members: [loc2rt, loc2wsw001, loc2ntp001, loc2wan001] }
-  loc2rt: { <<: *group, name: "",stroke: none, members: [loc2wrt001, loc2wrt002, loc2wrt003, loc2wrt004] }
-  loc3: { <<: *group, name: "Location 3", members: [loc3rt, loc3wsw001, loc3ntp001, loc3wan001] }
-  loc3rt: { <<: *group, name: "",stroke: none, members: [loc3wrt001, loc3wrt002, loc3wrt003, loc3wrt004] }
-  mplsrtrs1: { <<: *hiddenGroup, name: "", members: [loc4crt001, loc5crt001, loc6crt001,loc7crt001, loc1wrt001, loc2wrt001, loc3wrt001] }
-  mplsrtrs2: { <<: *hiddenGroup, name: "", members: [loc4crt002, loc5crt002, loc6crt002, loc7crt002, loc1wrt002, loc2wrt002, loc3wrt002] }
+  loc1: { <<: *group, text: "Location 1", members: [loc1rt, loc1wsw001, loc1ntp001, loc1wan001] }
+  loc1rt: { <<: *group, text: "", members: [loc1wrt001, loc1wrt002, loc1wrt003, loc1wrt004] }
+  loc2: { <<: *group, text: "Location 2", members: [loc2rt, loc2wsw001, loc2ntp001, loc2wan001] }
+  loc2rt: { <<: *group, text: "", members: [loc2wrt001, loc2wrt002, loc2wrt003, loc2wrt004] }
+  loc3: { <<: *group, text: "Location 3", members: [loc3rt, loc3wsw001, loc3ntp001, loc3wan001] }
+  loc3rt: { <<: *group, text: "", members: [loc3wrt001, loc3wrt002, loc3wrt003, loc3wrt004] }
+  mplsrtrs1: { <<: *hiddenGroup, text: "", members: [loc4crt001, loc5crt001, loc6crt001,loc7crt001, loc1wrt001, loc2wrt001, loc3wrt001] }
+  mplsrtrs2: { <<: *hiddenGroup, text: "", members: [loc4crt002, loc5crt002, loc6crt002, loc7crt002, loc1wrt002, loc2wrt002, loc3wrt002] }
 
-  loc4: { <<: *group, name: "Location 4", members: [loc4crt001, loc4ntp001, loc4rlb002] }
-  loc4crt: { <<: *hiddenGroup, name: "", members: [loc4crt001, loc4crt002, loc4crt003,loc4crt004] }
-  loc4ntp: { <<: *zone, name: "Zone 16", members: [loc4ntp001, loc4slb002] }
+  loc4: { <<: *group, text: "Location 4", members: [loc4crt001, loc4ntp001, loc4rlb002] }
+  loc4crt: { <<: *hiddenGroup, text: "", members: [loc4crt001, loc4crt002, loc4crt003,loc4crt004] }
+  loc4ntp: { <<: *zone, text: "Zone 16", members: [loc4ntp001, loc4slb002] }
 
-  loc5: { <<: *group, name: "Location 5", members: [loc5crt001, loc5ntp001, loc5rlb002] }
-  loc5crt: { <<: *hiddenGroup, name: "", members: [loc5crt001, loc5crt002, loc5crt003,loc5crt004] }
-  loc5ntp: { <<: *zone, name: "Zone 16", members: [loc5ntp001, loc5slb002] }
+  loc5: { <<: *group, text: "Location 5", members: [loc5crt001, loc5ntp001, loc5rlb002] }
+  loc5crt: { <<: *hiddenGroup, text: "", members: [loc5crt001, loc5crt002, loc5crt003,loc5crt004] }
+  loc5ntp: { <<: *zone, text: "Zone 16", members: [loc5ntp001, loc5slb002] }
 
-  loc6: { <<: *group, name: "Location 6", members: [loc6crt001, loc6slb002] }
-  loc6crt: { <<: *hiddenGroup, name: "", members: [loc6crt001, loc6crt002, loc6crt003,loc6crt004] }
-  loc6ntp: { <<: *zone, name: "Zone 16", members: [loc6ntp001, loc6ntp002, loc6slb002] }
+  loc6: { <<: *group, text: "Location 6", members: [loc6crt001, loc6slb002] }
+  loc6crt: { <<: *hiddenGroup, text: "", members: [loc6crt001, loc6crt002, loc6crt003,loc6crt004] }
+  loc6ntp: { <<: *zone, text: "Zone 16", members: [loc6ntp001, loc6ntp002, loc6slb002] }
 
-  loc7: { <<: *group, name: "Location 6", members: [loc7crt001, loc7slb002] }
-  loc7crt: { <<: *hiddenGroup, name: "", members: [loc7crt001, loc7crt002, loc7crt003,loc7crt004] }
-  loc7ntp: { <<: *zone, name: "Zone 16", members: [loc7ntp001, loc7ntp002, loc7slb002] }
+  loc7: { <<: *group, text: "Location 6", members: [loc7crt001, loc7slb002] }
+  loc7crt: { <<: *hiddenGroup, text: "", members: [loc7crt001, loc7crt002, loc7crt003,loc7crt004] }
+  loc7ntp: { <<: *zone, text: "Zone 16", members: [loc7ntp001, loc7ntp002, loc7slb002] }
 
-  naRlbs: {<<: *hiddenGroup, name: "NA Outlets", members: [loc4rlb001, loc4rlb002, loc5rlb001, loc5rlb002] }
-  naOutlets: {<<: *group, name: "NA Outlets", members: [NA outlet1, NA outlet2, NA outlet3] }
-  naNTPClients: {<<: *group, name: "NA NTP Clients", members: [NA server1, NA server2, Network Devices] }
-  naSNTPClients: {<<: *group, name: "NA SNTP Clients", members: [NA server4, NA server5] }
+  naRlbs: {<<: *hiddenGroup, text: "NA Outlets", members: [loc4rlb001, loc4rlb002, loc5rlb001, loc5rlb002] }
+  naOutlets: {<<: *group, text: "NA Outlets", members: [NA outlet1, NA outlet2, NA outlet3] }
+  naNTPClients: {<<: *group, text: "NA NTP Clients", members: [NA server1, NA server2, Network Devices] }
+  naSNTPClients: {<<: *group, text: "NA SNTP Clients", members: [NA server4, NA server5] }
 
-  emeaRlbs: {<<: *hiddenGroup, name: "", members: [loc6slb001, loc6slb002] }
-  emeaOutlets: {<<: *group, name: "EMEA Outlets", members: [EMEA outlet1] }
-  emeaNTPClients: {<<: *group, name: "NA NTP Clients", members: [EMEA server1] }
-  emeaSNTPClients: {<<: *group, name: "NA SNTP Clients", members: [EMEA server4] }
+  emeaRlbs: {<<: *hiddenGroup, text: "", members: [loc6slb001, loc6slb002] }
+  emeaOutlets: {<<: *group, text: "EMEA Outlets", members: [EMEA outlet1] }
+  emeaNTPClients: {<<: *group, text: "NA NTP Clients", members: [EMEA server1] }
+  emeaSNTPClients: {<<: *group, text: "NA SNTP Clients", members: [EMEA server4] }
 
-  apacRlbs: {<<: *hiddenGroup, name: "", members: [loc7slb001, loc7slb002] }
-  apacOutlets: {<<: *group, name: "APAC Outlets", members: [APAC outlet1] }
-  apacNTPClients: {<<: *group, name: "APAC NTP Clients", members: [APAC server1] }
-  apacSNTPClients: {<<: *group, name: "APAC SNTP Clients", members: [APAC server4] }
+  apacRlbs: {<<: *hiddenGroup, text: "", members: [loc7slb001, loc7slb002] }
+  apacOutlets: {<<: *group, text: "APAC Outlets", members: [APAC outlet1] }
+  apacNTPClients: {<<: *group, text: "APAC NTP Clients", members: [APAC server1] }
+  apacSNTPClients: {<<: *group, text: "APAC SNTP Clients", members: [APAC server4] }
