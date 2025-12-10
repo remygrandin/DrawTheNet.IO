@@ -142,6 +142,20 @@
         <p class="text-muted">Please wait while we prepare your workspace...</p>
     </div>
 
+    <!-- Mobile Warning Overlay -->
+    <div id="mobileWarning" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(33, 37, 41, 0.95); z-index: 99998; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center;">
+        <div class="bg-dark border border-secondary rounded p-4 shadow-lg" style="max-width: 500px;">
+            <div class="mb-4 text-warning">
+                <iconify-icon icon="mdi:monitor-cellphone" width="64" height="64"></iconify-icon>
+            </div>
+            <h3 class="text-light mb-3">Desktop Experience Recommended</h3>
+            <p class="text-light mb-4">DrawTheNet.IO is designed for desktop use. For the best experience, please use a larger screen or switch to a desktop computer.</p>
+            <button id="btnDismissMobileWarning" class="btn btn-primary btn-lg">
+                I Understand, Continue Anyway
+            </button>
+        </div>
+    </div>
+
     <header id="topBar">
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -805,6 +819,19 @@
             // =============================================
 
             let params = await LoadParams();
+
+            // Mobile Warning Logic
+            function isMobileDevice() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+            }
+
+            if (!params.fullscreen && isMobileDevice()) {
+                $("#mobileWarning").css("display", "flex");
+            }
+
+            $("#btnDismissMobileWarning").click(function() {
+                $("#mobileWarning").fadeOut();
+            });
 
             editor.setValue(params.doc, -1);
 
