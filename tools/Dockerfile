@@ -34,8 +34,6 @@ RUN rm /etc/nginx/sites-available/default && rm /etc/nginx/sites-enabled/default
 COPY drawthenet.io.nginx.conf /etc/nginx/sites-available/drawthenet.io.nginx.conf
 RUN ln -s /etc/nginx/sites-available/drawthenet.io.nginx.conf /etc/nginx/sites-enabled/drawthenet.io.nginx.conf
 
-USER 1000
-
 # Run the specified command within the container.
 CMD ["nginx", "-g", "daemon off;"]
 
