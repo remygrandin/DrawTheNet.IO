@@ -5,6 +5,10 @@ on:
     branches: [ "master" ]
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
+    branches: [ "master" ]
+    tags:
+      - 'v*.*.*'
 
 jobs:
 
