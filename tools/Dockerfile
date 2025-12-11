@@ -28,11 +28,13 @@ RUN apt update && apt -y install nginx ca-certificates
 COPY --from=builder /tmp/drawthenet.io/drawthenet.io/dist /opt/drawthenet.io
 
 RUN chmod -R +r /opt/drawthenet.io
-RUN chown -R www-data:www-data /opt/drawthenet.io
+RUN chown -R 1000:1000 /opt/drawthenet.io
 
 RUN rm /etc/nginx/sites-available/default && rm /etc/nginx/sites-enabled/default
 COPY drawthenet.io.nginx.conf /etc/nginx/sites-available/drawthenet.io.nginx.conf
 RUN ln -s /etc/nginx/sites-available/drawthenet.io.nginx.conf /etc/nginx/sites-enabled/drawthenet.io.nginx.conf
+
+USER 1000
 
 # Run the specified command within the container.
 CMD ["nginx", "-g", "daemon off;"]
