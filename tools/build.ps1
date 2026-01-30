@@ -19,10 +19,12 @@ $iconsJSONPath = Join-Path $iconsPath "icons.json"
 
 $vssConvInstalled = $null -ne (Get-Command "vss2svg-conv" -ErrorAction SilentlyContinue)
 
+$ProgressPreference = 'SilentlyContinue'
+
 function DownloadIcons {
     Write-Output "====== Downloading & processing icons ======"
     New-Item -Type Directory -Path $tempPath -Force | Out-Null
-    
+
     DownloadAWSIcons
     DownloadAzureIcons
     DownloadM365Icons
@@ -31,7 +33,8 @@ function DownloadIcons {
     DownloadGCPIcons
     DownloadCiscoIcons
     DownloadFortinetIcons
-    DownloadMerakiIcons    
+    DownloadMerakiIcons
+    DownloadNutanixIcons
 }
 
 function DownloadAWSIcons {
@@ -739,7 +742,6 @@ function DownloadCiscoIcons {
     Write-Output "Done"
 }
 
-
 function DownloadFortinetIcons {
     Write-Output "------ Fortinet ------"
 
@@ -789,129 +791,6 @@ function DownloadFortinetIcons {
         $iconSVG = $iconSVG -replace "cls-", "cls-$title-"
         $iconSVG = $iconSVG -replace """st", """st-$title-"
         $iconSVG = $iconSVG -replace "\.st", ".st-$title-"
-
-        $iconSVG | Set-Content -Path $icon.FullName -Force
-    }
-
-    Write-Output "Done"
-
-    Write-Output "Copy :"
-    New-Item -Type Directory -Path $destPath -Force | Out-Null
-    $svgFilesRaw = Get-ChildItem $extractPath -Recurse | `
-        Select-Object -ExpandProperty FullName | `
-        Where-Object { $_.EndsWith(".svg") }
-
-    # filtering the lowest resolution icons
-    $svgFilesParsed = @()
-    foreach ($svgFile in $svgFilesRaw) {       
-        $obj = [PSCustomObject]@{
-            FullName = $svgFile
-            FileName = Split-Path $svgFile -leaf
-        }
-
-        $obj.FileName -match "(.*).svg" | Out-Null
-
-        $baseName = $Matches[1] -replace "_-_", "-"
-
-        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value $baseName
-        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")      
-
-        $svgFilesParsed += $obj
-    }
-
-    $copiedFiles = @()
-
-    foreach ($svgFileParsed in $svgFilesParsed) {
-        Write-Output "    Copy $($svgFileParsed.FullName) as $($svgFileParsed.Name) ..."
-        Copy-Item -Path $svgFileParsed.FullName -Destination (Join-Path $destPath $svgFileParsed.Name) -Force
-
-        $copiedFiles += $svgFileParsed.BaseName
-    }
-
-    Write-Output "Adding data to icons.json..."
-    $iconsJson = $null
-    
-    if (Test-Path $iconsJSONPath) {
-        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
-    }
-    else {
-        $iconsJson = [PSCustomObject]@{
-        }
-    }
-    
-    $iconsJson | Add-Member -MemberType NoteProperty -Name "Fortinet" -Value $copiedFiles -Force | Out-Null
-    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
-
-    Write-Output "Done"
-}
-
-
-
-function DownloadFortinetIcons_deprecated_2025-11-29 {
-    Write-Output "------ Fortinet ------"
-
-    if (-not $vssConvInstalled) {
-        Write-Output "vss2svg-conv not installed, skipping Cisco icons download & format"
-        return
-    }
-
-    $zipPath = Join-Path $tempPath "Fortinet.zip"
-    $extractPath = Join-Path $tempPath "Fortinet"
-    $destPath = Join-Path $iconsPath "Fortinet"
-
-    Write-Output "Download..."
-    Invoke-WebRequest -Uri "https://www.fortinet.com/content/dam/fortinet/assets/downloads/Fortinet%20Visio%20Stencil.zip" -OutFile $zipPath
-    Write-Output "Done"
-
-    Write-Output "Extract..."
-    New-Item -Type Directory -Path $extractPath -Force | Out-Null
-    Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-    Write-Output "Done"
-
-    Write-Output "Extract again..."
-    $innerZips = Get-ChildItem -Recurse -Path $extractPath | Where-Object { $_.Name.EndsWith(".zip") }
-
-    foreach ($zip in $innerZips) {
-        Write-Output "    Extracting $($zip.FullName) ..."
-        Expand-Archive -Path $zip.FullName -DestinationPath $extractPath -Force
-    }
-    Write-Output "Done"
-
-    Write-Output "Fix permission..."
-    if ($IsLinux) {
-        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
-            $file.UnixFileMode += "OtherRead"
-        }
-    }
-    Write-Output "Done"
-
-    Write-Output "Convert..."
-    $vssFiles = Get-ChildItem -Recurse -Path $extractPath | Where-Object { $_.Name.Contains("Icons") -and $_.Name.EndsWith(".vss") }
-    foreach ($vss in $vssFiles) {
-        Write-Output "    Converting $($vss.FullName) ..."
-        New-Item -Type Directory -Path "$extractPath/ext-$($vss.Name)/" -Force | Out-Null
-        vss2svg-conv -i $vss -o "$extractPath/ext-$($vss.Name)/"
-    }
-    Write-Output "Done"
-
-    Write-Output "Edit Icons :"
-    $icons = Get-ChildItem -Recurse -Path $extractPath | `
-        Where-Object { $_.Name.EndsWith(".svg") } 
-        
-    foreach ($icon in $icons) {
-        Write-Output "    Editing  $($icon.FullName) ..."
-
-        $iconSVG = Get-Content -Path $icon.FullName -Raw
-
-        $iconSVG = $iconSVG -replace "transform="" scale([\d\.]*) """, ""
-        
-        $iconSVG -match "version=""1.1"" width=""([\d\.]*)"" height=""([\d\.]*)""" | Out-Null
-
-        $X = $Matches[1];
-        $Y = $Matches[2];
-        
-        $iconSVG = $iconSVG -replace "version=""1.1"" width=""[\d\.]*"" height=""[\d\.]*""", "version=""1.1"" width=""$X"" height=""$Y"" viewBox=""0 0 $X $Y"""
-        $iconSVG = $iconSVG -replace "x=""[-\d\.]*"" y=""[-\d\.]*"" ", ""
 
         $iconSVG | Set-Content -Path $icon.FullName -Force
     }
@@ -1053,6 +932,139 @@ function DownloadMerakiIcons {
     $copiedFiles = $copiedFiles | Sort-Object
     
     $iconsJson | Add-Member -MemberType NoteProperty -Name "Meraki" -Value $copiedFiles -Force | Out-Null
+    $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
+
+    Write-Output "Done"
+
+
+}
+
+function DownloadNutanixIcons {
+    Write-Output "------ Nutanix ------"
+    $zipPath = $tempPath
+    $extractPath = Join-Path $tempPath "Nutanix"
+    $extractTempPath = Join-Path $extractPath "Temp"
+    $destPath = Join-Path $iconsPath "Nutanix"
+    Write-Output "Download..."
+    
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FEmpty_States_marketing.zip?alt=media&token=80c4dcc4-8d50-47ce-a7db-c2d23a14b2a5" -OutFile (Join-Path $zipPath "Nutanix_Empty_States_Marketing.zip")
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FEmpty_States_product.zip?alt=media&token=13a24374-d3b3-457e-9650-ea987b27b94f" -OutFile (Join-Path $zipPath "Nutanix_Empty_States_Product.zip")
+
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FIcons_marketing.zip?alt=media&token=17bcd418-68ed-4460-b02a-8c43dca1b8a1" -OutFile (Join-Path $zipPath "Nutanix_Icons_Marketing.zip")
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FIcons_product.zip?alt=media&token=d00560ba-cc3f-4ba0-a3dc-9f58f5e872fe" -OutFile (Join-Path $zipPath "Nutanix_Icons_Product.zip")
+    
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FOnboarding_marketing.zip?alt=media&token=0c961b25-bd1a-48bc-a7ab-6dbaf5222d86" -OutFile (Join-Path $zipPath "Nutanix_Onboarding_Marketing.zip")
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FOnboarding_product.zip?alt=media&token=774ad228-6f0d-45c5-8657-aab865684e4b" -OutFile (Join-Path $zipPath "Nutanix_Onboarding_Product.zip")
+
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FOther_marketing.zip?alt=media&token=400699ed-a5f2-4919-a1a2-f6c549d7894f" -OutFile (Join-Path $zipPath "Nutanix_Other_Marketing.zip")
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FOther_product.zip?alt=media&token=306bce64-572a-471a-8029-d60ff49d5fd6" -OutFile (Join-Path $zipPath "Nutanix_Other_Product.zip")
+
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FWidgets_marketing.zip?alt=media&token=2dabedf3-b41d-497c-9569-2875edb488c1" -OutFile (Join-Path $zipPath "Nutanix_Widgets_Marketing.zip")
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FWidgets_product.zip?alt=media&token=df05e6fc-864a-4adc-993e-d25b20913bfc" -OutFile (Join-Path $zipPath "Nutanix_Widgets_Product.zip")
+
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FFull_Page_marketing.zip?alt=media&token=daf40a13-c303-415c-a6ee-53c3e6ad3202" -OutFile (Join-Path $zipPath "Nutanix_Full_Page_Marketing.zip")
+    Invoke-WebRequest -Uri "https://firebasestorage.googleapis.com/v0/b/design-illustrations.appspot.com/o/illustrations%2FFull_Page_product.zip?alt=media&token=1f0e4a98-5725-455c-841d-549d8cc155fb" -OutFile (Join-Path $zipPath "Nutanix_Full_Page_Product.zip")
+
+    Write-Output "Done"
+
+    Write-Output "Extract..."
+    New-Item -Type Directory -Path $extractPath -Force | Out-Null
+    New-Item -Type Directory -Path $extractTempPath -Force | Out-Null
+    foreach ($file in Get-ChildItem -Path $zipPath -Filter "Nutanix_*.zip") {
+        Write-Output "    Extracting $($file.FullName) ..."
+        Expand-Archive -Path $file.FullName -DestinationPath $extractTempPath -Force
+
+        Write-Output "    Rename with palette ..."
+        $paletteName = ($file.BaseName -split "_")[-1]
+        $svgFiles = Get-ChildItem -Recurse -Path $extractTempPath | Where-Object { $_.Name.EndsWith(".svg") }
+
+        foreach ($svgFile in $svgFiles) {
+            $newName = $svgFile.Name -replace "_svg", "_$paletteName"
+            Rename-Item -Path $svgFile.FullName -NewName $newName -Force
+        }
+
+        Write-Output "    Moving files ..."
+        Move-Item -Path (Join-Path $extractTempPath "*.svg") -Destination $extractPath -Force
+
+        Write-Output "    Cleaning temp ..."
+        Remove-Item -Path $extractTempPath -Recurse -Force
+        New-Item -Type Directory -Path $extractTempPath -Force | Out-Null
+    }
+    Write-Output "Done"
+
+    Write-Output "Fix permission..."
+    if ($IsLinux) {
+        foreach ($file in Get-ChildItem $extractPath -Recurse -File) {
+            $file.UnixFileMode += "OtherRead"
+        }
+    }
+    Write-Output "Done"
+
+    Write-Output "Edit..."
+    $svgFilesRaw = Get-ChildItem $extractPath -Recurse -File | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith(".svg") }
+
+    foreach ($icon in $svgFilesRaw) {
+        Write-Output "    Editing  $($icon) ..."
+
+        $iconSVG = Get-Content -Path $icon -Raw
+
+        $title = [System.IO.Path]::GetFileNameWithoutExtension($icon) -replace ",", ""  -replace "\(", "" -replace "\)", "" -replace "\+", "plus" -replace "\&", "and"
+
+        $iconSVG = $iconSVG -replace "\.st", ".st-$title-"
+        $iconSVG = $iconSVG -replace """st", """st-$title-"
+        
+        
+        $iconSVG | Set-Content -Path $icon -Force
+    }
+    Write-Output "Done"
+
+    Write-Output "Copy :"
+    New-Item -Type Directory -Path $destPath -Force | Out-Null
+    $svgFilesRaw = Get-ChildItem $extractPath -Recurse -File | `
+        Select-Object -ExpandProperty FullName | `
+        Where-Object { $_.EndsWith(".svg") }
+
+    $svgFilesParsed = @()
+    foreach ($svgFile in $svgFilesRaw) {
+        $obj = [PSCustomObject]@{
+            FullName = $svgFile
+            FileName = Split-Path $svgFile -leaf
+        }
+
+        $obj.FileName -match "(.*).svg" | Out-Null
+
+        $obj | Add-Member -MemberType NoteProperty -Name "BaseName" -Value "$($Matches[1])"
+        $obj.BaseName = $obj.BaseName -replace ",", ""  -replace "\(", "" -replace "\)", "" -replace "\+", "plus" -replace "\&", "and"
+
+        $obj | Add-Member -MemberType NoteProperty -Name "Name" -Value ("$($obj.BaseName).svg")
+
+        $svgFilesParsed += $obj
+    }
+
+    $copiedFiles = @()
+
+    $svgFilesParsed | ForEach-Object {
+        Write-Output "    Copy $($_.FullName) as $($_.Name)  ..."
+        Copy-Item -Path $_.FullName -Destination (Join-Path $destPath $_.Name) -Force
+        $copiedFiles += $_.BaseName
+    }
+
+    Write-Output "Adding data to icons.json..."
+    $iconsJson = $null
+    
+    if (Test-Path $iconsJSONPath) {
+        $iconsJson = Get-Content $iconsJSONPath | ConvertFrom-Json
+    }
+    else {
+        $iconsJson = [PSCustomObject]@{
+        }
+    }
+
+    $copiedFiles = $copiedFiles | Sort-Object
+    
+    $iconsJson | Add-Member -MemberType NoteProperty -Name "Nutanix" -Value $copiedFiles -Force | Out-Null
     $iconsJson | ConvertTo-Json -Depth 100 | Out-File $iconsJSONPath -Force
 
     Write-Output "Done"
